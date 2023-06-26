@@ -1,0 +1,10 @@
+###############
+# Directories #
+###############
+bin/
+obj/
+TestResults/
+# OS generated files #
+######################
+[Bb]in
+[Oo]bj
