@@ -56,8 +56,9 @@ body {
 }
 
 .buttonColor {
-    background-color: black;
-    border-color: black;
+    background-color: white;
+    border-color: white;
+    color: rgb(208, 24, 24);
 }
 
 .buttonColor:hover {
@@ -66,14 +67,23 @@ body {
 }
 
 .aBgColorReg {
-    color: black;
+    color: white;
 }
 
 .aBgColor:hover {
-    color: rgb(208, 24, 24);
+    color: white;
 }
 
 .textItalic {
     font-style: italic;
     font-weight: bold;
+}
+
+.bgImg {
+    background-image: url('../img/bg.jpg');
+    background-size: cover;
+}
+
+.textColor {
+    color: white;
 }
