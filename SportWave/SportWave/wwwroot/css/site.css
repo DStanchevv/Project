@@ -1,0 +1,56 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.logo {
+    font-family: "Rockwell";
+    font-style: italic;
+    font-weight: bold;
+}
+
+.logoColor {
+    color: rgb(208, 24, 24);
+}
+
+.myFont {
+    font-family: "Rockwell";
+}
+
+.navbarBg {
+    background-color: black;
+}
+
+.nbFontColor {
+    color: white;
+}
+
+.footerFontColor {
+    color: white;
+}
+
+.nbButtonColor {
+    background-color: white;
+}
+
+.spaceAdjust {
+    margin-bottom: 3%;
+}
+
+.spaceAdjust2 {
+    margin-bottom: 2%;
+}
