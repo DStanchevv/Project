@@ -1,0 +1,39 @@
+﻿@using SportWave.ViewModels.MenViewModels
+@model IEnumerable<MenViewModel>
+
+@{
+    ViewBag.Title = "Men";
+}
+
+<h1 class="text-center textColor">@ViewBag.Title</h1>
+<p class="text-center textColor">Welcome to the male section.</p>
+<hr class="hrStyle" />
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <img class="card-img-top" src="@product.ImageUrl" alt="Product Image" style="width: 100%; height: 280px;">
+                <div class="card-body text-center">
+                    <h4>@product.Name</h4>
+                    <h6>Price: <b>@product.Price</b></h6>
+                    <h6>Color: <b>@product.Color</b></h6>
+                    <h6>
+                        Description:
+                        <b>@product.Description</b>
+                    </h6>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <input class="btn btn-primary" type="submit" value="Add to cart" />
+                    }
+                    else
+                    {
+                        <p>Log in or register in order to shop</p>
+                    }
+                    <br />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

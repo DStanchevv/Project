@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SportWave.Data;
 using SportWave.Data.Models;
+using SportWave.Services;
+using SportWave.Services.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     .AddEntityFrameworkStores<SportWaveDbContext>();
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IMenService, MenService>();
 
 var app = builder.Build();
 

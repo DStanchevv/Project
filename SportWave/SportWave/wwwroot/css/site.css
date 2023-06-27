@@ -95,3 +95,8 @@ body {
 .aMen:hover {
      color: red;
 }
+
+.hrStyle {
+    height: 30px;
+    color: white;
+}
