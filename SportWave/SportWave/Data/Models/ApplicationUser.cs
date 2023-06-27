@@ -6,6 +6,7 @@ namespace SportWave.Data.Models
     {
         public ApplicationUser()
         {
+            this.Id = Guid.NewGuid();
             this.Orders = new HashSet<Order>();
             this.UserReviews = new HashSet<UserReviews>();
         }

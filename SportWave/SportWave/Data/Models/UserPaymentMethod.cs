@@ -6,6 +6,11 @@ namespace SportWave.Data.Models
 {
     public class UserPaymentMethod
     {
+        public UserPaymentMethod()
+        {
+            this.Id = Guid.NewGuid();
+        }
+
         [Key]
         public Guid Id { get; set; }
 

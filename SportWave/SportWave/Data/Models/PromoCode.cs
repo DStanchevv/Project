@@ -5,6 +5,11 @@ namespace SportWave.Data.Models
 {
     public class PromoCode
     {
+        public PromoCode()
+        {
+            this.Id = Guid.NewGuid();
+        }
+
         [Key]
         public Guid Id { get; set; }
 
