@@ -35,6 +35,12 @@ namespace SportWave.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<UserAddress>().HasKey(x => new { x.UserId, x.AddressId });
+            builder.Entity<ProductVariation>().HasKey(x => new { x.ProductId, x.Color, x.Size, x.Gender });
+            builder.Entity<ShoppingCartItem>().HasKey(x => new { x.CartId, x.ProductId });
+            builder.Entity<ProductOrder>().HasKey(x => new { x.ProductId, x.OrderId });
+            builder.Entity<PromoOrder>().HasKey(x => new { x.PromoCodeId, x.OrderId });
+            builder.Entity<PromoUser>().HasKey(x => new { x.UserId, x.PromoCodeId });
             base.OnModelCreating(builder);
         }
     }

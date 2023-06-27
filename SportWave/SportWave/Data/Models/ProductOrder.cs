@@ -5,7 +5,7 @@ namespace SportWave.Data.Models
     public class ProductOrder
     {
         [ForeignKey(nameof(Order))]
-        public int OrderId { get; set; }
+        public Guid OrderId { get; set; }
         public Order Order { get; set; } = null!;
 
         [ForeignKey(nameof(Product))]

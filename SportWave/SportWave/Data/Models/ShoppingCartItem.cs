@@ -5,7 +5,7 @@ namespace SportWave.Data.Models
     public class ShoppingCartItem
     {
         [ForeignKey(nameof(ShoppingCart))]
-        public int CartId { get; set; }
+        public Guid CartId { get; set; }
         public ShoppingCart ShoppingCart { get; set; } = null!;
 
         [ForeignKey(nameof(Product))]
