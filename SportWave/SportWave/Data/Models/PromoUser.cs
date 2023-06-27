@@ -6,11 +6,11 @@ namespace SportWave.Data.Models
     public class PromoUser
     {
         [ForeignKey(nameof(User))]
-        public int UserId { get; set; }
-        public IdentityUser User { get; set; } = null!;
+        public Guid UserId { get; set; }
+        public ApplicationUser User { get; set; } = null!;
 
         [ForeignKey(nameof(PromoCode))]
-        public int PromoCodeId { get; set; }
+        public Guid PromoCodeId { get; set; }
         public PromoCode PromoCode { get; set; } = null!;
     }
 }

@@ -7,10 +7,10 @@ namespace SportWave.Data.Models
     public class ShoppingCart
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [ForeignKey(nameof(User))]
-        public int UserId { get; set; }
-        public IdentityUser User { get; set; } = null!;
+        public Guid UserId { get; set; }
+        public ApplicationUser User { get; set; } = null!;
     }
 }

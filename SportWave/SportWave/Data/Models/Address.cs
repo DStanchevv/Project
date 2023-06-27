@@ -6,7 +6,7 @@ namespace SportWave.Data.Models
     public class Address
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [MaxLength(CountryNameMaxLength)]

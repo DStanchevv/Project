@@ -6,11 +6,11 @@ namespace SportWave.Data.Models
     public class UserAddress
     {
         [ForeignKey(nameof(User))]
-        public int UserId { get; set; }
-        public IdentityUser User { get; set; } = null!;
+        public Guid UserId { get; set; }
+        public ApplicationUser User { get; set; } = null!;
 
         [ForeignKey(nameof(Address))]
-        public int AddressId { get; set; }
+        public Guid AddressId { get; set; }
         public Address Address { get; set; } = null!;
 
         public bool IsDefault { get; set; }
