@@ -1,0 +1,9 @@
+﻿@using SportWave.Data.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+<ul class="nav nav-pills flex-column">
+    <li class="nav-item"><a class="@ManageNavPages.IndexNavClass(ViewContext) textColor aMen" id="profile" asp-page="./Index">Profile</a></li>
+    <li class="nav-item"><a class="@ManageNavPages.ChangePasswordNavClass(ViewContext) textColor aMen" id="change-password" asp-page="./ChangePassword">Password</a></li>
+</ul>

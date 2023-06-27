@@ -74,6 +74,10 @@ body {
     color: white;
 }
 
+.aMenColor:hover {
+    color: rgb(208, 24, 24);
+}
+
 .textItalic {
     font-style: italic;
     font-weight: bold;
@@ -86,4 +90,8 @@ body {
 
 .textColor {
     color: white;
+}
+
+.aMen:hover {
+     color: red;
 }
