@@ -41,6 +41,8 @@ namespace SportWave.Data
             builder.Entity<ProductOrder>().HasKey(x => new { x.ProductId, x.OrderId });
             builder.Entity<PromoOrder>().HasKey(x => new { x.PromoCodeId, x.OrderId });
             builder.Entity<PromoUser>().HasKey(x => new { x.UserId, x.PromoCodeId });
+            builder.Entity<Order>().Property(x => x.OrderTotal).HasPrecision(18, 2);
+            builder.Entity<Product>().Property(x => x.Price).HasPrecision(18, 2);
             base.OnModelCreating(builder);
         }
     }
