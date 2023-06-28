@@ -13,7 +13,7 @@ namespace SportWave.Data.Models
         public ProductColor ProductColor { get; set; } = null!;
 
         [ForeignKey(nameof(ProductSize))]
-        public string Size { get; set; } = null!;
+        public int SizeId { get; set; }
         public ProductSize ProductSize { get; set; } = null!;
 
         public int Quantity { get; set; }

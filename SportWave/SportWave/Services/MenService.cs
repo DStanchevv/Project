@@ -18,6 +18,7 @@ namespace SportWave.Services
         {
             return await this.dbContext.Products.Where(p => p.Gender == "Male").Select(p => new MenViewModel
             {
+                Id = p.Id,
                 Name = p.Name,
                 Price = p.Price,
                 ImageUrl = p.ImgUrl

@@ -7,6 +7,9 @@
 
 <h1 class="text-center textColor">@ViewBag.Title</h1>
 <p class="text-center textColor">Welcome to the male section.</p>
+<a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Men" asp-action="Men">
+    Add Product
+</a>
 <hr class="hrStyle" />
 <div class="row">
     @foreach (var product in Model)
@@ -17,7 +20,7 @@
                 <div class="card-body text-center">
                     <h4>@product.Name</h4>
                     <h6>Price: <b>@product.Price $</b></h6>
-                        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Home" asp-action="Index">
+                        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
                             Details
                         </a>
                     <br />

@@ -8,7 +8,7 @@ using SportWave.Data;
 
 #nullable disable
 
-namespace SportWave.Migrations
+namespace SportWave.Data.Migrations
 {
     [DbContext(typeof(SportWaveDbContext))]
     partial class SportWaveDbContextModelSnapshot : ModelSnapshot
@@ -514,32 +514,44 @@ namespace SportWave.Migrations
 
             modelBuilder.Entity("SportWave.Data.Models.ProductSize", b =>
                 {
-                    b.Property<string>("Size")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.HasKey("Size");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("ProductSizes");
 
                     b.HasData(
                         new
                         {
+                            Id = 1,
                             Size = "XS"
                         },
                         new
                         {
+                            Id = 2,
                             Size = "S"
                         },
                         new
                         {
+                            Id = 3,
                             Size = "M"
                         },
                         new
                         {
+                            Id = 4,
                             Size = "L"
                         },
                         new
                         {
+                            Id = 5,
                             Size = "XL"
                         });
                 });
@@ -552,17 +564,17 @@ namespace SportWave.Migrations
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Size")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("SizeId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductId", "Color", "Size");
+                    b.HasKey("ProductId", "Color", "SizeId");
 
                     b.HasIndex("Color");
 
-                    b.HasIndex("Size");
+                    b.HasIndex("SizeId");
 
                     b.ToTable("ProductsVariations");
 
@@ -571,42 +583,42 @@ namespace SportWave.Migrations
                         {
                             ProductId = 1,
                             Color = "White",
-                            Size = "S",
+                            SizeId = 1,
                             Quantity = 10
                         },
                         new
                         {
                             ProductId = 1,
                             Color = "White",
-                            Size = "M",
+                            SizeId = 2,
                             Quantity = 10
                         },
                         new
                         {
                             ProductId = 2,
                             Color = "White",
-                            Size = "S",
+                            SizeId = 1,
                             Quantity = 10
                         },
                         new
                         {
                             ProductId = 2,
                             Color = "White",
-                            Size = "M",
+                            SizeId = 2,
                             Quantity = 10
                         },
                         new
                         {
                             ProductId = 3,
                             Color = "Black",
-                            Size = "S",
+                            SizeId = 1,
                             Quantity = 10
                         },
                         new
                         {
                             ProductId = 3,
                             Color = "Black",
-                            Size = "M",
+                            SizeId = 2,
                             Quantity = 10
                         });
                 });
@@ -635,14 +647,14 @@ namespace SportWave.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("928fc5cc-1e5a-408e-ad01-26edb6cfc37c"),
+                            Id = new Guid("57c882a2-ffd3-42fd-a22d-d64037ca951b"),
                             Code = "CODE10",
                             Value = 10,
                             isValid = true
                         },
                         new
                         {
-                            Id = new Guid("e1f312da-b611-4924-99bf-c5b67e6f3dea"),
+                            Id = new Guid("f0a7a067-2f4f-4f9a-91d7-ceebdcfd9b64"),
                             Code = "CODE20",
                             Value = 20,
                             isValid = true
@@ -937,7 +949,7 @@ namespace SportWave.Migrations
 
                     b.HasOne("SportWave.Data.Models.ProductSize", "ProductSize")
                         .WithMany()
-                        .HasForeignKey("Size")
+                        .HasForeignKey("SizeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

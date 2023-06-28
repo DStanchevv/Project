@@ -1,5 +1,65 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using SportWave.ViewModels.ProductViewModels
+@model ProductDetailsViewModel
+
 @{
+    ViewBag.Title = "Product Details";
+    string select = "";
 }
+
+<h2 class="text-center textColor">@ViewBag.Title</h2>
+<hr class="hrStyle" />
+
+
+<div class="d-flex align-items-center justify-content-center" style="margin-bottom: 2%;">
+    <img class="" style="width: 50%; height: 50%; border-radius: 5px;" src="@Model.ImageUrl" alt="Product Image">
+</div>
+
+<div class="d-flex align-items-center justify-content-center card" style="width: 50%; left: 25%; text-align: center">
+
+    <p style="font-size:25px;"><u>@Model.Name</u></p>
+    <p>
+        Price:
+        <b>@Model.Price $</b>
+    </p>
+    <p>@Model.Description</p>
+    <p>Category: <b>@Model.Category</b></p>
+
+    @{
+        List<SelectListItem> list = new List<SelectListItem>();
+    }
+
+    <label asp-for="@Model.Color" class="form-label">Choose Color</label>
+    <select asp-for="@Model.Color" class="form-control">
+        @foreach (var color in @Model.Colors)
+        {
+            @if (!Model.ProductVariations.Any(v => v.Color == color.Color && v.Quantity > 0))
+            {
+                continue;
+            }
+            else
+            {
+                <option value="@color.Color">@color.Color</option>
+            }
+        }
+    </select>
+
+    <span asp-validation-for="@Model.Color" class="text-danger"></span>
+
+    <label asp-for="@Model.Size" class="form-label" style="margin-top: 1%;">Choose Size</label>
+    <select asp-for="@Model.Size" class="form-control" style="margin-bottom: 2%;">
+
+        @foreach (var size in @Model.Sizes)
+        {
+            <option value="@size.Size">@size.Size</option>
+        }
+    </select>
+    <span asp-validation-for="@Model.Size" class="text-danger"></span>
+
+    <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Men" asp-action="Men">
+        Edit
+    </a>
+    <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Men" asp-action="Men">
+        Add to Cart
+    </a>
+</div>
+
