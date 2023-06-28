@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportWave.Services.Contracts;
+using SportWave.ViewModels.MenViewModels;
 
 namespace SportWave.Controllers
 {
@@ -16,6 +17,27 @@ namespace SportWave.Controllers
         {
             var model = await menService.GetMenProductsAsync();
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Add()
+        {
+            AddProductViewModel model = await menService.GetNewAddProductAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(AddProductViewModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await menService.AddProductAsync(model);
+
+            return RedirectToAction(nameof(Men));
         }
     }
 }

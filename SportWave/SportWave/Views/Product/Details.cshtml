@@ -3,7 +3,6 @@
 
 @{
     ViewBag.Title = "Product Details";
-    string select = "";
 }
 
 <h2 class="text-center textColor">@ViewBag.Title</h2>
@@ -28,38 +27,49 @@
         List<SelectListItem> list = new List<SelectListItem>();
     }
 
-    <label asp-for="@Model.Color" class="form-label">Choose Color</label>
-    <select asp-for="@Model.Color" class="form-control">
-        @foreach (var color in @Model.Colors)
-        {
-            @if (!Model.ProductVariations.Any(v => v.Color == color.Color && v.Quantity > 0))
+    @if (Model.ProductVariations.Count() == 0 || Model.ProductVariations.All(pv => pv.Quantity == 0))
+    {
+        <p>Out of Stock</p>
+        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Men" asp-action="Men">
+            Add Variation
+        </a>
+    }
+    else
+    {
+        <label asp-for="@Model.Color" class="form-label">Choose Color</label>
+        <select asp-for="@Model.Color" class="form-control">
+            @foreach (var color in @Model.Colors)
             {
-                continue;
+                @if (!Model.ProductVariations.Any(v => v.Color == color.Color && v.Quantity > 0))
+                {
+                    continue;
+                }
+                else
+                {
+                    <option value="@color.Color">@color.Color</option>
+                }
             }
-            else
+        </select>
+        <span asp-validation-for="@Model.Color" class="text-danger"></span>
+
+        <label asp-for="@Model.Size" class="form-label" style="margin-top: 1%;">Choose Size</label>
+        <select asp-for="@Model.Size" class="form-control" style="margin-bottom: 2%;">
+
+            @foreach (var size in @Model.Sizes)
             {
-                <option value="@color.Color">@color.Color</option>
+                <option value="@size.Size">@size.Size</option>
             }
-        }
-    </select>
+        </select>
+        <span asp-validation-for="@Model.Size" class="text-danger"></span>
+        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Men" asp-action="Men">
+            Add to Cart
+        </a>
+        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Men" asp-action="Men">
+            Edit
+        </a>
+    }
 
-    <span asp-validation-for="@Model.Color" class="text-danger"></span>
 
-    <label asp-for="@Model.Size" class="form-label" style="margin-top: 1%;">Choose Size</label>
-    <select asp-for="@Model.Size" class="form-control" style="margin-bottom: 2%;">
 
-        @foreach (var size in @Model.Sizes)
-        {
-            <option value="@size.Size">@size.Size</option>
-        }
-    </select>
-    <span asp-validation-for="@Model.Size" class="text-danger"></span>
-
-    <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Men" asp-action="Men">
-        Edit
-    </a>
-    <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Men" asp-action="Men">
-        Add to Cart
-    </a>
 </div>
 
