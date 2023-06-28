@@ -12,10 +12,6 @@ namespace SportWave.Data.Models
         public string Color { get; set; } = null!;
         public ProductColor ProductColor { get; set; } = null!;
 
-        [ForeignKey(nameof(ProductGender))]
-        public string Gender { get; set; } = null!;
-        public ProductGender ProductGender { get; set; } = null!;
-
         [ForeignKey(nameof(ProductSize))]
         public string Size { get; set; } = null!;
         public ProductSize ProductSize { get; set; } = null!;

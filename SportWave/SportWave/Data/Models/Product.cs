@@ -6,6 +6,11 @@ namespace SportWave.Data.Models
 {
     public class Product
     {
+        public Product()
+        {
+        this.variations = new HashSet<ProductVariation>();  
+        }
+
         [Key]
         public int Id { get; set; }
 
@@ -23,7 +28,13 @@ namespace SportWave.Data.Models
         public int CategoryId { get; set; }
         public ProductCategory Category { get; set; } = null!;
 
+        [ForeignKey(nameof(ProductGender))]
+        public string Gender { get; set; } = null!;
+        public ProductGender ProductGender { get; set; } = null!;
+
         [Required]
         public string ImgUrl { get; set; } = null!;
+
+        ICollection<ProductVariation> variations { get; set; }
     }
 }

@@ -16,20 +16,10 @@
                 <img class="card-img-top" src="@product.ImageUrl" alt="Product Image" style="width: 100%; height: 280px;">
                 <div class="card-body text-center">
                     <h4>@product.Name</h4>
-                    <h6>Price: <b>@product.Price</b></h6>
-                    <h6>Color: <b>@product.Color</b></h6>
-                    <h6>
-                        Description:
-                        <b>@product.Description</b>
-                    </h6>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <input class="btn btn-primary" type="submit" value="Add to cart" />
-                    }
-                    else
-                    {
-                        <p>Log in or register in order to shop</p>
-                    }
+                    <h6>Price: <b>@product.Price $</b></h6>
+                        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Home" asp-action="Index">
+                            Details
+                        </a>
                     <br />
                 </div>
             </div>

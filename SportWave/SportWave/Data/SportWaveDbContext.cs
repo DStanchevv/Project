@@ -36,7 +36,7 @@ namespace SportWave.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<UserAddress>().HasKey(x => new { x.UserId, x.AddressId });
-            builder.Entity<ProductVariation>().HasKey(x => new { x.ProductId, x.Color, x.Size, x.Gender });
+            builder.Entity<ProductVariation>().HasKey(x => new { x.ProductId, x.Color, x.Size });
             builder.Entity<ShoppingCartItem>().HasKey(x => new { x.CartId, x.ProductId });
             builder.Entity<ProductOrder>().HasKey(x => new { x.ProductId, x.OrderId });
             builder.Entity<PromoOrder>().HasKey(x => new { x.PromoCodeId, x.OrderId });
@@ -255,6 +255,7 @@ namespace SportWave.Data
                 Name = "T-Shirt V1",
                 Price = 15.99m,
                 Description = "A very light, soft and comfortable T-shirt made of 100% cotton.",
+                Gender = "Male",
                 CategoryId = 1,
                 ImgUrl = "/img/T-Shirt V1.jpg"
             };
@@ -266,6 +267,7 @@ namespace SportWave.Data
                 Name = "Hoodie V1",
                 Price = 20.99m,
                 Description = "A very light, soft and comfortable hoodie made of 100% cotton.",
+                Gender = "Male",
                 CategoryId = 2,
                 ImgUrl = "/img/Hoodie V1.jpg"
             };
@@ -277,6 +279,7 @@ namespace SportWave.Data
                 Name = "Shorts V1",
                 Price = 20.99m,
                 Description = "A very light, soft and comfortable Shorts made of 100% cotton.",
+                Gender = "Male",
                 CategoryId = 3,
                 ImgUrl = "/img/Shorts V1.jpg"
             };
@@ -295,7 +298,6 @@ namespace SportWave.Data
             {
                 ProductId = 1,
                 Color = "White",
-                Gender = "Male",
                 Size = "S",
                 Quantity = 10
             };
@@ -305,7 +307,6 @@ namespace SportWave.Data
             {
                 ProductId = 1,
                 Color = "White",
-                Gender = "Male",
                 Size = "M",
                 Quantity = 10
             };
@@ -315,7 +316,6 @@ namespace SportWave.Data
             {
                 ProductId = 2,
                 Color = "White",
-                Gender = "Male",
                 Size = "S",
                 Quantity = 10
             };
@@ -325,7 +325,6 @@ namespace SportWave.Data
             {
                 ProductId = 2,
                 Color = "White",
-                Gender = "Male",
                 Size = "M",
                 Quantity = 10
             };
@@ -335,7 +334,6 @@ namespace SportWave.Data
             {
                 ProductId = 3,
                 Color = "Black",
-                Gender = "Male",
                 Size = "S",
                 Quantity = 10
             };
@@ -345,7 +343,6 @@ namespace SportWave.Data
             {
                 ProductId = 3,
                 Color = "Black",
-                Gender = "Male",
                 Size = "M",
                 Quantity = 10
             };

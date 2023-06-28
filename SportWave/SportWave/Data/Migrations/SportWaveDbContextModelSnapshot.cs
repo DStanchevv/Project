@@ -360,6 +360,10 @@ namespace SportWave.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ImgUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -377,6 +381,8 @@ namespace SportWave.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("Gender");
+
                     b.ToTable("Products");
 
                     b.HasData(
@@ -385,6 +391,7 @@ namespace SportWave.Migrations
                             Id = 1,
                             CategoryId = 1,
                             Description = "A very light, soft and comfortable T-shirt made of 100% cotton.",
+                            Gender = "Male",
                             ImgUrl = "/img/T-Shirt V1.jpg",
                             Name = "T-Shirt V1",
                             Price = 15.99m
@@ -394,6 +401,7 @@ namespace SportWave.Migrations
                             Id = 2,
                             CategoryId = 2,
                             Description = "A very light, soft and comfortable hoodie made of 100% cotton.",
+                            Gender = "Male",
                             ImgUrl = "/img/Hoodie V1.jpg",
                             Name = "Hoodie V1",
                             Price = 20.99m
@@ -403,6 +411,7 @@ namespace SportWave.Migrations
                             Id = 3,
                             CategoryId = 3,
                             Description = "A very light, soft and comfortable Shorts made of 100% cotton.",
+                            Gender = "Male",
                             ImgUrl = "/img/Shorts V1.jpg",
                             Name = "Shorts V1",
                             Price = 20.99m
@@ -546,17 +555,12 @@ namespace SportWave.Migrations
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductId", "Color", "Size", "Gender");
+                    b.HasKey("ProductId", "Color", "Size");
 
                     b.HasIndex("Color");
-
-                    b.HasIndex("Gender");
 
                     b.HasIndex("Size");
 
@@ -568,7 +572,6 @@ namespace SportWave.Migrations
                             ProductId = 1,
                             Color = "White",
                             Size = "S",
-                            Gender = "Male",
                             Quantity = 10
                         },
                         new
@@ -576,7 +579,6 @@ namespace SportWave.Migrations
                             ProductId = 1,
                             Color = "White",
                             Size = "M",
-                            Gender = "Male",
                             Quantity = 10
                         },
                         new
@@ -584,7 +586,6 @@ namespace SportWave.Migrations
                             ProductId = 2,
                             Color = "White",
                             Size = "S",
-                            Gender = "Male",
                             Quantity = 10
                         },
                         new
@@ -592,7 +593,6 @@ namespace SportWave.Migrations
                             ProductId = 2,
                             Color = "White",
                             Size = "M",
-                            Gender = "Male",
                             Quantity = 10
                         },
                         new
@@ -600,7 +600,6 @@ namespace SportWave.Migrations
                             ProductId = 3,
                             Color = "Black",
                             Size = "S",
-                            Gender = "Male",
                             Quantity = 10
                         },
                         new
@@ -608,7 +607,6 @@ namespace SportWave.Migrations
                             ProductId = 3,
                             Color = "Black",
                             Size = "M",
-                            Gender = "Male",
                             Quantity = 10
                         });
                 });
@@ -637,14 +635,14 @@ namespace SportWave.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("837707c8-7d9d-4274-9bdc-1168cfb4eacb"),
+                            Id = new Guid("928fc5cc-1e5a-408e-ad01-26edb6cfc37c"),
                             Code = "CODE10",
                             Value = 10,
                             isValid = true
                         },
                         new
                         {
-                            Id = new Guid("de9dc45e-ad66-404b-9e4c-501ac441af4f"),
+                            Id = new Guid("e1f312da-b611-4924-99bf-c5b67e6f3dea"),
                             Code = "CODE20",
                             Value = 20,
                             isValid = true
@@ -893,7 +891,15 @@ namespace SportWave.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SportWave.Data.Models.ProductGender", "ProductGender")
+                        .WithMany()
+                        .HasForeignKey("Gender")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("ProductGender");
                 });
 
             modelBuilder.Entity("SportWave.Data.Models.ProductOrder", b =>
@@ -923,12 +929,6 @@ namespace SportWave.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SportWave.Data.Models.ProductGender", "ProductGender")
-                        .WithMany()
-                        .HasForeignKey("Gender")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SportWave.Data.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -944,8 +944,6 @@ namespace SportWave.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("ProductColor");
-
-                    b.Navigation("ProductGender");
 
                     b.Navigation("ProductSize");
                 });

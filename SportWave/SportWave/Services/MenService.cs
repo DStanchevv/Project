@@ -16,13 +16,11 @@ namespace SportWave.Services
 
         public async Task<IEnumerable<MenViewModel>> GetMenProductsAsync()
         {
-            return await this.dbContext.ProductsVariations.Where(p => p.Gender == "Male").Select(p => new MenViewModel
+            return await this.dbContext.Products.Where(p => p.Gender == "Male").Select(p => new MenViewModel
             {
-                Name = p.Product.Name,
-                Price = p.Product.Price,
-                Description = p.Product.Description,
-                ImageUrl = p.Product.ImgUrl,
-                Color = p.Color
+                Name = p.Name,
+                Price = p.Price,
+                ImageUrl = p.ImgUrl
             }).ToListAsync();
         }
     }
