@@ -27,7 +27,7 @@ namespace SportWave.Services
                 ImgUrl = model.ImgUrl
             };
 
-            if(!dbContext.Products.Any(p => p.Name == product.Name))
+            if(!dbContext.Products.Any(p => p.Name == product.Name && p.Color == product.Color))
             {
                 await dbContext.Products.AddAsync(product);
                 await dbContext.SaveChangesAsync();
@@ -40,6 +40,7 @@ namespace SportWave.Services
             {
                 Id = p.Id,
                 Name = p.Name,
+                Color = p.Color,
                 Price = p.Price,
                 ImageUrl = p.ImgUrl
             }).ToListAsync();

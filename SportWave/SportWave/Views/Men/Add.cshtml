@@ -26,6 +26,11 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="mb-3">
+                <label asp-for="@Model.Color" class="form-label">Color</label>
+                <input asp-for="@Model.Color" class="form-control" aria-required="true" />
+                <span asp-validation-for="@Model.Color" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
                 <label asp-for="@Model.ImgUrl" class="form-label">Image URL</label>
                 <input asp-for="@Model.ImgUrl" class="form-control" aria-required="true" />
                 <span asp-validation-for="@Model.ImgUrl" class="text-danger"></span>

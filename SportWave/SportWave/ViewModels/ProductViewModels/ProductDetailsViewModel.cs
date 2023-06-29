@@ -14,7 +14,6 @@ namespace SportWave.ViewModels.ProductViewModels
         public string Size { get; set; } = null!;
 
         public IEnumerable<SizesViewModel> Sizes { get; set; } = new List<SizesViewModel>();
-        public IEnumerable<ColorsViewModel> Colors { get; set; } = new HashSet<ColorsViewModel>();
         public IEnumerable<ProductVariationModel> ProductVariations { get; set; } = new HashSet<ProductVariationModel>();
     }
 }

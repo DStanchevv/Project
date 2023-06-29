@@ -28,6 +28,10 @@ namespace SportWave.Data.Models
         public int CategoryId { get; set; }
         public ProductCategory Category { get; set; } = null!;
 
+        [Required]
+        [MaxLength(ColorMaxLength)]
+        public string Color { get; set; } = null!;
+
         [ForeignKey(nameof(ProductGender))]
         public string Gender { get; set; } = null!;
         public ProductGender ProductGender { get; set; } = null!;

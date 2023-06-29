@@ -22,6 +22,7 @@
     </p>
     <p>@Model.Description</p>
     <p>Category: <b>@Model.Category</b></p>
+    <p>Color: <b>@Model.Color</b></p>
 
     @{
         List<SelectListItem> list = new List<SelectListItem>();
@@ -36,28 +37,19 @@
     }
     else
     {
-        <label asp-for="@Model.Color" class="form-label">Choose Color</label>
-        <select asp-for="@Model.Color" class="form-control">
-            @foreach (var color in @Model.Colors)
-            {
-                @if (!Model.ProductVariations.Any(v => v.Color == color.Color && v.Quantity > 0))
-                {
-                    continue;
-                }
-                else
-                {
-                    <option value="@color.Color">@color.Color</option>
-                }
-            }
-        </select>
-        <span asp-validation-for="@Model.Color" class="text-danger"></span>
-
         <label asp-for="@Model.Size" class="form-label" style="margin-top: 1%;">Choose Size</label>
         <select asp-for="@Model.Size" class="form-control" style="margin-bottom: 2%;">
 
             @foreach (var size in @Model.Sizes)
             {
-                <option value="@size.Size">@size.Size</option>
+                @if (!Model.ProductVariations.Any(v => v.Size == size.Size && v.Quantity > 0))
+                {
+                    continue;
+                }
+                else
+                {
+                    <option value="@size.Size">@size.Size</option>
+                }
             }
         </select>
         <span asp-validation-for="@Model.Size" class="text-danger"></span>

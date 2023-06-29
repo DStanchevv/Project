@@ -31,6 +31,9 @@
 
             public const int DescriptionMaxLength = 200;
             public const int DescriptionMinLength = 50;
+
+            public const int ColorMaxLength = 30;
+            public const int ColorMinLength = 3;
         }
 
         public static class ProductCategory

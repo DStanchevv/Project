@@ -19,6 +19,10 @@ namespace SportWave.ViewModels.MenViewModels
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; set; } = null!;
 
+        [Required]
+        [StringLength(ColorMaxLength, MinimumLength = ColorMinLength)]
+        public string Color { get; set; } = null!;
+
         [Range(1, int.MaxValue)]
         public int CategoryId { get; set; }
 

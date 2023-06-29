@@ -14,12 +14,7 @@ namespace SportWave.Services
         }
 
         public async Task<ProductDetailsViewModel> GetProductDetails(int id)
-        {
-            var colors = await dbContext.ProductColors.Select(c => new ColorsViewModel
-            {
-                Color = c.Color
-            }).OrderBy(c => c.Color).ToListAsync();
-            
+        {           
             var sizes = await dbContext.ProductSizes.Select(s => new SizesViewModel
             {
                 Size = s.Size
@@ -28,7 +23,6 @@ namespace SportWave.Services
             var variations = await dbContext.ProductsVariations.Where(pv => pv.ProductId == id).Select(pv => new ProductVariationModel
             {
                 Size = pv.ProductSize.Size,
-                Color = pv.ProductColor.Color,
                 Quantity = pv.Quantity
             }).ToListAsync();
             
@@ -39,8 +33,8 @@ namespace SportWave.Services
                 Name = p.Name,
                 Price = p.Price,
                 Description = p.Description,
+                Color = p.Color,
                 Category = p.Category.Category,
-                Colors = colors,
                 Sizes = sizes,
                 ProductVariations = variations
             }).FirstOrDefaultAsync();

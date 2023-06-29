@@ -17,7 +17,6 @@ namespace SportWave.Data
         public DbSet<UserAddress> UsersAddresses { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<ProductCategory> ProductCategories { get; set; } = null!;
-        public DbSet<ProductColor> ProductColors { get; set; } = null!;
         public DbSet<ProductSize> ProductSizes { get; set; } = null!;
         public DbSet<ProductGender> ProductGenders { get; set; } = null!;
         public DbSet<ProductVariation> ProductsVariations { get; set; } = null!;
@@ -36,7 +35,7 @@ namespace SportWave.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<UserAddress>().HasKey(x => new { x.UserId, x.AddressId });
-            builder.Entity<ProductVariation>().HasKey(x => new { x.ProductId, x.Color, x.SizeId });
+            builder.Entity<ProductVariation>().HasKey(x => new { x.ProductId, x.SizeId });
             builder.Entity<ShoppingCartItem>().HasKey(x => new { x.CartId, x.ProductId });
             builder.Entity<ProductOrder>().HasKey(x => new { x.ProductId, x.OrderId });
             builder.Entity<PromoOrder>().HasKey(x => new { x.PromoCodeId, x.OrderId });
@@ -46,7 +45,6 @@ namespace SportWave.Data
 
             builder.Entity<PaymentType>().HasData(this.GeneratePaymentTypes());
             builder.Entity<OrderStatus>().HasData(this.GenerateOrderStatus());
-            builder.Entity<ProductColor>().HasData(this.GenerateProductColor());
             builder.Entity<ProductSize>().HasData(this.GenerateProductSize());
             builder.Entity<ProductGender>().HasData(this.GenerateProductGender());
             builder.Entity<ProductCategory>().HasData(this.GenerateProductCategory());
@@ -99,33 +97,6 @@ namespace SportWave.Data
             orderStatuses.Add(orderStatus);
 
             return orderStatuses.ToArray();
-        }
-
-        private ProductColor[] GenerateProductColor()
-        {
-            ICollection<ProductColor> productColors = new HashSet<ProductColor>();
-
-            ProductColor productColor;
-
-            productColor = new ProductColor()
-            {
-                Color = "White"
-            };
-            productColors.Add(productColor);
-
-            productColor = new ProductColor()
-            {
-                Color = "Black"
-            };
-            productColors.Add(productColor);
-
-            productColor = new ProductColor()
-            {
-                Color = "Red"
-            };
-            productColors.Add(productColor);
-
-            return productColors.ToArray();
         }
 
         private ProductSize[] GenerateProductSize()
@@ -261,6 +232,7 @@ namespace SportWave.Data
                 Price = 15.99m,
                 Description = "A very light, soft and comfortable T-shirt made of 100% cotton.",
                 Gender = "Male",
+                Color = "WHite",
                 CategoryId = 1,
                 ImgUrl = "/img/T-Shirt V1.jpg"
             };
@@ -273,6 +245,7 @@ namespace SportWave.Data
                 Price = 20.99m,
                 Description = "A very light, soft and comfortable hoodie made of 100% cotton.",
                 Gender = "Male",
+                Color = "White",
                 CategoryId = 2,
                 ImgUrl = "/img/Hoodie V1.jpg"
             };
@@ -285,6 +258,7 @@ namespace SportWave.Data
                 Price = 20.99m,
                 Description = "A very light, soft and comfortable Shorts made of 100% cotton.",
                 Gender = "Male",
+                Color = "Blue",
                 CategoryId = 3,
                 ImgUrl = "/img/Shorts V1.jpg"
             };
@@ -302,7 +276,6 @@ namespace SportWave.Data
             productVariation = new ProductVariation()
             {
                 ProductId = 1,
-                Color = "White",
                 SizeId = 1,
                 Quantity = 10
             };
@@ -311,7 +284,6 @@ namespace SportWave.Data
             productVariation = new ProductVariation()
             {
                 ProductId = 1,
-                Color = "White",
                 SizeId = 2,
                 Quantity = 10
             };
@@ -320,7 +292,6 @@ namespace SportWave.Data
             productVariation = new ProductVariation()
             {
                 ProductId = 2,
-                Color = "White",
                 SizeId = 1,
                 Quantity = 10
             };
@@ -329,7 +300,6 @@ namespace SportWave.Data
             productVariation = new ProductVariation()
             {
                 ProductId = 2,
-                Color = "White",
                 SizeId = 2,
                 Quantity = 10
             };
@@ -338,7 +308,6 @@ namespace SportWave.Data
             productVariation = new ProductVariation()
             {
                 ProductId = 3,
-                Color = "Black",
                 SizeId = 1,
                 Quantity = 10
             };
@@ -347,7 +316,6 @@ namespace SportWave.Data
             productVariation = new ProductVariation()
             {
                 ProductId = 3,
-                Color = "Black",
                 SizeId = 2,
                 Quantity = 10
             };
