@@ -20,9 +20,29 @@ namespace SportWave.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> AddVariations()
+        {
+            AddVariationViewModel model = await menService.GetSizes();
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddVariations(AddVariationViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await menService.AddProductVariationAsync(model);
+
+            return RedirectToAction(nameof(Men));
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Add()
         {
-            AddProductViewModel model = await menService.GetNewAddProductAsync();
+            AddProductViewModel model = await menService.GetNewAddedProductAsync();
 
             return View(model);
         }
@@ -37,7 +57,7 @@ namespace SportWave.Controllers
 
             await menService.AddProductAsync(model);
 
-            return RedirectToAction(nameof(Men));
+            return RedirectToAction(nameof(AddVariations));
         }
     }
 }

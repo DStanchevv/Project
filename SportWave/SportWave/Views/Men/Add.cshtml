@@ -13,27 +13,27 @@
             <div class="mb-3">
                 <label asp-for="@Model.Name" class="form-label">Name</label>
                 <input asp-for="@Model.Name" class="form-control" aria-required="true" />
-                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                <span asp-validation-for="@Model.Name" class="textColor"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="@Model.Price" class="form-label">Price</label>
                 <input asp-for="@Model.Price" class="form-control" aria-required="true" />
-                <span asp-validation-for="@Model.Price" class="text-danger"></span>
+                <span asp-validation-for="@Model.Price" class="textColor"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="@Model.Description" class="form-label">Description</label>
                 <textarea asp-for="@Model.Description" class="form-control" aria-required="true" rows="5"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <span asp-validation-for="Description" class="textColor"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="@Model.Color" class="form-label">Color</label>
                 <input asp-for="@Model.Color" class="form-control" aria-required="true" />
-                <span asp-validation-for="@Model.Color" class="text-danger"></span>
+                <span asp-validation-for="@Model.Color" class="textColor"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="@Model.ImgUrl" class="form-label">Image URL</label>
                 <input asp-for="@Model.ImgUrl" class="form-control" aria-required="true" />
-                <span asp-validation-for="@Model.ImgUrl" class="text-danger"></span>
+                <span asp-validation-for="@Model.ImgUrl" class="textColor"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="@Model.CategoryId" class="form-label">Category</label>
@@ -43,10 +43,10 @@
                         <option value="@category.Id">@category.Category</option>
                     }
                 </select>
-                <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
+                <span asp-validation-for="@Model.CategoryId" class="textColor"></span>
             </div>
             <div class="mb-3">
-                <input class="btn btn-primary" type="submit" value="Add" />
+                <input class="btn btn-primary buttonColor" type="submit" value="Add" />
             </div>
         </form>
     </div>
