@@ -45,5 +45,31 @@ namespace SportWave.Controllers
 
             return RedirectToAction("Men", "Men");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            EditProductViewModel product = await productService.GetProductByIdForEditAsync(id);
+
+            if(product == null)
+            {
+                return RedirectToAction("Men", "Men");
+            }
+
+            return View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, EditProductViewModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await productService.EditProductAsync(model, id);
+
+            return RedirectToAction("Men", "Men");
+        }
     }
 }

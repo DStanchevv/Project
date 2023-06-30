@@ -56,11 +56,48 @@ namespace SportWave.Services
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task EditProductAsync(EditProductViewModel model, int id)
+        {
+            var product = await dbContext.Products.FindAsync(id);
+
+            if(product != null)
+            {
+                product.Name = model.Name;
+                product.Price = decimal.Parse(model.Price);
+                product.Description = model.Description;
+                product.CategoryId = model.CategoryId;
+                product.Color = model.Color;
+                product.ImgUrl = model.ImgUrl;
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task<GetProductWithQuantityAndVariationsViewModel> GetProductByIdAsync(int id)
         {
             return await dbContext.Products.Where(p => p.Id == id).Select(p => new GetProductWithQuantityAndVariationsViewModel
             {
                 Id = p.Id,
+            }).FirstOrDefaultAsync();
+        }
+
+        public async Task<EditProductViewModel> GetProductByIdForEditAsync(int id)
+        {
+            var categories = await dbContext.ProductCategories.Select(c => new CategoryViewModel
+            {
+                Id = c.Id,
+                Category = c.Category
+            }).ToListAsync();
+
+            return await dbContext.Products.Where(p => p.Id == id).Select(p => new EditProductViewModel
+            {
+                Name = p.Name,
+                Price = p.Price.ToString(),
+                Description = p.Description,
+                CategoryId = p.CategoryId,
+                ImgUrl = p.ImgUrl,
+                Color = p.Color,
+                Categories = categories
             }).FirstOrDefaultAsync();
         }
 
