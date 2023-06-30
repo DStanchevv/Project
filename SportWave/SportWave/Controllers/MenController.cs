@@ -22,7 +22,7 @@ namespace SportWave.Controllers
         [HttpGet]
         public async Task<IActionResult> AddVariations()
         {
-            AddVariationViewModel model = await menService.GetSizes();
+            AddVariationViewModel model = new AddVariationViewModel();
 
             return View(model);
         }

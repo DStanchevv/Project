@@ -11,6 +11,6 @@ namespace SportWave.ViewModels.MenViewModels
         [Range(0, 100)]
         public int Quantity { get; set; }
 
-        public IEnumerable<SizeViewModel> Sizes { get; set; } = new HashSet<SizeViewModel>();
+        public IEnumerable<SizesViewModel> Sizes { get; set; } = new HashSet<SizesViewModel>();
     }
 }

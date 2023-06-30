@@ -8,6 +8,5 @@ namespace SportWave.Services.Contracts
         Task AddProductVariationAsync(AddVariationViewModel model);
         Task<IEnumerable<MenViewModel>> GetMenProductsAsync();
         Task<AddProductViewModel> GetNewAddedProductAsync();
-        Task<AddVariationViewModel> GetSizes();
     }
 }

@@ -41,6 +41,13 @@ namespace SportWave.Services
             var Ids = await dbContext.Products.Select(p => p.Id).ToListAsync();
             model.ProductId = Ids.Last();
 
+            var sizes = await dbContext.ProductSizes.Select(s => new SizesViewModel
+            {
+                SizeId = s.Id,
+                Size = s.Size
+            }).ToListAsync();
+            model.Sizes = sizes;
+
             foreach (var size in model.Sizes)
             {
 
@@ -79,22 +86,6 @@ namespace SportWave.Services
             var model = new AddProductViewModel
             {
                 Categories = categories
-            };
-
-            return model;
-        }
-
-        public async Task<AddVariationViewModel> GetSizes()
-        {
-            var sizes = await dbContext.ProductSizes.Select(s => new SizeViewModel
-            {
-                SizeId = s.Id,
-                Size = s.Size
-            }).ToListAsync();
-
-            var model = new AddVariationViewModel
-            {
-                Sizes = sizes
             };
 
             return model;
