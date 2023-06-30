@@ -41,7 +41,7 @@ namespace SportWave.Services
                 }
                 else
                 {
-                    
+
                     ProductVariation var = new ProductVariation()
                     {
                         ProductId = model.Id,
@@ -60,7 +60,7 @@ namespace SportWave.Services
         {
             var product = await dbContext.Products.FindAsync(id);
 
-            if(product != null)
+            if (product != null)
             {
                 product.Name = model.Name;
                 product.Price = decimal.Parse(model.Price);
@@ -101,6 +101,14 @@ namespace SportWave.Services
             }).FirstOrDefaultAsync();
         }
 
+        public async Task<GetProductWithQuantityAndVariationsViewModel> GetProductByIdForRemoveAsync(int id)
+        {
+            return await dbContext.Products.Where(p => p.Id == id).Select(p => new GetProductWithQuantityAndVariationsViewModel
+            {
+                Id = p.Id
+            }).FirstOrDefaultAsync();
+        }
+
         public async Task<ProductDetailsViewModel> GetProductDetails(int id)
         {
             var sizes = await dbContext.ProductSizes.Select(s => new SizesViewModel
@@ -126,6 +134,28 @@ namespace SportWave.Services
                 Sizes = sizes,
                 ProductVariations = variations
             }).FirstOrDefaultAsync();
+        }
+
+        public async Task RemoveProductAndVariationsAsync(GetProductWithQuantityAndVariationsViewModel product)
+        {
+            var productVariations = await dbContext.ProductsVariations.Where(pv => pv.ProductId == product.Id).ToListAsync();
+
+            if (productVariations.Count != 0)
+            {
+                foreach (var pv in productVariations)
+                {
+                    dbContext.ProductsVariations.Remove(pv);
+                }
+            }
+
+            var productToBeRemoved = await dbContext.Products.Where(p => p.Id == product.Id).FirstOrDefaultAsync();
+
+            if (productToBeRemoved != null)
+            {
+                dbContext.Products.Remove(productToBeRemoved);
+            }
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }

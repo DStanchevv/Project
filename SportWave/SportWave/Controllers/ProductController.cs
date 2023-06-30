@@ -71,5 +71,19 @@ namespace SportWave.Controllers
 
             return RedirectToAction("Men", "Men");
         }
+
+        public async Task<IActionResult> Remove(int id)
+        {
+            var product = await productService.GetProductByIdForRemoveAsync(id);
+
+            if(product == null)
+            {
+                return RedirectToAction("Men", "Men");
+            }
+
+            await productService.RemoveProductAndVariationsAsync(product);
+
+            return RedirectToAction("Men", "Men");
+        }
     }
 }
