@@ -5,7 +5,8 @@ namespace SportWave.ViewModels.ProductViewModels
     public class GetProductWithQuantityAndVariationsViewModel
     {
         public int Id { get; set; }
-        
+        public int SizeId { get; set; }
+
         [Range(1, 100)]
         public int Quantity { get; set; }
 

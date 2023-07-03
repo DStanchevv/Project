@@ -35,7 +35,7 @@ namespace SportWave.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<UserAddress>().HasKey(x => new { x.UserId, x.AddressId });
-            builder.Entity<ProductVariation>().HasKey(x => new { x.ProductId, x.SizeId });
+            builder.Entity<ProductVariation>().HasKey(x => new { x.ProductId, x.SizeId, x.GenderId});
             builder.Entity<ShoppingCartItem>().HasKey(x => new { x.CartId, x.ProductId });
             builder.Entity<ProductOrder>().HasKey(x => new { x.ProductId, x.OrderId });
             builder.Entity<PromoOrder>().HasKey(x => new { x.PromoCodeId, x.OrderId });
@@ -151,12 +151,14 @@ namespace SportWave.Data
 
             productGender = new ProductGender()
             {
+                Id = 1,
                 Gender = "Male"
             };
             productGenders.Add(productGender);
 
             productGender = new ProductGender()
             {
+                Id = 2,
                 Gender = "Female"
             };
             productGenders.Add(productGender);
@@ -231,7 +233,7 @@ namespace SportWave.Data
                 Name = "T-Shirt V1",
                 Price = 15.99m,
                 Description = "A very light, soft and comfortable T-shirt made of 100% cotton.",
-                Gender = "Male",
+                GenderId = 1,
                 Color = "WHite",
                 CategoryId = 1,
                 ImgUrl = "/img/T-Shirt V1.jpg"
@@ -244,7 +246,7 @@ namespace SportWave.Data
                 Name = "Hoodie V1",
                 Price = 20.99m,
                 Description = "A very light, soft and comfortable hoodie made of 100% cotton.",
-                Gender = "Male",
+                GenderId = 1,
                 Color = "White",
                 CategoryId = 2,
                 ImgUrl = "/img/Hoodie V1.jpg"
@@ -257,7 +259,7 @@ namespace SportWave.Data
                 Name = "Shorts V1",
                 Price = 20.99m,
                 Description = "A very light, soft and comfortable Shorts made of 100% cotton.",
-                Gender = "Male",
+                GenderId = 1,
                 Color = "Blue",
                 CategoryId = 3,
                 ImgUrl = "/img/Shorts V1.jpg"
@@ -277,6 +279,7 @@ namespace SportWave.Data
             {
                 ProductId = 1,
                 SizeId = 1,
+                GenderId = 1,
                 Quantity = 10
             };
             productsVariations.Add(productVariation);
@@ -285,6 +288,7 @@ namespace SportWave.Data
             {
                 ProductId = 1,
                 SizeId = 2,
+                GenderId = 1,
                 Quantity = 10
             };
             productsVariations.Add(productVariation);
@@ -293,6 +297,7 @@ namespace SportWave.Data
             {
                 ProductId = 2,
                 SizeId = 1,
+                GenderId = 1,
                 Quantity = 10
             };
             productsVariations.Add(productVariation);
@@ -301,6 +306,7 @@ namespace SportWave.Data
             {
                 ProductId = 2,
                 SizeId = 2,
+                GenderId = 1,
                 Quantity = 10
             };
             productsVariations.Add(productVariation);
@@ -309,6 +315,7 @@ namespace SportWave.Data
             {
                 ProductId = 3,
                 SizeId = 1,
+                GenderId = 1,
                 Quantity = 10
             };
             productsVariations.Add(productVariation);
@@ -317,6 +324,7 @@ namespace SportWave.Data
             {
                 ProductId = 3,
                 SizeId = 2,
+                GenderId = 1,
                 Quantity = 10
             };
             productsVariations.Add(productVariation);

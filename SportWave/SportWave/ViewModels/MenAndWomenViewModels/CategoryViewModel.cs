@@ -1,4 +1,4 @@
-﻿namespace SportWave.ViewModels.MenViewModels
+﻿namespace SportWave.ViewModels.MenAndWomenViewModels
 {
     public class CategoryViewModel
     {

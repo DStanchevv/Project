@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SportWave.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitializeDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -102,25 +102,16 @@ namespace SportWave.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductColors",
-                columns: table => new
-                {
-                    Color = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductColors", x => x.Color);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductGenders",
                 columns: table => new
                 {
-                    Gender = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Gender = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductGenders", x => x.Gender);
+                    table.PrimaryKey("PK_ProductGenders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -339,7 +330,8 @@ namespace SportWave.Data.Migrations
                     Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    GenderId = table.Column<int>(type: "int", nullable: false),
                     ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -352,10 +344,10 @@ namespace SportWave.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Products_ProductGenders_Gender",
-                        column: x => x.Gender,
+                        name: "FK_Products_ProductGenders_GenderId",
+                        column: x => x.GenderId,
                         principalTable: "ProductGenders",
-                        principalColumn: "Gender",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -429,25 +421,25 @@ namespace SportWave.Data.Migrations
                 columns: table => new
                 {
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    GenderId = table.Column<int>(type: "int", nullable: false),
                     SizeId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductsVariations", x => new { x.ProductId, x.Color, x.SizeId });
+                    table.PrimaryKey("PK_ProductsVariations", x => new { x.ProductId, x.SizeId, x.GenderId });
                     table.ForeignKey(
-                        name: "FK_ProductsVariations_ProductColors_Color",
-                        column: x => x.Color,
-                        principalTable: "ProductColors",
-                        principalColumn: "Color",
+                        name: "FK_ProductsVariations_Products_GenderId",
+                        column: x => x.GenderId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ProductsVariations_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_ProductsVariations_ProductSizes_SizeId",
                         column: x => x.SizeId,
@@ -586,22 +578,12 @@ namespace SportWave.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "ProductColors",
-                column: "Color",
-                values: new object[]
-                {
-                    "Black",
-                    "Red",
-                    "White"
-                });
-
-            migrationBuilder.InsertData(
                 table: "ProductGenders",
-                column: "Gender",
-                values: new object[]
+                columns: new[] { "Id", "Gender" },
+                values: new object[,]
                 {
-                    "Female",
-                    "Male"
+                    { 1, "Male" },
+                    { 2, "Female" }
                 });
 
             migrationBuilder.InsertData(
@@ -621,36 +603,36 @@ namespace SportWave.Data.Migrations
                 columns: new[] { "Id", "Code", "Value", "isValid" },
                 values: new object[,]
                 {
-                    { new Guid("57c882a2-ffd3-42fd-a22d-d64037ca951b"), "CODE10", 10, true },
-                    { new Guid("f0a7a067-2f4f-4f9a-91d7-ceebdcfd9b64"), "CODE20", 20, true }
+                    { new Guid("8207c71d-8619-4423-8317-73bf1a748bcd"), "CODE10", 10, true },
+                    { new Guid("f9fd4b96-9613-41bf-b148-788ba1fb5557"), "CODE20", 20, true }
                 });
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CategoryId", "Description", "Gender", "ImgUrl", "Name", "Price" },
-                values: new object[] { 1, 1, "A very light, soft and comfortable T-shirt made of 100% cotton.", "Male", "/img/T-Shirt V1.jpg", "T-Shirt V1", 15.99m });
+                columns: new[] { "Id", "CategoryId", "Color", "Description", "GenderId", "ImgUrl", "Name", "Price" },
+                values: new object[] { 1, 1, "WHite", "A very light, soft and comfortable T-shirt made of 100% cotton.", 1, "/img/T-Shirt V1.jpg", "T-Shirt V1", 15.99m });
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CategoryId", "Description", "Gender", "ImgUrl", "Name", "Price" },
-                values: new object[] { 2, 2, "A very light, soft and comfortable hoodie made of 100% cotton.", "Male", "/img/Hoodie V1.jpg", "Hoodie V1", 20.99m });
+                columns: new[] { "Id", "CategoryId", "Color", "Description", "GenderId", "ImgUrl", "Name", "Price" },
+                values: new object[] { 2, 2, "White", "A very light, soft and comfortable hoodie made of 100% cotton.", 1, "/img/Hoodie V1.jpg", "Hoodie V1", 20.99m });
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CategoryId", "Description", "Gender", "ImgUrl", "Name", "Price" },
-                values: new object[] { 3, 3, "A very light, soft and comfortable Shorts made of 100% cotton.", "Male", "/img/Shorts V1.jpg", "Shorts V1", 20.99m });
+                columns: new[] { "Id", "CategoryId", "Color", "Description", "GenderId", "ImgUrl", "Name", "Price" },
+                values: new object[] { 3, 3, "Blue", "A very light, soft and comfortable Shorts made of 100% cotton.", 1, "/img/Shorts V1.jpg", "Shorts V1", 20.99m });
 
             migrationBuilder.InsertData(
                 table: "ProductsVariations",
-                columns: new[] { "Color", "ProductId", "SizeId", "Quantity" },
+                columns: new[] { "GenderId", "ProductId", "SizeId", "Quantity" },
                 values: new object[,]
                 {
-                    { "White", 1, 1, 10 },
-                    { "White", 1, 2, 10 },
-                    { "White", 2, 1, 10 },
-                    { "White", 2, 2, 10 },
-                    { "Black", 3, 1, 10 },
-                    { "Black", 3, 2, 10 }
+                    { 1, 1, 1, 10 },
+                    { 1, 1, 2, 10 },
+                    { 1, 2, 1, 10 },
+                    { 1, 2, 2, 10 },
+                    { 1, 3, 1, 10 },
+                    { 1, 3, 2, 10 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -718,9 +700,9 @@ namespace SportWave.Data.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_Gender",
+                name: "IX_Products_GenderId",
                 table: "Products",
-                column: "Gender");
+                column: "GenderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductsOrders_OrderId",
@@ -728,9 +710,9 @@ namespace SportWave.Data.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductsVariations_Color",
+                name: "IX_ProductsVariations_GenderId",
                 table: "ProductsVariations",
-                column: "Color");
+                column: "GenderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductsVariations_SizeId",
@@ -823,9 +805,6 @@ namespace SportWave.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "ProductColors");
 
             migrationBuilder.DropTable(
                 name: "ProductSizes");

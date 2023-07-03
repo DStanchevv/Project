@@ -1,4 +1,4 @@
-﻿using SportWave.ViewModels.MenViewModels;
+﻿using SportWave.ViewModels.MenAndWomenViewModels;
 using System.ComponentModel.DataAnnotations;
 using static SportWave.Common.EntityValidationConstants.Product;
 

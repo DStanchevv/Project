@@ -33,12 +33,13 @@ namespace SportWave.Data.Models
         public string Color { get; set; } = null!;
 
         [ForeignKey(nameof(ProductGender))]
-        public string Gender { get; set; } = null!;
+        public int GenderId { get; set; }
         public ProductGender ProductGender { get; set; } = null!;
 
         [Required]
         public string ImgUrl { get; set; } = null!;
 
-        ICollection<ProductVariation> variations { get; set; }
+        [NotMapped]
+        public ICollection<ProductVariation> variations { get; set; }
     }
 }

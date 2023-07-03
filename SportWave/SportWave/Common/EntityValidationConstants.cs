@@ -34,6 +34,8 @@
 
             public const int ColorMaxLength = 30;
             public const int ColorMinLength = 3;
+
+            public const int GenderMaxLength = 6;
         }
 
         public static class ProductCategory

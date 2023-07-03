@@ -1,1 +1,30 @@
-﻿
+﻿@using SportWave.ViewModels.MenAndWomenViewModels
+@model IEnumerable<MenAndWomenViewModel>
+
+@{
+    ViewBag.Title = "Women";
+}
+
+<h1 class="text-center textColor">@ViewBag.Title</h1>
+<p class="text-center textColor">Welcome to the female section.</p>
+<hr class="hrStyle" />
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <img class="card-img-top" src="@product.ImageUrl" alt="Product Image" style="width: 100%; height: 280px;">
+                <div class="card-body text-center">
+                    <h4>@product.Name</h4>
+                    <h6>Color: <b>@product.Color</b></h6>
+                    <h6>Price: <b>@product.Price $</b></h6>
+                    <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+                        Details
+                    </a>
+                    <br />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

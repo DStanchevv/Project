@@ -1,4 +1,4 @@
-﻿@using SportWave.ViewModels.MenViewModels
+﻿@using SportWave.ViewModels.MenAndWomenViewModels
 @model AddProductViewModel
 @{
     ViewBag.Title = "Add Product";
@@ -31,6 +31,16 @@
                 <span asp-validation-for="@Model.Color" class="textColor"></span>
             </div>
             <div class="mb-3">
+                <label asp-for="@Model.GenderId" class="form-label">Gender</label>
+                <select asp-for="@Model.GenderId" class="form-control">
+                    @foreach (var gender in @Model.Genders)
+                    {
+                        <option value="@gender.Id">@gender.Gender</option>
+                    }
+                </select>
+                <span asp-validation-for="@Model.GenderId" class="textColor"></span>
+            </div>
+            <div class="mb-3">
                 <label asp-for="@Model.ImgUrl" class="form-label">Image URL</label>
                 <input asp-for="@Model.ImgUrl" class="form-control" aria-required="true" />
                 <span asp-validation-for="@Model.ImgUrl" class="textColor"></span>
@@ -46,7 +56,7 @@
                 <span asp-validation-for="@Model.CategoryId" class="textColor"></span>
             </div>
             <div class="mb-3">
-                <input class="btn btn-primary buttonColor" type="submit" value="Add" />
+                <input class="btn btn-danger buttonColor" type="submit" value="Add" />
             </div>
         </form>
     </div>

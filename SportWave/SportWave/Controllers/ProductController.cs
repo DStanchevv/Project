@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportWave.Services.Contracts;
-using SportWave.ViewModels.MenViewModels;
 using SportWave.ViewModels.ProductViewModels;
 
 namespace SportWave.Controllers
@@ -43,7 +42,7 @@ namespace SportWave.Controllers
 
             await productService.AddVariationToProductAsync(model, id);
 
-            return RedirectToAction("Men", "Men");
+            return RedirectToAction($"Men", "Men");
         }
 
         [HttpGet]

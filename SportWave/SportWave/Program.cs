@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SportWave.Data;
 using SportWave.Data.Models;
@@ -25,8 +24,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IMenService, MenService>();
+builder.Services.AddScoped<IMenAndWomanService, MenAndWomenService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 var app = builder.Build();
 

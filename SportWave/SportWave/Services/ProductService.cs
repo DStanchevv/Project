@@ -2,8 +2,9 @@
 using SportWave.Data;
 using SportWave.Data.Models;
 using SportWave.Services.Contracts;
-using SportWave.ViewModels.MenViewModels;
+using SportWave.ViewModels.MenAndWomenViewModels;
 using SportWave.ViewModels.ProductViewModels;
+using System.Drawing;
 
 namespace SportWave.Services
 {
@@ -17,6 +18,7 @@ namespace SportWave.Services
 
         public async Task AddVariationToProductAsync(GetProductWithQuantityAndVariationsViewModel model, int id)
         {
+            var gender = await dbContext.Products.Where(p => p.Id == id).Select(p => p.GenderId).FirstAsync();
             var sizes = await dbContext.ProductSizes.Select(s => new SizesViewModel
             {
                 SizeId = s.Id,
@@ -28,15 +30,44 @@ namespace SportWave.Services
             {
                 ProductId = pv.ProductId,
                 SizeId = pv.ProductSize.Id,
+                GenderId = gender,
                 Quantity = pv.Quantity
             }).ToListAsync();
             model.ProductVariations = variations;
-
-            foreach (var size in model.Sizes)
+            
+            var neededSize = model.Sizes.Where(p => p.SizeId == model.SizeId).Select(p => p.Size).First();
+            if (neededSize == "All")
             {
-                if (model.ProductVariations.Any(pv => pv.SizeId == size.SizeId))
+                foreach (var size in model.Sizes)
                 {
-                    var productVariation = await dbContext.ProductsVariations.Where(pv => pv.SizeId == size.SizeId).FirstAsync();
+                    if (size.Size != "All")
+                    {
+                        if (model.ProductVariations.Any(pv => pv.SizeId == size.SizeId && pv.ProductId == model.Id))
+                        {
+                            var productVariation = await dbContext.ProductsVariations.Where(pv => pv.SizeId == size.SizeId && pv.ProductId == model.Id).FirstAsync();
+                            productVariation.Quantity += model.Quantity;
+                        }
+                        else
+                        {
+
+                            ProductVariation var = new ProductVariation()
+                            {
+                                ProductId = model.Id,
+                                SizeId = size.SizeId,
+                                GenderId = gender,
+                                Quantity = model.Quantity
+                            };
+
+                            await dbContext.ProductsVariations.AddAsync(var);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (model.ProductVariations.Any(pv => pv.SizeId == model.SizeId && pv.ProductId == model.Id))
+                {
+                    var productVariation = await dbContext.ProductsVariations.Where(pv => pv.SizeId == model.SizeId && pv.ProductId == model.Id).FirstAsync();
                     productVariation.Quantity += model.Quantity;
                 }
                 else
@@ -45,7 +76,8 @@ namespace SportWave.Services
                     ProductVariation var = new ProductVariation()
                     {
                         ProductId = model.Id,
-                        SizeId = size.SizeId,
+                        SizeId = model.SizeId,
+                        GenderId = gender,
                         Quantity = model.Quantity
                     };
 
@@ -75,9 +107,16 @@ namespace SportWave.Services
 
         public async Task<GetProductWithQuantityAndVariationsViewModel> GetProductByIdAsync(int id)
         {
+            var sizes = await dbContext.ProductSizes.Select(s => new SizesViewModel
+            {
+                SizeId = s.Id,
+                Size = s.Size
+            }).ToListAsync();
+
             return await dbContext.Products.Where(p => p.Id == id).Select(p => new GetProductWithQuantityAndVariationsViewModel
             {
                 Id = p.Id,
+                Sizes = sizes
             }).FirstOrDefaultAsync();
         }
 

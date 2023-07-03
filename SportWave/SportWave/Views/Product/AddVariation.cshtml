@@ -11,12 +11,22 @@
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6 textColor">
         <form asp-action="AddVariation" method="post">
             <div class="mb-3">
+                <label asp-for="@Model.SizeId" class="form-label">Size</label>
+                <select asp-for="@Model.SizeId" class="form-control">
+                    @foreach (var size in @Model.Sizes)
+                    {
+                        <option value="@size.SizeId">@size.Size</option>
+                    }
+                </select>
+                <span asp-validation-for="@Model.SizeId" class="textColor"></span>
+            </div>
+            <div class="mb-3">
                 <label asp-for="@Model.Quantity" class="form-label">Quantity for each size</label>
                 <input asp-for="@Model.Quantity" class="form-control" aria-required="true" />
                 <span asp-validation-for="@Model.Quantity" class="textColor"></span>
             </div>
             <div class="mb-3">
-                <input class="btn btn-primary buttonColor" type="submit" value="Add" />
+                <input class="btn btn-danger buttonColor" type="submit" value="Add" />
             </div>
         </form>
     </div>

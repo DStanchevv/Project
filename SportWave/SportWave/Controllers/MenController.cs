@@ -1,63 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportWave.Services.Contracts;
-using SportWave.ViewModels.MenViewModels;
+using SportWave.ViewModels.MenAndWomenViewModels;
 
 namespace SportWave.Controllers
 {
     public class MenController : Controller
     {
-        private readonly IMenService menService;
+        private readonly IMenAndWomanService menService;
 
-        public MenController(IMenService menService)
+        public MenController(IMenAndWomanService menService)
         {
             this.menService = menService;
         }
 
         public async Task<IActionResult> Men()
         {
-            var model = await menService.GetMenProductsAsync();
+            var model = await menService.GetProductsAsync(1);
             return View(model);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> AddVariations()
-        {
-            AddVariationViewModel model = new AddVariationViewModel();
-
-            return View(model);
-        }
-        [HttpPost]
-        public async Task<IActionResult> AddVariations(AddVariationViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            await menService.AddProductVariationAsync(model);
-
-            return RedirectToAction(nameof(Men));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Add()
-        {
-            AddProductViewModel model = await menService.GetNewAddedProductAsync();
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Add(AddProductViewModel model)
-        {
-            if(!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            await menService.AddProductAsync(model);
-
-            return RedirectToAction(nameof(AddVariations));
         }
     }
 }

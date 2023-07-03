@@ -1,4 +1,4 @@
-﻿using SportWave.ViewModels.MenViewModels;
+﻿using SportWave.ViewModels.MenAndWomenViewModels;
 using SportWave.ViewModels.ProductViewModels;
 
 namespace SportWave.Services.Contracts

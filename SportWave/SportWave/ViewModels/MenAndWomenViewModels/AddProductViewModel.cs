@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using static SportWave.Common.EntityValidationConstants.Product;
 using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
 
-namespace SportWave.ViewModels.MenViewModels
+namespace SportWave.ViewModels.MenAndWomenViewModels
 {
     public class AddProductViewModel
     {
@@ -24,11 +24,15 @@ namespace SportWave.ViewModels.MenViewModels
         public string Color { get; set; } = null!;
 
         [Range(1, int.MaxValue)]
+        public int GenderId { get; set; }
+
+        [Range(1, int.MaxValue)]
         public int CategoryId { get; set; }
 
         [Required]
         public string ImgUrl { get; set; } = null!;
 
         public IEnumerable<CategoryViewModel> Categories { get; set; } = new HashSet<CategoryViewModel>();
+        public IEnumerable<GenderViewModel> Genders { get; set; } = new HashSet<GenderViewModel>();
     }
 }
