@@ -18,6 +18,20 @@ namespace SportWave.Services
             this.dbContext = dbContext;
         }
 
+        public async Task AddCategoryAsync(AddCategoryViewModel model)
+        {
+            ProductCategory category = new ProductCategory()
+            {
+                Category = model.Name
+            };
+            
+            if (!dbContext.ProductCategories.Any(c => c.Category == model.Name))
+            {
+                await dbContext.ProductCategories.AddAsync(category);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
         public async Task AddProductAsync(AddProductViewModel model)
         {
 

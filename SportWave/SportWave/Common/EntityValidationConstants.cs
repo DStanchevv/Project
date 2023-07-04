@@ -49,5 +49,11 @@
             public const int CodeMaxLength = 15;
             public const int CodeMinLength = 10;
         }
+
+        public static class Category
+        {
+            public const int NameMaxLength = 20;
+            public const int NameMinLength = 3;
+        }
     }
 }

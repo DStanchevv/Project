@@ -38,5 +38,25 @@ namespace SportWave.Controllers
             await adminService.AddProductAsync(model);
             return RedirectToAction("Admin", "Admin");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AddCategory()
+        {
+            AddCategoryViewModel model = new AddCategoryViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddCategory(AddCategoryViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await adminService.AddCategoryAsync(model);
+            return RedirectToAction("Admin", "Admin");
+        }
     }
 }
