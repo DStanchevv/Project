@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.ProductViewModels;
+using SportWave.ViewModels.ShoppingCart;
+using System.Security.Claims;
 
 namespace SportWave.Controllers
 {
@@ -42,7 +44,7 @@ namespace SportWave.Controllers
 
             await productService.AddVariationToProductAsync(model, id);
 
-            return RedirectToAction($"Men", "Men");
+            return RedirectToAction("Men", "Men");
         }
 
         [HttpGet]
@@ -82,6 +84,28 @@ namespace SportWave.Controllers
 
             await productService.RemoveProductAndVariationsAsync(product);
 
+            return RedirectToAction("Men", "Men");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToCart([FromRoute]int id, [FromForm]CartProductViewModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return RedirectToAction("Details", "Product", new { Id = id });
+            }
+
+            var product = await productService.GetProductByIdForCartAsync(id);
+
+            if (product == null)
+            {
+                return RedirectToAction("Men", "Men");
+            }
+
+            product.Size = model.Size;
+            product.Quantity = model.Quantity;
+
+            await productService.AddToCartAsync(product, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             return RedirectToAction("Men", "Men");
         }
     }

@@ -24,10 +24,6 @@
     <p>Category: <b>@Model.Category</b></p>
     <p>Color: <b>@Model.Color</b></p>
 
-    @{
-        List<SelectListItem> list = new List<SelectListItem>();
-    }
-
     @if (Model.ProductVariations.Count() == 0 || Model.ProductVariations.All(pv => pv.Quantity == 0))
     {
         <p>Out of Stock</p>
@@ -43,30 +39,38 @@
     }
     else
     {
-        <label asp-for="@Model.Size" class="form-label" style="margin-top: 1%;">Choose Size</label>
-        <select asp-for="@Model.Size" class="form-control" style="margin-bottom: 2%;">
+        <form asp-action="AddToCart" method="post">
+            <label asp-for="@Model.Size" class="form-label" style="margin-top: 1%;">Choose Size</label>
+            <select asp-for="@Model.Size" class="form-control" style="margin-bottom: 2%;">
 
-            @foreach (var size in @Model.Sizes)
-            {
-                @if (!Model.ProductVariations.Any(v => v.Size == size.Size && v.Quantity > 0))
+                @foreach (var size in @Model.Sizes)
                 {
-                    continue;
+                    @if (!Model.ProductVariations.Any(v => v.Size == size.Size && v.Quantity > 0))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        <option value="@size.Size">@size.Size</option>
+                    }
                 }
-                else
-                {
-                    <option value="@size.Size">@size.Size</option>
-                }
-            }
-        </select>
-        <span asp-validation-for="@Model.Size" class="text-danger"></span>
-        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Men" asp-action="Men">
-            Add to Cart
-        </a>
+            </select>
+            <span asp-validation-for="@Model.Size" class="text-danger"></span>
+
+            <label asp-for="@Model.Quantity" class="form-label">Quantity</label>
+            <input asp-for="@Model.Quantity" class="form-control" aria-required="true" />
+            <span asp-validation-for="@Model.Quantity" class="textColor"></span>
+
+
+            <input class="w-100 btn btn-lg btn-danger buttonColor" type="submit" value="Add to Cart" asp-area="" asp-controller="Product" asp-action="AddToCart" asp-route-id="@Model.Id">
+        </form>
+
+
         <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id">
             Edit
         </a>
         <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="AddVariation" asp-route-id="@Model.Id">
-            Stock up 
+            Stock up
         </a>
         <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Remove" asp-route-id="@Model.Id">
             Remove product

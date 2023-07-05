@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SportWave.Data;
 using SportWave.Data.Models;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.MenAndWomenViewModels;
 using SportWave.ViewModels.ProductViewModels;
+using SportWave.ViewModels.ShoppingCart;
 using System.Drawing;
 
 namespace SportWave.Services
@@ -14,6 +16,44 @@ namespace SportWave.Services
         public ProductService(SportWaveDbContext dbContext)
         {
             this.dbContext = dbContext;
+        }
+
+        public async Task AddToCartAsync(ProductDetailsViewModel product, Guid userId)
+        {
+            if(!dbContext.ShoppingCarts.Any(p => p.UserId == userId))
+            {
+                var shoppingCart = new ShoppingCart()
+                {
+                    UserId = userId
+                };
+                await dbContext.ShoppingCarts.AddAsync(shoppingCart);
+
+                var shoppingCartItems = new ShoppingCartItem()
+                {
+                    CartId = shoppingCart.Id,
+                    ProductId = product.Id,
+                    Quantity = product.Quantity,
+                    Size = product.Size
+                };
+                await dbContext.ShoppingCartItems.AddAsync(shoppingCartItems);
+            }
+            else
+            {
+                var shoppingCart = await dbContext.ShoppingCarts.Where(p => p.UserId == userId).FirstOrDefaultAsync();
+                if (!dbContext.ShoppingCartItems.Any(p => p.ProductId == product.Id && p.Size == product.Size))
+                {
+                    var shoppingCartItems = new ShoppingCartItem()
+                    {
+                        CartId = shoppingCart.Id,
+                        ProductId = product.Id,
+                        Quantity = product.Quantity,
+                        Size = product.Size
+                    };
+                    await dbContext.ShoppingCartItems.AddAsync(shoppingCartItems);
+                }
+            }
+
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task AddVariationToProductAsync(GetProductWithQuantityAndVariationsViewModel model, int id)
@@ -117,6 +157,17 @@ namespace SportWave.Services
             {
                 Id = p.Id,
                 Sizes = sizes
+            }).FirstOrDefaultAsync();
+        }
+
+        public async Task<ProductDetailsViewModel> GetProductByIdForCartAsync(int id)
+        {
+            return await dbContext.Products.Where(p => p.Id == id).Select(p => new ProductDetailsViewModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Category = p.Category.Category,
+                Color = p.Color,
             }).FirstOrDefaultAsync();
         }
 

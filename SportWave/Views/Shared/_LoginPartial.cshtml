@@ -4,21 +4,24 @@
 @inject UserManager<ApplicationUser> UserManager
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="ShoppingCart" asp-action="ShoppingCart"><span class="nbFontColor aMenColor">Shopping cart</span></a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><span class="textColor aMenColor">Profile</span></a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button type="submit" class="nav-link btn btn-link text-dark"><span class="textColor aMenColor">Logout</span></button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login"><span class="nbFontColor aMenColor">Sign in</span></a>
-    </li>
-}
+        </li>
+    }
 </ul>

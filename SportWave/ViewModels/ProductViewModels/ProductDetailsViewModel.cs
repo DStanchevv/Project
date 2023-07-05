@@ -1,4 +1,5 @@
 ﻿using SportWave.Data.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace SportWave.ViewModels.ProductViewModels
 {
@@ -12,6 +13,9 @@ namespace SportWave.ViewModels.ProductViewModels
         public string Category { get; set; } = null!;
         public string Color { get; set; } = null!;
         public string Size { get; set; } = null!;
+        
+        [Range(1, 100)]
+        public int Quantity { get; set; }
 
         public IEnumerable<SizesViewModel> Sizes { get; set; } = new List<SizesViewModel>();
         public IEnumerable<ProductVariationModel> ProductVariations { get; set; } = new HashSet<ProductVariationModel>();

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportWave.Data;
 
@@ -11,9 +12,10 @@ using SportWave.Data;
 namespace SportWave.Data.Migrations
 {
     [DbContext(typeof(SportWaveDbContext))]
-    partial class SportWaveDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230705142039_ChangeCartItemsId")]
+    partial class ChangeCartItemsId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -640,14 +642,14 @@ namespace SportWave.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8adfeb01-9dcb-43ac-8e19-caf2e49709e2"),
+                            Id = new Guid("93be0241-5d0a-4b79-987c-95e068e7c8a2"),
                             Code = "CODE10",
                             Value = 10,
                             isValid = true
                         },
                         new
                         {
-                            Id = new Guid("a4c2ad73-1d79-4881-bf65-102073452f84"),
+                            Id = new Guid("120906e5-de6e-4ede-b2d3-2f72ffc023eb"),
                             Code = "CODE20",
                             Value = 20,
                             isValid = true
@@ -708,10 +710,13 @@ namespace SportWave.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Size")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("CartId", "ProductId");
+                    b.HasKey("CartId", "ProductId", "Size");
 
                     b.HasIndex("ProductId");
 
