@@ -16,9 +16,9 @@ namespace SportWave.Services
             this.dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<MenAndWomenViewModel>> GetProductsAsync(int gender)
+        public async Task<AllProductsViewModel> GetProductsAsync(int gender)
         {
-            return await this.dbContext.Products.Where(p => p.GenderId == gender).Select(p => new MenAndWomenViewModel
+            var products = await this.dbContext.Products.Where(p => p.GenderId == gender).Select(p => new MenAndWomenViewModel
             {
                 Id = p.Id,
                 Name = p.Name,
@@ -26,6 +26,20 @@ namespace SportWave.Services
                 Price = p.Price,
                 ImageUrl = p.ImgUrl
             }).ToListAsync();
+
+            var categories = await dbContext.ProductCategories.Select(c => new CategoryViewModel
+            {
+                Id = c.Id,
+                Category = c.Category
+            }).ToListAsync();
+
+            var model = new AllProductsViewModel()
+            {
+                Categories = categories,
+                Products = products
+            };
+
+            return model;
         }
     }
 }

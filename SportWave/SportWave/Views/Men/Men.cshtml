@@ -1,5 +1,5 @@
 ﻿@using SportWave.ViewModels.MenAndWomenViewModels
-@model IEnumerable<MenAndWomenViewModel>
+@model AllProductsViewModel
 
 @{
     ViewBag.Title = "Men";
@@ -8,8 +8,25 @@
 <h1 class="text-center textColor">@ViewBag.Title</h1>
 <p class="text-center textColor">Welcome to the male section.</p>
 <hr class="hrStyle" />
+
 <div class="row">
-    @foreach (var product in Model)
+    <form asp-action="Men" method="post">
+        <div class="mb-3 textColor">
+            <label asp-for="@Model.CategoryId" class="form-label">Filter by Category</label>
+            <select asp-for="@Model.CategoryId" class="form-control">
+                @foreach (var category in @Model.Categories)
+                {
+                    <option value="@category.Id">@category.Category</option>
+                }
+            </select>
+            <span asp-validation-for="@Model.CategoryId" class="textColor"></span>
+        </div>
+        <div class="mb-3">
+            <input class="btn btn-danger buttonColor" type="submit" value="Filter" />
+        </div>
+    </form>
+
+    @foreach (var product in Model.Products)
     {
         <div class="col-md-4">
             <div class="card mb-3">

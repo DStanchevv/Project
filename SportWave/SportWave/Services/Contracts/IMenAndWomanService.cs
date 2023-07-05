@@ -4,6 +4,6 @@ namespace SportWave.Services.Contracts
 {
     public interface IMenAndWomanService
     {
-        Task<IEnumerable<MenAndWomenViewModel>> GetProductsAsync(int gender);
+        Task<AllProductsViewModel> GetProductsAsync(int gender);
     }
 }

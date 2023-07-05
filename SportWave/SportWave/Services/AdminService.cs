@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SportWave.Data;
 using SportWave.Data.Models;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.MenAndWomenViewModels;
-using SportWave.ViewModels.ProductViewModels;
 
 namespace SportWave.Services
 {
