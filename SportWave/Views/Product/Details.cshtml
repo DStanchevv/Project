@@ -39,7 +39,7 @@
     }
     else
     {
-        <form asp-action="AddToCart" method="post">
+        <form asp-action="AddToCart" method="post" class="w-50">
             <label asp-for="@Model.Size" class="form-label" style="margin-top: 1%;">Choose Size</label>
             <select asp-for="@Model.Size" class="form-control" style="margin-bottom: 2%;">
 
@@ -62,22 +62,18 @@
             <span asp-validation-for="@Model.Quantity" class="textColor"></span>
 
 
-            <input class="w-100 btn btn-lg btn-danger buttonColor" type="submit" value="Add to Cart" asp-area="" asp-controller="Product" asp-action="AddToCart" asp-route-id="@Model.Id">
+            <input class="my-1 w-100 btn btn-lg btn-danger buttonColor" type="submit" value="Add to Cart" asp-area="" asp-controller="Product" asp-action="AddToCart" asp-route-id="@Model.Id">
         </form>
 
-
-        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id">
+        <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id">
             Edit
         </a>
-        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="AddVariation" asp-route-id="@Model.Id">
+        <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="AddVariation" asp-route-id="@Model.Id">
             Stock up
         </a>
-        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Remove" asp-route-id="@Model.Id">
+        <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Remove" asp-route-id="@Model.Id">
             Remove product
         </a>
     }
-
-
-
 </div>
 

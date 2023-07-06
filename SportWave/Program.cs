@@ -27,6 +27,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IMenAndWomanService, MenAndWomenService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 
 var app = builder.Build();
 

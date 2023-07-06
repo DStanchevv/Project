@@ -1,12 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SportWave.Services.Contracts;
+using SportWave.ViewModels.ShoppingCart;
+using System.Security.Claims;
 
 namespace SportWave.Controllers
 {
     public class ShoppingCartController : Controller
     {
-        public IActionResult ShoppingCart()
+        private readonly IShoppingCartService shoppingCartService;
+
+        public ShoppingCartController(IShoppingCartService shoppingCartService)
         {
-            return View();
+            this.shoppingCartService = shoppingCartService;
+        }
+
+        public async Task<IActionResult> ShoppingCart()
+        {
+            var model = await shoppingCartService.GetProductsInCartAsync(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            return View(model);
+        }
+
+        public async Task<IActionResult> Add(int id)
+        {
+            await shoppingCartService.AddQuantityToProductAsync(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)), id);
+            return RedirectToAction(nameof(ShoppingCart));
+        }
+
+        public async Task<IActionResult> Subtract(int id)
+        {
+            await shoppingCartService.SubtractQuantityToProductAsync(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)), id);
+            return RedirectToAction(nameof(ShoppingCart));
+        }
+
+        public async Task<IActionResult> Remove(int id)
+        {
+            await shoppingCartService.RemoveProductFromCart(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)), id);
+            return RedirectToAction(nameof(ShoppingCart));
         }
     }
 }
