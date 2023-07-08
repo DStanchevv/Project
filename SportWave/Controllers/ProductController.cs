@@ -95,18 +95,26 @@ namespace SportWave.Controllers
                 return RedirectToAction("Details", "Product", new { Id = id });
             }
 
-            var product = await productService.GetProductByIdForCartAsync(id);
-
-            if (product == null)
+            var availableQuantity = await productService.GetAvailableQuantityAsync(id, model);
+            if (availableQuantity >= model.Quantity)
             {
+                var product = await productService.GetProductByIdForCartAsync(id);
+
+                if (product == null)
+                {
+                    return RedirectToAction("Men", "Men");
+                }
+
+                product.Size = model.Size;
+                product.Quantity = model.Quantity;
+
+                await productService.AddToCartAsync(product, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
                 return RedirectToAction("Men", "Men");
             }
-
-            product.Size = model.Size;
-            product.Quantity = model.Quantity;
-
-            await productService.AddToCartAsync(product, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-            return RedirectToAction("Men", "Men");
+            else
+            {
+                return RedirectToAction("Details", "Product", new { Id = id });
+            }
         }
     }
 }

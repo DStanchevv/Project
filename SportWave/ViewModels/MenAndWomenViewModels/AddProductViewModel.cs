@@ -1,6 +1,4 @@
-﻿using Microsoft.Build.Framework;
-using SportWave.ViewModels.ProductViewModels;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using static SportWave.Common.EntityValidationConstants.Product;
 using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
 

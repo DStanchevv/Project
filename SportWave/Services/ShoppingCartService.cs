@@ -20,7 +20,12 @@ namespace SportWave.Services
 
             var product = await dbContext.ShoppingCartItems.Where(sci => sci.CartId == shoppingCartId && sci.ProductId == id).FirstAsync();
 
-            product.Quantity++;
+            var productVariationQuantity = await dbContext.ProductsVariations.Where(pv => pv.ProductId == id && pv.ProductSize.Size == product.Size).Select(pv => pv.Quantity).FirstOrDefaultAsync();
+
+            if (product.Quantity < productVariationQuantity)
+            {
+                product.Quantity++;
+            }
 
             await dbContext.SaveChangesAsync();
         }

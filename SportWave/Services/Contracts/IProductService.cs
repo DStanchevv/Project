@@ -9,6 +9,7 @@ namespace SportWave.Services.Contracts
         Task AddToCartAsync(ProductDetailsViewModel product, Guid userId);
         Task AddVariationToProductAsync(GetProductWithQuantityAndVariationsViewModel models, int id);
         Task EditProductAsync(EditProductViewModel model, int id);
+        Task<int> GetAvailableQuantityAsync(int id, CartProductViewModel model);
         Task<GetProductWithQuantityAndVariationsViewModel> GetProductByIdAsync(int id);
         Task<ProductDetailsViewModel> GetProductByIdForCartAsync(int id);
         Task<EditProductViewModel> GetProductByIdForEditAsync(int id);

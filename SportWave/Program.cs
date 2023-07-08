@@ -28,6 +28,7 @@ builder.Services.AddScoped<IMenAndWomanService, MenAndWomenService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+builder.Services.AddScoped<ICheckoutService, CheckoutService>();
 
 var app = builder.Build();
 

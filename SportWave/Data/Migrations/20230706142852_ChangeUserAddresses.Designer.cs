@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportWave.Data;
 
@@ -11,9 +12,10 @@ using SportWave.Data;
 namespace SportWave.Data.Migrations
 {
     [DbContext(typeof(SportWaveDbContext))]
-    partial class SportWaveDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230706142852_ChangeUserAddresses")]
+    partial class ChangeUserAddresses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

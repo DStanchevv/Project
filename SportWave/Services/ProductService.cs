@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SportWave.Data;
 using SportWave.Data.Models;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.MenAndWomenViewModels;
 using SportWave.ViewModels.ProductViewModels;
 using SportWave.ViewModels.ShoppingCart;
-using System.Drawing;
 
 namespace SportWave.Services
 {
@@ -143,6 +141,14 @@ namespace SportWave.Services
             }
 
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<int> GetAvailableQuantityAsync(int id, CartProductViewModel model)
+        {
+            var sizeId = await dbContext.ProductSizes.Where(ps => ps.Size == model.Size).Select(ps => ps.Id).FirstOrDefaultAsync();
+            var quantity = await dbContext.ProductsVariations.Where(pv => pv.ProductId == id && pv.SizeId == sizeId).Select(pv => pv.Quantity).FirstOrDefaultAsync();
+
+            return quantity;
         }
 
         public async Task<GetProductWithQuantityAndVariationsViewModel> GetProductByIdAsync(int id)

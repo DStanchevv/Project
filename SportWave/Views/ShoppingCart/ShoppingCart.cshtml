@@ -13,8 +13,11 @@
 
 <h1 class="text-center textColor">@ViewBag.Title</h1>
 <h5 class="text-center textColor"> Total Price: <b>@Math.Round(total, 2) $</b></h5>
-<a class="w-50 btn btn-lg btn-danger buttonColor" style="margin-left: 25%" asp-area="" asp-controller="ShoppingCart" asp-action="Remove">
-    Checkout
+<a class="w-50 btn btn-lg btn-danger buttonColor my-1" style="margin-left: 25%" asp-area="" asp-controller="Checkout" asp-action="PayInCash">
+    Pay in cash
+</a>
+<a class="w-50 btn btn-lg btn-danger buttonColor my-1" style="margin-left: 25%" asp-area="" asp-controller="Checkout" asp-action="PayWithCard">
+    Pay with card <i class="far fa-credit-card"></i>
 </a>
 
 <hr class="hrStyle" />
@@ -31,6 +34,7 @@
                     <h6>Category: <b>@product.Category</b></h6>
                     <h6>Color: <b>@product.Color</b></h6>
                     <h6>Quantity: <b>@product.Quantity</b></h6>
+                    <h6>Size: <b>@product.Size</b> </h6>
                     <h6>Price: <b>@Math.Round(product.TotalPrice, 2) $</b></h6>
 
                     <div>

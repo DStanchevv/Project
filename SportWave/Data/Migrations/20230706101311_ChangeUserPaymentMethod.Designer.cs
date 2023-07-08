@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportWave.Data;
 
@@ -11,9 +12,10 @@ using SportWave.Data;
 namespace SportWave.Data.Migrations
 {
     [DbContext(typeof(SportWaveDbContext))]
-    partial class SportWaveDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230706101311_ChangeUserPaymentMethod")]
+    partial class ChangeUserPaymentMethod
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -640,14 +642,14 @@ namespace SportWave.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ac234074-8523-4e30-8774-661b227e3ece"),
+                            Id = new Guid("81559b53-022a-4402-9154-b65097aa93fa"),
                             Code = "CODE10",
                             Value = 10,
                             isValid = true
                         },
                         new
                         {
-                            Id = new Guid("0fd7f6bd-a6cb-4f87-b84a-c8ad20b93605"),
+                            Id = new Guid("c9017b78-1b18-46fa-812f-66e373f6ea4e"),
                             Code = "CODE20",
                             Value = 20,
                             isValid = true
@@ -728,6 +730,9 @@ namespace SportWave.Data.Migrations
 
                     b.Property<Guid>("AddressId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
 
                     b.HasKey("UserId", "AddressId");
 

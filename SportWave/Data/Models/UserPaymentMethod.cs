@@ -29,7 +29,5 @@ namespace SportWave.Data.Models
         public string? SecurityCode { get; set; }
 
         public DateTime? ExpiryDate { get; set; }
-
-        public bool isDefault { get; set; }
     }
 }

@@ -55,5 +55,17 @@
             public const int NameMaxLength = 20;
             public const int NameMinLength = 3;
         }
+
+        public static class PaymentMethod
+        {
+            public const int CardNumberMaxLength = 16;
+            public const int CardNumberMinLength = 16;
+
+            public const int SecurityNumberMaxLength = 4;
+            public const int SecurityNumberMinLength = 3;
+
+            public const int ExpiryDateMaxLength = 5;
+            public const int ExpiryDateMinLength = 5;
+        }
     }
 }

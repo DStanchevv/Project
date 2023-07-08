@@ -12,7 +12,5 @@ namespace SportWave.Data.Models
         [ForeignKey(nameof(Address))]
         public Guid AddressId { get; set; }
         public Address Address { get; set; } = null!;
-
-        public bool IsDefault { get; set; }
     }
 }
