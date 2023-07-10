@@ -37,7 +37,7 @@ namespace SportWave.Data
             builder.Entity<UserAddress>().HasKey(x => new { x.UserId, x.AddressId });
             builder.Entity<ProductVariation>().HasKey(x => new { x.ProductId, x.SizeId, x.GenderId});
             builder.Entity<ShoppingCartItem>().HasKey(x => new { x.CartId, x.ProductId, x.Size });
-            builder.Entity<ProductOrder>().HasKey(x => new { x.ProductId, x.OrderId });
+            builder.Entity<ProductOrder>().HasKey(x => new { x.ProductId, x.OrderId, x.Size });
             builder.Entity<PromoOrder>().HasKey(x => new { x.PromoCodeId, x.OrderId });
             builder.Entity<PromoUser>().HasKey(x => new { x.UserId, x.PromoCodeId });
             builder.Entity<Order>().Property(x => x.OrderTotal).HasPrecision(18, 2);

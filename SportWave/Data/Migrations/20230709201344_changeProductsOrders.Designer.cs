@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportWave.Data;
 
@@ -11,9 +12,10 @@ using SportWave.Data;
 namespace SportWave.Data.Migrations
 {
     [DbContext(typeof(SportWaveDbContext))]
-    partial class SportWaveDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230709201344_changeProductsOrders")]
+    partial class changeProductsOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -499,9 +501,10 @@ namespace SportWave.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Size")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProductId", "OrderId", "Size");
+                    b.HasKey("ProductId", "OrderId");
 
                     b.HasIndex("OrderId");
 
@@ -643,14 +646,14 @@ namespace SportWave.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d9f66b75-7367-489d-9ed7-fb18fccd14cc"),
+                            Id = new Guid("d80e9924-4431-47e2-9fef-4238cab36466"),
                             Code = "CODE10",
                             Value = 10,
                             isValid = true
                         },
                         new
                         {
-                            Id = new Guid("41f77e07-b977-4fa6-913b-53b282a70441"),
+                            Id = new Guid("4810e9f4-2711-49cf-a52a-e7163ae9eed6"),
                             Code = "CODE20",
                             Value = 20,
                             isValid = true
