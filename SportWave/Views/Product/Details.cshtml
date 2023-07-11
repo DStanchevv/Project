@@ -64,6 +64,9 @@
             <input class="my-1 w-100 btn btn-lg btn-danger buttonColor" type="submit" value="Add to Cart" asp-area="" asp-controller="Product" asp-action="AddToCart" asp-route-id="@Model.Id">
         </form>
 
+        <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="AddReview" asp-route-id="@Model.Id">
+            Add Review
+        </a>
         <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id">
             Edit
         </a>
@@ -75,3 +78,67 @@
         </a>
     }
 </div>
+
+
+@if (Model.Reviews.Count() > 0)
+{
+    bool helper = false;
+
+    if (Model.Reviews.Any(ur => ur.User.UserName == User.Identity.Name))
+    {
+        var review = Model.Reviews.Where(ur => ur.User.UserName == User.Identity.Name).First();
+
+        <div class="d-flex align-items-center justify-content-center card my-4" style="width: 50%; left: 25%; text-align: center">
+            <p style="font-size:20px;"><u>@review.User.Email</u></p>
+            <p>  Rating: <b>@review.Rating</b> / 10 </p>
+            @if (review.Comment != null)
+            {
+                <p> Comment: @review.Comment </p>
+            }
+            @if (User.Identity.Name == review.User.UserName)
+            {
+                <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="EditReview" asp-route-id="@review.Id">
+                    Edit
+                </a>
+            }
+        </div>
+        helper = true;
+    }
+
+
+    foreach (var ur in Model.Reviews)
+    {
+        if (helper)
+        {
+            if (ur.User.UserName == User.Identity.Name)
+            {
+                continue;
+            }
+            <div class="d-flex align-items-center justify-content-center card my-4" style="width: 50%; left: 25%; text-align: center">
+                <p style="font-size:20px;"><u>@ur.User.Email</u></p>
+                <p>  Rating: <b>@ur.Rating</b> / 10 </p>
+                @if (ur.Comment != null)
+                {
+                    <p> Comment: @ur.Comment </p>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="d-flex align-items-center justify-content-center card my-4" style="width: 50%; left: 25%; text-align: center">
+                <p style="font-size:20px;"><u>@ur.User.Email</u></p>
+                <p>  Rating: <b>@ur.Rating</b> / 10 </p>
+                @if (ur.Comment != null)
+                {
+                    <p> Comment: @ur.Comment </p>
+                }
+            </div>
+        }
+
+    }
+}
+else
+{
+    <p style="font-size:25px;"><u>No reviews yet</u></p>
+}
+

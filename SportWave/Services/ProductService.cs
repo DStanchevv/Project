@@ -16,9 +16,25 @@ namespace SportWave.Services
             this.dbContext = dbContext;
         }
 
+        public async Task AddReviewAsync(AddAndEditReviewViewModel model, int id, Guid userId)
+        {
+            if (!dbContext.UserReviews.Any(ur => ur.UserId == userId && ur.ProductId == id))
+            {
+                var userReview = new UserReviews()
+                {
+                    UserId = userId,
+                    Rating = model.Rating,
+                    Comment = model.Comment,
+                    ProductId = id
+                };
+                await dbContext.UserReviews.AddAsync(userReview);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
         public async Task AddToCartAsync(ProductDetailsViewModel product, Guid userId)
         {
-            if(!dbContext.ShoppingCarts.Any(p => p.UserId == userId))
+            if (!dbContext.ShoppingCarts.Any(p => p.UserId == userId))
             {
                 var shoppingCart = new ShoppingCart()
                 {
@@ -72,7 +88,7 @@ namespace SportWave.Services
                 Quantity = pv.Quantity
             }).ToListAsync();
             model.ProductVariations = variations;
-            
+
             var neededSize = model.Sizes.Where(p => p.SizeId == model.SizeId).Select(p => p.Size).First();
             if (neededSize == "All")
             {
@@ -143,6 +159,19 @@ namespace SportWave.Services
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task EditReviewAsync(AddAndEditReviewViewModel model, int id)
+        {
+            var review = await dbContext.UserReviews.FindAsync(id);
+
+            if(review != null)
+            {
+                review.Rating = model.Rating;
+                review.Comment = model.Comment;
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task<int> GetAvailableQuantityAsync(int id, CartProductViewModel model)
         {
             var sizeId = await dbContext.ProductSizes.Where(ps => ps.Size == model.Size).Select(ps => ps.Id).FirstOrDefaultAsync();
@@ -197,11 +226,30 @@ namespace SportWave.Services
             }).FirstOrDefaultAsync();
         }
 
+        public async Task<AddAndEditReviewViewModel> GetReviewByIdForEditReviewAsync(int id)
+        {
+            return await dbContext.UserReviews.Where(ur => ur.Id == id).Select(ur => new AddAndEditReviewViewModel
+            {
+                UserId = ur.UserId,
+                Rating = ur.Rating,
+                Comment = ur.Comment,
+                ProductId = ur.ProductId
+            }).FirstOrDefaultAsync();
+        }
+
         public async Task<GetProductWithQuantityAndVariationsViewModel> GetProductByIdForRemoveAsync(int id)
         {
             return await dbContext.Products.Where(p => p.Id == id).Select(p => new GetProductWithQuantityAndVariationsViewModel
             {
                 Id = p.Id
+            }).FirstOrDefaultAsync();
+        }
+
+        public async Task<AddAndEditReviewViewModel> GetProductByIdForReviewAsync(int id)
+        {
+            return await dbContext.Products.Where(p => p.Id == id).Select(p => new AddAndEditReviewViewModel
+            {
+                ProductId = id
             }).FirstOrDefaultAsync();
         }
 
@@ -218,6 +266,9 @@ namespace SportWave.Services
                 Quantity = pv.Quantity
             }).ToListAsync();
 
+            var reviews = await dbContext.UserReviews.Where(ur => ur.ProductId == id).Include(ur => ur.User).ToListAsync();
+
+
             return await dbContext.Products.Where(p => p.Id == id).Select(p => new ProductDetailsViewModel
             {
                 Id = p.Id,
@@ -228,7 +279,8 @@ namespace SportWave.Services
                 Color = p.Color,
                 Category = p.Category.Category,
                 Sizes = sizes,
-                ProductVariations = variations
+                ProductVariations = variations,
+                Reviews = reviews
             }).FirstOrDefaultAsync();
         }
 

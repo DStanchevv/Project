@@ -116,5 +116,57 @@ namespace SportWave.Controllers
                 return RedirectToAction("Details", "Product", new { Id = id });
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AddReview(int id)
+        {
+            AddAndEditReviewViewModel product = await productService.GetProductByIdForReviewAsync(id);
+
+            if (product == null)
+            {
+                return RedirectToAction("Men", "Men");
+            }
+
+            return View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddReview(int id, AddAndEditReviewViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await productService.AddReviewAsync(model, id, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+
+            return RedirectToAction("Details", "Product", new { Id = id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditReview(int id)
+        {
+            AddAndEditReviewViewModel review = await productService.GetReviewByIdForEditReviewAsync(id);
+
+            if (review == null)
+            {
+                return RedirectToAction("Men", "Men");
+            }
+
+            return View(review);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditReview(int id, AddAndEditReviewViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await productService.EditReviewAsync(model, id);
+
+            return RedirectToAction("Men", "Men");
+        }
     }
 }

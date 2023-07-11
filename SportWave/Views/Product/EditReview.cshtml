@@ -1,0 +1,29 @@
+﻿@using SportWave.ViewModels.ProductViewModels
+
+@model AddAndEditReviewViewModel
+@{
+    ViewBag.Title = "Add Review for Product";
+}
+
+<h2 class="text-center textColor">@ViewBag.Title</h2>
+<hr class="hrStyle" />
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6 textColor">
+        <form asp-action="EditReview" method="post">
+            <div class="mb-3">
+                <label asp-for="@Model.Rating" class="form-label">Rating (1 - 10)</label>
+                <input asp-for="@Model.Rating" class="form-control" aria-required="true" type="number" />
+                <span asp-validation-for="@Model.Rating" class="textColor"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.Comment" class="form-label">Comment (Not necessary)</label>
+                <textarea asp-for="@Model.Comment" class="form-control" aria-required="true" rows="5"></textarea>
+                <span asp-validation-for="Comment" class="textColor"></span>
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-danger buttonColor" type="submit" value="Edit" />
+            </div>
+        </form>
+    </div>
+</div>

@@ -19,7 +19,7 @@
         public static class UserReviews
         {
             public const int RatingMaxValue = 10;
-            public const int RatingMinValue = 0;
+            public const int RatingMinValue = 1;
 
             public const int CommentMaxLength = 100;
         }

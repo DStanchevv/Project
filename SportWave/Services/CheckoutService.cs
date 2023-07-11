@@ -29,7 +29,7 @@ namespace SportWave.Services
             if (!dbContext.Addresses.Any(a => a.Country == model.Country && a.Town == model.Town && a.StreetName == model.StreetName && a.StreetNumber == model.StreetNumber && a.AdditionalInfo == model.AdditionalInfo))
             {
                 await dbContext.Addresses.AddAsync(address);
-
+                await dbContext.SaveChangesAsync();
             }
             
             var addressId = await dbContext.Addresses.Where(a => a.Country == model.Country && a.Town == model.Town && a.StreetName == model.StreetName && a.StreetNumber == model.StreetNumber && a.AdditionalInfo == model.AdditionalInfo).Select(a => a.Id).FirstOrDefaultAsync();
@@ -55,6 +55,7 @@ namespace SportWave.Services
             if (!dbContext.UsersPaymentMethods.Any(pm => pm.UserId == UserId && pm.PaymentTypeId == typeId))
             {
                 await dbContext.UsersPaymentMethods.AddAsync(method);
+                await dbContext.SaveChangesAsync();
             }
 
 
@@ -99,7 +100,6 @@ namespace SportWave.Services
                 }
 
             }
-
             await dbContext.SaveChangesAsync();
         }
 
@@ -117,6 +117,7 @@ namespace SportWave.Services
             if (!dbContext.Addresses.Any(a => a.Country == model.Country && a.Town == model.Town && a.StreetName == model.StreetName && a.StreetNumber == model.StreetNumber && a.AdditionalInfo == model.AdditionalInfo))
             {
                 await dbContext.Addresses.AddAsync(address);
+                await dbContext.SaveChangesAsync();
 
             }
 
@@ -148,6 +149,7 @@ namespace SportWave.Services
                 if (!(method.ExpiryDate < DateTime.Now))
                 {
                     await dbContext.UsersPaymentMethods.AddAsync(method);
+                    await dbContext.SaveChangesAsync();
                 }
             }
 
@@ -191,7 +193,6 @@ namespace SportWave.Services
                 }
 
             }
-
             await dbContext.SaveChangesAsync();
         }
 
