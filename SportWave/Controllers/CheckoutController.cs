@@ -46,11 +46,19 @@ namespace SportWave.Controllers
                 }
             }
 
-            await checkoutService.CheckoutWithCardAsync(model, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var isSuccessful = await checkoutService.CheckoutWithCardAsync(model, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            
+            if(isSuccessful)
+            {
+                await checkoutService.EmptyShoppingCart(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
 
-            await checkoutService.EmptyShoppingCart(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-
-            return RedirectToAction(nameof(OrderThanks));
+                return RedirectToAction(nameof(OrderThanks));
+            }
+            else
+            {
+                model.Msg = "Invalid card information or card has expired!";
+                return View(model);
+            }
         }
 
         [HttpGet]

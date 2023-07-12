@@ -31,7 +31,7 @@ namespace SportWave.Services
                 await dbContext.Addresses.AddAsync(address);
                 await dbContext.SaveChangesAsync();
             }
-            
+
             var addressId = await dbContext.Addresses.Where(a => a.Country == model.Country && a.Town == model.Town && a.StreetName == model.StreetName && a.StreetNumber == model.StreetNumber && a.AdditionalInfo == model.AdditionalInfo).Select(a => a.Id).FirstOrDefaultAsync();
             UserAddress userAddress = new UserAddress
             {
@@ -103,35 +103,9 @@ namespace SportWave.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task CheckoutWithCardAsync(PayWithCardViewModel model, Guid UserId)
+        public async Task<bool> CheckoutWithCardAsync(PayWithCardViewModel model, Guid UserId)
         {
-            Address address = new Address()
-            {
-                Country = model.Country,
-                Town = model.Town,
-                StreetName = model.StreetName,
-                StreetNumber = model.StreetNumber,
-                AdditionalInfo = model.AdditionalInfo
-            };
-
-            if (!dbContext.Addresses.Any(a => a.Country == model.Country && a.Town == model.Town && a.StreetName == model.StreetName && a.StreetNumber == model.StreetNumber && a.AdditionalInfo == model.AdditionalInfo))
-            {
-                await dbContext.Addresses.AddAsync(address);
-                await dbContext.SaveChangesAsync();
-
-            }
-
-            var addressId = await dbContext.Addresses.Where(a => a.Country == model.Country && a.Town == model.Town && a.StreetName == model.StreetName && a.StreetNumber == model.StreetNumber && a.AdditionalInfo == model.AdditionalInfo).Select(a => a.Id).FirstOrDefaultAsync();
-            UserAddress userAddress = new UserAddress
-            {
-                UserId = UserId,
-                AddressId = addressId
-            };
-
-            if (!dbContext.UsersAddresses.Any(ua => ua.UserId == UserId && ua.AddressId == addressId))
-            {
-                await dbContext.UsersAddresses.AddAsync(userAddress);
-            }
+            bool helper = false;
 
             var typeId = await dbContext.PaymentTypes.Where(pt => pt.Type == "Card").Select(pt => pt.Id).FirstOrDefaultAsync();
             UserPaymentMethod method = new UserPaymentMethod()
@@ -150,50 +124,163 @@ namespace SportWave.Services
                 {
                     await dbContext.UsersPaymentMethods.AddAsync(method);
                     await dbContext.SaveChangesAsync();
+
+                    Address address = new Address()
+                    {
+                        Country = model.Country,
+                        Town = model.Town,
+                        StreetName = model.StreetName,
+                        StreetNumber = model.StreetNumber,
+                        AdditionalInfo = model.AdditionalInfo
+                    };
+
+                    if (!dbContext.Addresses.Any(a => a.Country == model.Country && a.Town == model.Town && a.StreetName == model.StreetName && a.StreetNumber == model.StreetNumber && a.AdditionalInfo == model.AdditionalInfo))
+                    {
+                        await dbContext.Addresses.AddAsync(address);
+                        await dbContext.SaveChangesAsync();
+
+                    }
+
+                    var addressId = await dbContext.Addresses.Where(a => a.Country == model.Country && a.Town == model.Town && a.StreetName == model.StreetName && a.StreetNumber == model.StreetNumber && a.AdditionalInfo == model.AdditionalInfo).Select(a => a.Id).FirstOrDefaultAsync();
+                    UserAddress userAddress = new UserAddress
+                    {
+                        UserId = UserId,
+                        AddressId = addressId
+                    };
+
+                    if (!dbContext.UsersAddresses.Any(ua => ua.UserId == UserId && ua.AddressId == addressId))
+                    {
+                        await dbContext.UsersAddresses.AddAsync(userAddress);
+                    }
+
+
+
+                    decimal total = 0;
+                    var productsInCart = await dbContext.ShoppingCartItems.Include(sci => sci.Product).ToListAsync();
+                    foreach (var product in productsInCart)
+                    {
+                        var price = product.Product.Price;
+                        total += (price * product.Quantity);
+                    }
+
+
+                    var paymentMethodId = await dbContext.UsersPaymentMethods.Where(pm => pm.UserId == UserId && pm.PaymentTypeId == typeId).Select(upm => upm.Id).FirstOrDefaultAsync();
+                    Order order = new Order()
+                    {
+                        UserId = UserId,
+                        DateOfOrder = DateTime.Now,
+                        PaymentMethodId = paymentMethodId,
+                        ShippingAddressId = addressId,
+                        OrderTotal = total,
+                        Status = "Not sent"
+                    };
+
+                    if (!dbContext.Orders.Any(o => o.Id == order.Id))
+                    {
+                        await dbContext.Orders.AddAsync(order);
+                    }
+
+                    foreach (var product in productsInCart)
+                    {
+                        ProductOrder productOrder = new ProductOrder()
+                        {
+                            OrderId = order.Id,
+                            ProductId = product.ProductId,
+                            Size = product.Size
+                        };
+
+                        if (!dbContext.ProductsOrders.Any(po => po.OrderId == productOrder.OrderId && po.ProductId == productOrder.ProductId && po.Size == productOrder.Size))
+                        {
+                            await dbContext.ProductsOrders.AddAsync(productOrder);
+                        }
+
+                    }
+                    helper = true;
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+            else
+            {
+                var cardInfo = await dbContext.UsersPaymentMethods.Where(pm => pm.UserId == UserId && pm.PaymentTypeId == typeId && pm.CardNumber == method.CardNumber).FirstOrDefaultAsync();
+                if ((!(method.ExpiryDate < DateTime.Now)) && cardInfo.CardNumber == method.CardNumber && cardInfo.SecurityCode == method.SecurityCode)
+                {
+                    Address address = new Address()
+                    {
+                        Country = model.Country,
+                        Town = model.Town,
+                        StreetName = model.StreetName,
+                        StreetNumber = model.StreetNumber,
+                        AdditionalInfo = model.AdditionalInfo
+                    };
+
+                    if (!dbContext.Addresses.Any(a => a.Country == model.Country && a.Town == model.Town && a.StreetName == model.StreetName && a.StreetNumber == model.StreetNumber && a.AdditionalInfo == model.AdditionalInfo))
+                    {
+                        await dbContext.Addresses.AddAsync(address);
+                        await dbContext.SaveChangesAsync();
+
+                    }
+
+                    var addressId = await dbContext.Addresses.Where(a => a.Country == model.Country && a.Town == model.Town && a.StreetName == model.StreetName && a.StreetNumber == model.StreetNumber && a.AdditionalInfo == model.AdditionalInfo).Select(a => a.Id).FirstOrDefaultAsync();
+                    UserAddress userAddress = new UserAddress
+                    {
+                        UserId = UserId,
+                        AddressId = addressId
+                    };
+
+                    if (!dbContext.UsersAddresses.Any(ua => ua.UserId == UserId && ua.AddressId == addressId))
+                    {
+                        await dbContext.UsersAddresses.AddAsync(userAddress);
+                    }
+
+
+
+                    decimal total = 0;
+                    var productsInCart = await dbContext.ShoppingCartItems.Include(sci => sci.Product).ToListAsync();
+                    foreach (var product in productsInCart)
+                    {
+                        var price = product.Product.Price;
+                        total += (price * product.Quantity);
+                    }
+
+
+                    var paymentMethodId = await dbContext.UsersPaymentMethods.Where(pm => pm.UserId == UserId && pm.PaymentTypeId == typeId).Select(upm => upm.Id).FirstOrDefaultAsync();
+                    Order order = new Order()
+                    {
+                        UserId = UserId,
+                        DateOfOrder = DateTime.Now,
+                        PaymentMethodId = paymentMethodId,
+                        ShippingAddressId = addressId,
+                        OrderTotal = total,
+                        Status = "Not sent"
+                    };
+
+                    if (!dbContext.Orders.Any(o => o.Id == order.Id))
+                    {
+                        await dbContext.Orders.AddAsync(order);
+                    }
+
+                    foreach (var product in productsInCart)
+                    {
+                        ProductOrder productOrder = new ProductOrder()
+                        {
+                            OrderId = order.Id,
+                            ProductId = product.ProductId,
+                            Size = product.Size
+                        };
+
+                        if (!dbContext.ProductsOrders.Any(po => po.OrderId == productOrder.OrderId && po.ProductId == productOrder.ProductId && po.Size == productOrder.Size))
+                        {
+                            await dbContext.ProductsOrders.AddAsync(productOrder);
+                        }
+
+                    }
+
+                    helper = true;
+                    await dbContext.SaveChangesAsync();
                 }
             }
 
-            decimal total = 0;
-            var productsInCart = await dbContext.ShoppingCartItems.Include(sci => sci.Product).ToListAsync();
-            foreach (var product in productsInCart)
-            {
-                var price = product.Product.Price;
-                total += (price * product.Quantity);
-            }
-
-
-            var paymentMethodId = await dbContext.UsersPaymentMethods.Where(pm => pm.UserId == UserId && pm.PaymentTypeId == typeId).Select(upm => upm.Id).FirstOrDefaultAsync();
-            Order order = new Order()
-            {
-                UserId = UserId,
-                DateOfOrder = DateTime.Now,
-                PaymentMethodId = paymentMethodId,
-                ShippingAddressId = addressId,
-                OrderTotal = total,
-                Status = "Not sent"
-            };
-
-            if (!dbContext.Orders.Any(o => o.Id == order.Id))
-            {
-                await dbContext.Orders.AddAsync(order);
-            }
-
-            foreach (var product in productsInCart)
-            {
-                ProductOrder productOrder = new ProductOrder()
-                {
-                    OrderId = order.Id,
-                    ProductId = product.ProductId,
-                    Size = product.Size
-                };
-
-                if (!dbContext.ProductsOrders.Any(po => po.OrderId == productOrder.OrderId && po.ProductId == productOrder.ProductId && po.Size == productOrder.Size))
-                {
-                    await dbContext.ProductsOrders.AddAsync(productOrder);
-                }
-
-            }
-            await dbContext.SaveChangesAsync();
+            return helper;
         }
 
         public async Task EmptyShoppingCart(Guid UserId)
