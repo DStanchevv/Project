@@ -15,5 +15,6 @@ namespace SportWave.Data.Models
         public int Quantity { get; set; }
 
         public string Size { get; set; } = null!;
+
     }
 }

@@ -38,9 +38,11 @@ namespace SportWave.Services
             {
                 var shoppingCart = new ShoppingCart()
                 {
-                    UserId = userId
+                    UserId = userId,
+                    TotalPrice = 0
                 };
                 await dbContext.ShoppingCarts.AddAsync(shoppingCart);
+
 
                 var shoppingCartItems = new ShoppingCartItem()
                 {
@@ -49,7 +51,24 @@ namespace SportWave.Services
                     Quantity = product.Quantity,
                     Size = product.Size
                 };
+
+                if (!dbContext.PromosUsers.Any(pu => pu.UserId == userId))
+                {
+                    var price = await dbContext.Products.Where(p => p.Id == shoppingCartItems.ProductId).Select(p => p.Price).FirstOrDefaultAsync();
+                    shoppingCart.TotalPrice += price * shoppingCartItems.Quantity;
+                }
+                else
+                {
+                    var codeId = await dbContext.PromosUsers.Where(pu => pu.UserId == userId).Select(pu => pu.PromoCodeId).FirstOrDefaultAsync();
+                    var codeValue = await dbContext.PromoCodes.Where(pc => pc.Id == codeId).Select(pc => pc.Value).FirstOrDefaultAsync();
+
+                    var price = await dbContext.Products.Where(p => p.Id == shoppingCartItems.ProductId).Select(p => p.Price).FirstOrDefaultAsync();
+                    price -= price * (codeValue / 100m);
+                    shoppingCart.TotalPrice += price * shoppingCartItems.Quantity;
+                }
+
                 await dbContext.ShoppingCartItems.AddAsync(shoppingCartItems);
+                await dbContext.SaveChangesAsync();
             }
             else
             {
@@ -63,11 +82,26 @@ namespace SportWave.Services
                         Quantity = product.Quantity,
                         Size = product.Size
                     };
+
+                    if (!dbContext.PromosUsers.Any(pu => pu.UserId == userId))
+                    {
+                        var price = await dbContext.Products.Where(p => p.Id == shoppingCartItems.ProductId).Select(p => p.Price).FirstOrDefaultAsync();
+                        shoppingCart.TotalPrice += price * product.Quantity;
+                    }
+                    else
+                    {
+                        var codeId = await dbContext.PromosUsers.Where(pu => pu.UserId == userId).Select(pu => pu.PromoCodeId).FirstOrDefaultAsync();
+                        var codeValue = await dbContext.PromoCodes.Where(pc => pc.Id == codeId).Select(pc => pc.Value).FirstOrDefaultAsync();
+
+                        var price = await dbContext.Products.Where(p => p.Id == shoppingCartItems.ProductId).Select(p => p.Price).FirstOrDefaultAsync();
+                        price -= price * (codeValue / 100m);
+                        shoppingCart.TotalPrice += price * shoppingCartItems.Quantity;
+                    }
+                    
                     await dbContext.ShoppingCartItems.AddAsync(shoppingCartItems);
+                    await dbContext.SaveChangesAsync();
                 }
             }
-
-            await dbContext.SaveChangesAsync();
         }
 
         public async Task AddVariationToProductAsync(GetProductWithQuantityAndVariationsViewModel model, int id)
@@ -163,7 +197,7 @@ namespace SportWave.Services
         {
             var review = await dbContext.UserReviews.FindAsync(id);
 
-            if(review != null)
+            if (review != null)
             {
                 review.Rating = model.Rating;
                 review.Comment = model.Comment;

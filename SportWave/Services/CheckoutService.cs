@@ -59,14 +59,8 @@ namespace SportWave.Services
             }
 
 
-            decimal total = 0;
             var productsInCart = await dbContext.ShoppingCartItems.Include(sci => sci.Product).ToListAsync();
-            foreach (var product in productsInCart)
-            {
-                var price = product.Product.Price;
-                total += (price * product.Quantity);
-            }
-
+            var total = await dbContext.ShoppingCarts.Where(sc => sc.UserId == UserId).Select(sc => sc.TotalPrice).FirstOrDefaultAsync();
 
             var paymentMethodId = await dbContext.UsersPaymentMethods.Where(pm => pm.UserId == UserId && pm.PaymentTypeId == typeId).Select(upm => upm.Id).FirstOrDefaultAsync();
             Order order = new Order()
@@ -155,13 +149,8 @@ namespace SportWave.Services
 
 
 
-                    decimal total = 0;
                     var productsInCart = await dbContext.ShoppingCartItems.Include(sci => sci.Product).ToListAsync();
-                    foreach (var product in productsInCart)
-                    {
-                        var price = product.Product.Price;
-                        total += (price * product.Quantity);
-                    }
+                    var total = await dbContext.ShoppingCarts.Where(sc => sc.UserId == UserId).Select(sc => sc.TotalPrice).FirstOrDefaultAsync();
 
 
                     var paymentMethodId = await dbContext.UsersPaymentMethods.Where(pm => pm.UserId == UserId && pm.PaymentTypeId == typeId).Select(upm => upm.Id).FirstOrDefaultAsync();
@@ -293,6 +282,13 @@ namespace SportWave.Services
             {
                 var productVariation = await dbContext.ProductsVariations.Where(pv => pv.ProductId == product.ProductId && pv.ProductSize.Size == product.Size).FirstOrDefaultAsync();
                 productVariation.Quantity -= product.Quantity;
+            }
+
+            shoppingCart.TotalPrice = 0;
+            var promoUser = await dbContext.PromosUsers.Where(pu => pu.UserId == UserId).FirstOrDefaultAsync();
+            if (promoUser != null)
+            {
+                dbContext.PromosUsers.Remove(promoUser);
             }
 
             dbContext.ShoppingCartItems.RemoveRange(products);

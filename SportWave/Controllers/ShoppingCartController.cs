@@ -37,5 +37,19 @@ namespace SportWave.Controllers
             await shoppingCartService.RemoveProductFromCart(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)), id);
             return RedirectToAction(nameof(ShoppingCart));
         }
+
+        [HttpGet]
+        public IActionResult AddPromoCode()
+        {
+            var model = new AddPromoCodeViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPromoCode(AddPromoCodeViewModel model)
+        {
+            await shoppingCartService.ApplyDiscountAsync(model, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            return RedirectToAction(nameof(ShoppingCart));
+        }
     }
 }

@@ -1,30 +1,29 @@
 ﻿@using SportWave.ViewModels.ShoppingCart
-@model IEnumerable<AllProductsInCartViewModel>
+@model ShoppingCartViewModel
 
 @{
     ViewBag.Title = "Shopping Cart";
-
-    decimal total = 0;
-    foreach (var product in Model)
-    {
-        total += product.TotalPrice;
-    }
 }
 
 <h1 class="text-center textColor">@ViewBag.Title</h1>
-<h5 class="text-center textColor"> Total Price: <b>@Math.Round(total, 2) $</b></h5>
+<h5 class="text-center textColor"> Total Price: <b>@Math.Round(Model.TotalPrice, 2) $</b></h5>
 <a class="w-50 btn btn-lg btn-danger buttonColor my-1" style="margin-left: 25%" asp-area="" asp-controller="Checkout" asp-action="PayInCash">
     Pay in cash
 </a>
 <a class="w-50 btn btn-lg btn-danger buttonColor my-1" style="margin-left: 25%" asp-area="" asp-controller="Checkout" asp-action="PayWithCard">
-    Pay with card <i class="far fa-credit-card"></i>
+    Pay with card 
 </a>
+<a class="w-50 btn btn-lg btn-danger buttonColor my-1" style="margin-left: 25%" asp-area="" asp-controller="ShoppingCart" asp-action="AddPromoCode">
+    Add Promo Code
+</a>
+
+
 
 <hr class="hrStyle" />
 
 <div class="row">
 
-    @foreach (var product in Model)
+    @foreach (var product in Model.ProductsInCart)
     {
         <div class="col-md-4">
             <div class="card mb-3">
