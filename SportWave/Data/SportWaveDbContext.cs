@@ -27,7 +27,6 @@ namespace SportWave.Data
         public DbSet<Order> Orders { get; set; } = null!;
         public DbSet<ProductOrder> ProductsOrders { get; set; } = null!;
         public DbSet<PromoCode> PromoCodes { get; set; } = null!;
-        public DbSet<PromoOrder> PromosOrders { get; set; } = null!;
         public DbSet<PromoUser> PromosUsers { get; set; } = null!;
         public DbSet<PaymentType> PaymentTypes { get; set; } = null!;
         public DbSet<UserPaymentMethod> UsersPaymentMethods { get; set; } = null!;
@@ -38,7 +37,6 @@ namespace SportWave.Data
             builder.Entity<ProductVariation>().HasKey(x => new { x.ProductId, x.SizeId, x.GenderId});
             builder.Entity<ShoppingCartItem>().HasKey(x => new { x.CartId, x.ProductId, x.Size });
             builder.Entity<ProductOrder>().HasKey(x => new { x.ProductId, x.OrderId, x.Size });
-            builder.Entity<PromoOrder>().HasKey(x => new { x.PromoCodeId, x.OrderId });
             builder.Entity<PromoUser>().HasKey(x => new { x.UserId, x.PromoCodeId });
             builder.Entity<Order>().Property(x => x.OrderTotal).HasPrecision(18, 2);
             builder.Entity<Product>().Property(x => x.Price).HasPrecision(18, 2);
