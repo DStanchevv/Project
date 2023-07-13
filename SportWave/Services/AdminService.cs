@@ -32,28 +32,31 @@ namespace SportWave.Services
 
         public async Task AddProductAsync(AddProductViewModel model)
         {
-
-            Product product = new Product()
+            var category = await dbContext.ProductCategories.Where(pc => pc.Id == model.CategoryId).Select(pc => pc.Category).FirstOrDefaultAsync();
+            if (category != "All")
             {
-                Name = model.Name,
-                Price = decimal.Parse(model.Price),
-                Description = model.Description,
-                CategoryId = model.CategoryId,
-                Color = model.Color,
-                GenderId = model.GenderId,
-                ImgUrl = model.ImgUrl
-            };
+                Product product = new Product()
+                {
+                    Name = model.Name,
+                    Price = decimal.Parse(model.Price),
+                    Description = model.Description,
+                    CategoryId = model.CategoryId,
+                    Color = model.Color,
+                    GenderId = model.GenderId,
+                    ImgUrl = model.ImgUrl
+                };
 
-            if (!dbContext.Products.Any(p => p.Name == product.Name && p.Color == product.Color && p.GenderId == product.GenderId))
-            {
-                await dbContext.Products.AddAsync(product);
-                await dbContext.SaveChangesAsync();
+                if (!dbContext.Products.Any(p => p.Name == product.Name && p.Color == product.Color && p.GenderId == product.GenderId))
+                {
+                    await dbContext.Products.AddAsync(product);
+                    await dbContext.SaveChangesAsync();
+                }
             }
         }
 
         public async Task<AddProductViewModel> GetNewAddedProductAsync()
         {
-            var categories = await dbContext.ProductCategories.Select(c => new CategoryViewModel
+            var categories = await dbContext.ProductCategories.Where(pc => pc.Category != "All").Select(c => new CategoryViewModel
             {
                 Id = c.Id,
                 Category = c.Category

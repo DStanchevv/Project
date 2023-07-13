@@ -18,5 +18,11 @@ namespace SportWave.Controllers
             var model = await menService.GetProductsAsync(1);
             return View(model);
         }
+
+        public async Task<IActionResult> Filter([FromForm]AllProductsViewModel model)
+        {
+           var viewModel = await menService.GetFilteredProductsAsync(1, model);
+            return View(viewModel);
+        }
     }
 }
