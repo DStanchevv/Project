@@ -80,26 +80,59 @@ namespace SportWave.Services
 
             if (cart != null)
             {
-                var productsInCart = await dbContext.ShoppingCartItems.Where(sci => sci.CartId == cart.Id).Select(sci => new AllProductsInCartViewModel
-                {
-                    Id = sci.ProductId,
-                    Name = sci.Product.Name,
-                    Category = sci.Product.Category.Category,
-                    Price = sci.Product.Price,
-                    Color = sci.Product.Color,
-                    Size = sci.Size,
-                    Quantity = sci.Quantity,
-                    ImgUrl = sci.Product.ImgUrl,
-                    TotalPrice = sci.Product.Price * sci.Quantity
-                }).ToListAsync();
+                var promoUser = await dbContext.PromosUsers.Where(pu => pu.UserId == UserId).FirstOrDefaultAsync();
+               
+                if (promoUser != null)
+                { 
+                    var code = await dbContext.PromoCodes.Where(pc => pc.Id == promoUser.PromoCodeId).FirstOrDefaultAsync();
+                    
+                    var productsInCart = await dbContext.ShoppingCartItems.Where(sci => sci.CartId == cart.Id).Select(sci => new AllProductsInCartViewModel
+                    {
+                        Id = sci.ProductId,
+                        Name = sci.Product.Name,
+                        Category = sci.Product.Category.Category,
+                        Price = sci.Product.Price,
+                        Color = sci.Product.Color,
+                        Size = sci.Size,
+                        Quantity = sci.Quantity,
+                        ImgUrl = sci.Product.ImgUrl,
+                        TotalPrice = sci.Product.Price * sci.Quantity,
+                        TotalPriceWithPromo = (sci.Product.Price - sci.Product.Price * (code.Value / 100m)) * sci.Quantity
+                    }).ToListAsync();
 
-                var cartModel = new ShoppingCartViewModel()
-                {
-                    TotalPrice = cart.TotalPrice,
-                    ProductsInCart = productsInCart
-                };
+                    var cartModel = new ShoppingCartViewModel()
+                    {
+                        TotalPrice = cart.TotalPrice,
+                        ProductsInCart = productsInCart
+                    };
 
-                return cartModel;
+                    return cartModel;
+                }
+                else
+                {
+                    var productsInCart = await dbContext.ShoppingCartItems.Where(sci => sci.CartId == cart.Id).Select(sci => new AllProductsInCartViewModel
+                    {
+                        Id = sci.ProductId,
+                        Name = sci.Product.Name,
+                        Category = sci.Product.Category.Category,
+                        Price = sci.Product.Price,
+                        Color = sci.Product.Color,
+                        Size = sci.Size,
+                        Quantity = sci.Quantity,
+                        ImgUrl = sci.Product.ImgUrl,
+                        TotalPrice = sci.Product.Price * sci.Quantity,
+                        TotalPriceWithPromo = 0
+                    }).ToListAsync();
+
+                    var cartModel = new ShoppingCartViewModel()
+                    {
+                        TotalPrice = cart.TotalPrice,
+                        ProductsInCart = productsInCart
+                    };
+
+                    return cartModel;
+                }
+
             }
             else
             {
@@ -121,7 +154,8 @@ namespace SportWave.Services
                     Size = sci.Size,
                     Quantity = sci.Quantity,
                     ImgUrl = sci.Product.ImgUrl,
-                    TotalPrice = sci.Product.Price * sci.Quantity
+                    TotalPrice = sci.Product.Price * sci.Quantity,
+                    TotalPriceWithPromo = 0
                 }).ToListAsync();
 
                 var cartModel = new ShoppingCartViewModel()

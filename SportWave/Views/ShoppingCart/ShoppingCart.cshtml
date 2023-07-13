@@ -11,7 +11,7 @@
     Pay in cash
 </a>
 <a class="w-50 btn btn-lg btn-danger buttonColor my-1" style="margin-left: 25%" asp-area="" asp-controller="Checkout" asp-action="PayWithCard">
-    Pay with card 
+    Pay with card
 </a>
 <a class="w-50 btn btn-lg btn-danger buttonColor my-1" style="margin-left: 25%" asp-area="" asp-controller="ShoppingCart" asp-action="AddPromoCode">
     Add Promo Code
@@ -35,6 +35,11 @@
                     <h6>Quantity: <b>@product.Quantity</b></h6>
                     <h6>Size: <b>@product.Size</b> </h6>
                     <h6>Price: <b>@Math.Round(product.TotalPrice, 2) $</b></h6>
+                    @if (product.TotalPriceWithPromo > 0)
+                    {
+                        <h6>Price with code: <b>@Math.Round(product.TotalPriceWithPromo, 2) $</b></h6>
+                    }
+
 
                     <div>
                         <div class="d-inline-block">

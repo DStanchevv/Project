@@ -13,5 +13,6 @@ namespace SportWave.ViewModels.ShoppingCart
         public int Quantity { get; set; }
         public string ImgUrl { get; set; } = null!;
         public decimal TotalPrice { get; set; }
+        public decimal TotalPriceWithPromo { get; set; }
     }
 }
