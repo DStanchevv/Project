@@ -13,5 +13,7 @@ namespace SportWave.Data.Models
         public Product Product { get; set; } = null!;
 
         public string Size { get; set; } = null!;
+
+        public int Quantity { get; set; }
     }
 }

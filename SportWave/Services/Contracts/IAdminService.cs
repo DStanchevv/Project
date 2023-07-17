@@ -1,4 +1,5 @@
-﻿using SportWave.ViewModels.MenAndWomenViewModels;
+﻿using SportWave.ViewModels.AdminViewModels;
+using SportWave.ViewModels.MenAndWomenViewModels;
 
 namespace SportWave.Services.Contracts
 {
@@ -6,6 +7,9 @@ namespace SportWave.Services.Contracts
     {
         Task AddCategoryAsync(AddCategoryViewModel model);
         Task AddProductAsync(AddProductViewModel model);
+        Task ClearOrderAsync(Guid id);
         Task<AddProductViewModel> GetNewAddedProductAsync();
+        Task<ManageOrdersViewModel> GetOrdersAsync();
+        Task SendOrderAsync(Guid id);
     }
 }

@@ -29,6 +29,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 builder.Services.AddScoped<ICheckoutService, CheckoutService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 var app = builder.Build();
 

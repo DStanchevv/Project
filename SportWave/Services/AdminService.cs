@@ -2,6 +2,7 @@
 using SportWave.Data;
 using SportWave.Data.Models;
 using SportWave.Services.Contracts;
+using SportWave.ViewModels.AdminViewModels;
 using SportWave.ViewModels.MenAndWomenViewModels;
 
 namespace SportWave.Services
@@ -22,7 +23,7 @@ namespace SportWave.Services
             {
                 Category = model.Name
             };
-            
+
             if (!dbContext.ProductCategories.Any(c => c.Category == model.Name))
             {
                 await dbContext.ProductCategories.AddAsync(category);
@@ -54,6 +55,17 @@ namespace SportWave.Services
             }
         }
 
+        public async Task ClearOrderAsync(Guid id)
+        {
+            var order = await dbContext.Orders.Where(o => o.Id == id).FirstOrDefaultAsync();
+            var productsOrders = await dbContext.ProductsOrders.Where(po => po.OrderId == id).ToListAsync();
+
+            dbContext.ProductsOrders.RemoveRange(productsOrders);
+            dbContext.Remove(order);
+
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task<AddProductViewModel> GetNewAddedProductAsync()
         {
             var categories = await dbContext.ProductCategories.Where(pc => pc.Category != "All").Select(c => new CategoryViewModel
@@ -75,6 +87,50 @@ namespace SportWave.Services
             };
 
             return model;
+        }
+
+        public async Task<ManageOrdersViewModel> GetOrdersAsync()
+        {
+            var orders = await dbContext.Orders.Include(o => o.Address).Select(o => new OrdersViewModel
+            {
+                Id = o.Id,
+                DateOfOrder = o.DateOfOrder,
+                Town = o.Address.Town,
+                Coutnry = o.Address.Country,
+                StreetName = o.Address.StreetName,
+                StreetNumber = o.Address.StreetNumber,
+                AdditionalInfo = o.Address.AdditionalInfo,
+                Status = o.Status,
+                OrderTotal = o.OrderTotal,
+            }).ToListAsync();
+
+            var orderProducts = await dbContext.ProductsOrders.Include(p => p.Product).ThenInclude(c => c.Category).Select(po => new OrderProductsViewModel
+            {
+                OrderId = po.OrderId,
+                Name = po.Product.Name,
+                Category = po.Product.Category.Category,
+                Color = po.Product.Color,
+                Size = po.Size,
+                Quantity = po.Quantity,
+                ImgUrl = po.Product.ImgUrl
+            }).ToListAsync();
+
+            var model = new ManageOrdersViewModel()
+            {
+                Orders = orders,
+                OrderProducts = orderProducts
+            };
+
+            return model;
+        }
+
+        public async Task SendOrderAsync(Guid id)
+        {
+            var order = await dbContext.Orders.Where(o => o.Id == id).FirstOrDefaultAsync();
+            var status = await dbContext.OrderStatuses.Where(s => s.Status == "On the way").FirstOrDefaultAsync();
+            order.Status = status.Status;
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }

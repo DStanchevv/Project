@@ -58,5 +58,26 @@ namespace SportWave.Controllers
             await adminService.AddCategoryAsync(model);
             return RedirectToAction("Admin", "Admin");
         }
+
+        public async Task<IActionResult> ManageOrders()
+        {
+            var model = await adminService.GetOrdersAsync();
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> SendOrder(Guid id)
+        {
+            await adminService.SendOrderAsync(id);
+
+            return RedirectToAction(nameof(ManageOrders));
+        }
+
+        public async Task<IActionResult> ClearOrder(Guid id)
+        {
+            await adminService.ClearOrderAsync(id);
+
+            return RedirectToAction(nameof(ManageOrders));
+        }
     }
 }

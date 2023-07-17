@@ -85,7 +85,8 @@ namespace SportWave.Services
                 {
                     OrderId = order.Id,
                     ProductId = product.ProductId,
-                    Size = product.Size
+                    Size = product.Size,
+                    Quantity = product.Quantity
                 };
 
                 if (!dbContext.ProductsOrders.Any(po => po.OrderId == productOrder.OrderId && po.ProductId == productOrder.ProductId && po.Size == productOrder.Size))
@@ -175,7 +176,8 @@ namespace SportWave.Services
                         {
                             OrderId = order.Id,
                             ProductId = product.ProductId,
-                            Size = product.Size
+                            Size = product.Size,
+                            Quantity = product.Quantity
                         };
 
                         if (!dbContext.ProductsOrders.Any(po => po.OrderId == productOrder.OrderId && po.ProductId == productOrder.ProductId && po.Size == productOrder.Size))
