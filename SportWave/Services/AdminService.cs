@@ -4,6 +4,7 @@ using SportWave.Data.Models;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.AdminViewModels;
 using SportWave.ViewModels.MenAndWomenViewModels;
+using System.Globalization;
 
 namespace SportWave.Services
 {
@@ -40,7 +41,7 @@ namespace SportWave.Services
                 Product product = new Product()
                 {
                     Name = model.Name,
-                    Price = decimal.Parse(model.Price),
+                    Price = decimal.Parse(model.Price, CultureInfo.InvariantCulture),
                     Description = model.Description,
                     CategoryId = model.CategoryId,
                     Color = model.Color,
@@ -53,8 +54,11 @@ namespace SportWave.Services
 
                 if (!dbContext.Products.Any(p => p.Name == product.Name && p.Color == product.Color && p.GenderId == product.GenderId))
                 {
-                    await dbContext.Products.AddAsync(product);
-                    await dbContext.SaveChangesAsync();
+                    if (product.Price >= 0)
+                    {
+                        await dbContext.Products.AddAsync(product);
+                        await dbContext.SaveChangesAsync();
+                    }
                 }
             }
         }

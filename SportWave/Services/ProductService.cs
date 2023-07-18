@@ -5,6 +5,7 @@ using SportWave.Services.Contracts;
 using SportWave.ViewModels.MenAndWomenViewModels;
 using SportWave.ViewModels.ProductViewModels;
 using SportWave.ViewModels.ShoppingCart;
+using System.Globalization;
 
 namespace SportWave.Services
 {
@@ -183,14 +184,17 @@ namespace SportWave.Services
             if (product != null)
             {
                 product.Name = model.Name;
-                product.Price = decimal.Parse(model.Price);
+                product.Price = decimal.Parse(model.Price, CultureInfo.InvariantCulture);
                 product.Description = model.Description;
                 product.CategoryId = model.CategoryId;
                 product.Color = model.Color;
                 product.ImgUrl = model.ImgUrl;
             }
 
-            await dbContext.SaveChangesAsync();
+            if (product.Price >= 0)
+            {
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         public async Task EditReviewAsync(AddAndEditReviewViewModel model, int id)

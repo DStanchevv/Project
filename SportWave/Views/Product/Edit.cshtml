@@ -18,7 +18,7 @@
             </div>
             <div class="mb-3">
                 <label asp-for="@Model.Price" class="form-label">Price</label>
-                <input asp-for="@Model.Price" class="form-control" aria-required="true" />
+                <input asp-for="@Model.Price" class="form-control" aria-required="true" type="number" step=".01" min="0"/>
                 <span asp-validation-for="@Model.Price" class="textColor"></span>
             </div>
             <div class="mb-3">

@@ -4,10 +4,11 @@ namespace SportWave.Services.Contracts
 {
     public interface IShoppingCartService
     {
-        Task AddQuantityToProductAsync(Guid UserId, int id);
-        Task SubtractQuantityToProductAsync(Guid UserId, int id);
-        Task<ShoppingCartViewModel> GetProductsInCartAsync(Guid UserId);
-        Task RemoveProductFromCart(Guid UserId, int id);
-        Task ApplyDiscountAsync(AddPromoCodeViewModel model, Guid guid);
+        Task AddQuantityToProductAsync(Guid userId, int id);
+        Task SubtractQuantityToProductAsync(Guid userId, int id);
+        Task<ShoppingCartViewModel> GetProductsInCartAsync(Guid userId);
+        Task RemoveProductFromCart(Guid userId, int id);
+        Task ApplyDiscountAsync(AddPromoCodeViewModel model, Guid userId);
+        Task RemoveDiscountAsync(Guid guid);
     }
 }

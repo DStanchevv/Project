@@ -54,7 +54,7 @@ namespace SportWave.Services
 
             if (code != null)
             {
-                if (!dbContext.PromosUsers.Any(pu => pu.UserId == userId && pu.PromoCodeId == code.Id))
+                if (!dbContext.PromosUsers.Any())
                 {
                     var cart = await dbContext.ShoppingCarts.Where(sc => sc.UserId == userId).FirstOrDefaultAsync();
 
@@ -81,11 +81,11 @@ namespace SportWave.Services
             if (cart != null)
             {
                 var promoUser = await dbContext.PromosUsers.Where(pu => pu.UserId == UserId).FirstOrDefaultAsync();
-               
+
                 if (promoUser != null)
-                { 
+                {
                     var code = await dbContext.PromoCodes.Where(pc => pc.Id == promoUser.PromoCodeId).FirstOrDefaultAsync();
-                    
+
                     var productsInCart = await dbContext.ShoppingCartItems.Where(sci => sci.CartId == cart.Id).Select(sci => new AllProductsInCartViewModel
                     {
                         Id = sci.ProductId,
@@ -167,6 +167,26 @@ namespace SportWave.Services
                 return cartModel;
             }
 
+        }
+
+        public async Task RemoveDiscountAsync(Guid userId)
+        {
+            var promoUser = await dbContext.PromosUsers.Where(pu => pu.UserId == userId).FirstOrDefaultAsync();
+            var shoppingCart = await dbContext.ShoppingCarts.Where(sc => sc.UserId == userId).FirstOrDefaultAsync();
+            var shoppingCartItems = await dbContext.ShoppingCartItems.Include(sci => sci.Product).Where(sci => sci.CartId == shoppingCart.Id).ToListAsync();
+
+            if (promoUser != null)
+            {
+                dbContext.PromosUsers.Remove(promoUser);
+                shoppingCart.TotalPrice = 0;
+                foreach (var sci in shoppingCartItems)
+                {
+                    shoppingCart.TotalPrice += sci.Product.Price * sci.Quantity;
+                }
+
+            }
+
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task RemoveProductFromCart(Guid UserId, int id)

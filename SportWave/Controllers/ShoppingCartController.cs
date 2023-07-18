@@ -51,5 +51,11 @@ namespace SportWave.Controllers
             await shoppingCartService.ApplyDiscountAsync(model, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             return RedirectToAction(nameof(ShoppingCart));
         }
+
+        public async Task<IActionResult> RemovePromoCode()
+        {
+            await shoppingCartService.RemoveDiscountAsync(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            return RedirectToAction(nameof(ShoppingCart));
+        }
     }
 }
