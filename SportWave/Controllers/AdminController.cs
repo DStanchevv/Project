@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using SportWave.Services.Contracts;
+using SportWave.ViewModels.AdminViewModels;
 using SportWave.ViewModels.MenAndWomenViewModels;
 
 namespace SportWave.Controllers
@@ -36,7 +37,15 @@ namespace SportWave.Controllers
             }
 
             await adminService.AddProductAsync(model);
-            return RedirectToAction("Admin", "Admin");
+
+            if (model.Gender == "Male")
+            {
+                return RedirectToAction("Men", "Men");
+            }
+            else
+            {
+                return RedirectToAction("Women", "Women");
+            }
         }
 
         [HttpGet]
@@ -78,6 +87,13 @@ namespace SportWave.Controllers
             await adminService.ClearOrderAsync(id);
 
             return RedirectToAction(nameof(ManageOrders));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FilterOrders([FromForm] ManageOrdersViewModel model)
+        {
+            var viewModel = await adminService.GetFilteredOrdersAsync(model);
+            return View(viewModel);
         }
     }
 }

@@ -10,25 +10,26 @@
 <hr class="hrStyle" />
 
 <div class="row">
+
+    <form asp-action="FilterOrders" method="post">
+        <div class="mb-3 textColor">
+            <label asp-for="@Model.Status" class="form-label">Filter by Status</label>
+            <select asp-for="@Model.Status" class="form-control">
+                @foreach (var status in @Model.OrderStatuses)
+                {
+                    <option value="@status.Status">@status.Status</option>
+                }
+                <option value="">All</option>
+            </select>
+            <span asp-validation-for="@Model.Status" class="textColor"></span>
+        </div>
+        <div class="mb-3">
+            <input class="btn btn-danger buttonColor" type="submit" value="Filter" />
+        </div>
+    </form>
+
     @if (Model.Orders.Count() > 0)
     {
-        <form asp-action="FilterOrders" method="post">
-            <div class="mb-3 textColor">
-                <label asp-for="@Model.Status" class="form-label">Filter by Status</label>
-                <select asp-for="@Model.Status" class="form-control">
-                    @foreach (var status in @Model.OrderStatuses)
-                    {
-                        <option value="@status.Status">@status.Status</option>
-                    }
-                    <option value="">All</option>
-                </select>
-                <span asp-validation-for="@Model.Status" class="textColor"></span>
-            </div>
-            <div class="mb-3">
-                <input class="btn btn-danger buttonColor" type="submit" value="Filter" />
-            </div>
-        </form>
-
         @foreach (var order in Model.Orders)
         {
             <div class="col-md-4">
@@ -80,6 +81,6 @@
     }
     else
     {
-        <h2 class="textColor">No orders placed.</h2>
+        <h2 class="textColor">No such orders placed.</h2>
     }
 </div>

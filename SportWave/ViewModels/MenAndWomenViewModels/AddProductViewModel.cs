@@ -30,6 +30,8 @@ namespace SportWave.ViewModels.MenAndWomenViewModels
         [Required]
         public string ImgUrl { get; set; } = null!;
 
+        public string? Gender { get; set; }
+
         public IEnumerable<CategoryViewModel> Categories { get; set; } = new HashSet<CategoryViewModel>();
         public IEnumerable<GenderViewModel> Genders { get; set; } = new HashSet<GenderViewModel>();
     }

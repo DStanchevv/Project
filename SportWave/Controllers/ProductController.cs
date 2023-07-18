@@ -25,10 +25,9 @@ namespace SportWave.Controllers
         public async Task<IActionResult> AddVariation(int id)
         {
             var product = await productService.GetProductByIdAsync(id);
-
             if(product == null)
             {
-                return RedirectToAction("Men", "Men");
+                return RedirectToAction("Home", "Index");
             }
             
             return View(product);
@@ -44,7 +43,7 @@ namespace SportWave.Controllers
 
             await productService.AddVariationToProductAsync(model, id);
 
-            return RedirectToAction("Men", "Men");
+            return RedirectToAction("Details", "Product", new { Id = id});
         }
 
         [HttpGet]
@@ -54,7 +53,7 @@ namespace SportWave.Controllers
 
             if(product == null)
             {
-                return RedirectToAction("Men", "Men");
+                return RedirectToAction("Home", "Index");
             }
 
             return View(product);
@@ -70,21 +69,29 @@ namespace SportWave.Controllers
 
             await productService.EditProductAsync(model, id);
 
-            return RedirectToAction("Men", "Men");
+            return RedirectToAction("Details", "Product", new { Id = id });
         }
 
         public async Task<IActionResult> Remove(int id)
         {
             var product = await productService.GetProductByIdForRemoveAsync(id);
+            var gender = product.Gender;
 
             if(product == null)
             {
-                return RedirectToAction("Men", "Men");
+                return RedirectToAction("Home", "Index");
             }
 
             await productService.RemoveProductAndVariationsAsync(product);
 
-            return RedirectToAction("Men", "Men");
+            if (gender == "Male")
+            {
+                return RedirectToAction("Men", "Men");
+            }
+            else
+            {
+                return RedirectToAction("Women", "Women");
+            }
         }
 
         [HttpPost]
@@ -102,14 +109,14 @@ namespace SportWave.Controllers
 
                 if (product == null)
                 {
-                    return RedirectToAction("Men", "Men");
+                    return RedirectToAction("Home", "Index");
                 }
 
                 product.Size = model.Size;
                 product.Quantity = model.Quantity;
 
                 await productService.AddToCartAsync(product, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-                return RedirectToAction("Men", "Men");
+                return RedirectToAction("ShoppingCart", "ShoppingCart");
             }
             else
             {
@@ -124,7 +131,7 @@ namespace SportWave.Controllers
 
             if (product == null)
             {
-                return RedirectToAction("Men", "Men");
+                return RedirectToAction("Home", "Index");
             }
 
             return View(product);
@@ -150,7 +157,7 @@ namespace SportWave.Controllers
 
             if (review == null)
             {
-                return RedirectToAction("Men", "Men");
+                return RedirectToAction("Home", "Index");
             }
 
             return View(review);
@@ -166,7 +173,7 @@ namespace SportWave.Controllers
 
             await productService.EditReviewAsync(model, id);
 
-            return RedirectToAction("Men", "Men");
+            return RedirectToAction("Details", "Product", new { Id = model.ProductId });
         }
     }
 }

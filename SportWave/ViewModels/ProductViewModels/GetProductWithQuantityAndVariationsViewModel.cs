@@ -10,6 +10,7 @@ namespace SportWave.ViewModels.ProductViewModels
         [Range(1, 100)]
         public int Quantity { get; set; }
 
+        public string? Gender { get; set; }
         public IEnumerable<SizesViewModel> Sizes { get; set; } = new List<SizesViewModel>();
         public IEnumerable<ProductVariationModel> ProductVariations { get; set; } = new HashSet<ProductVariationModel>();
     }

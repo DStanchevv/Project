@@ -36,6 +36,7 @@ namespace SportWave.Services
             var category = await dbContext.ProductCategories.Where(pc => pc.Id == model.CategoryId).Select(pc => pc.Category).FirstOrDefaultAsync();
             if (category != "All")
             {
+                
                 Product product = new Product()
                 {
                     Name = model.Name,
@@ -46,6 +47,9 @@ namespace SportWave.Services
                     GenderId = model.GenderId,
                     ImgUrl = model.ImgUrl
                 };
+
+                var gender = await dbContext.ProductGenders.Where(g => g.Id == product.GenderId).FirstOrDefaultAsync();
+                model.Gender = gender.Gender;
 
                 if (!dbContext.Products.Any(p => p.Name == product.Name && p.Color == product.Color && p.GenderId == product.GenderId))
                 {
@@ -64,6 +68,68 @@ namespace SportWave.Services
             dbContext.Remove(order);
 
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<ManageOrdersViewModel> GetFilteredOrdersAsync(ManageOrdersViewModel model)
+        {
+            List<OrdersViewModel> orders;
+            if (!string.IsNullOrEmpty(model.Status))
+            {
+                orders = await dbContext.Orders.Include(o => o.Address).Where(o => o.Status == model.Status).Select(o => new OrdersViewModel
+                {
+                    Id = o.Id,
+                    DateOfOrder = o.DateOfOrder,
+                    Town = o.Address.Town,
+                    Coutnry = o.Address.Country,
+                    StreetName = o.Address.StreetName,
+                    StreetNumber = o.Address.StreetNumber,
+                    AdditionalInfo = o.Address.AdditionalInfo,
+                    Status = o.Status,
+                    OrderTotal = o.OrderTotal,
+                }).ToListAsync();
+            }
+            else 
+            {
+                orders = await dbContext.Orders.Include(o => o.Address).Select(o => new OrdersViewModel
+                {
+                    Id = o.Id,
+                    DateOfOrder = o.DateOfOrder,
+                    Town = o.Address.Town,
+                    Coutnry = o.Address.Country,
+                    StreetName = o.Address.StreetName,
+                    StreetNumber = o.Address.StreetNumber,
+                    AdditionalInfo = o.Address.AdditionalInfo,
+                    Status = o.Status,
+                    OrderTotal = o.OrderTotal,
+                }).ToListAsync();
+            }
+
+
+            var orderProducts = await dbContext.ProductsOrders.Include(p => p.Product).ThenInclude(c => c.Category).Select(po => new OrderProductsViewModel
+            {
+                OrderId = po.OrderId,
+                Name = po.Product.Name,
+                Category = po.Product.Category.Category,
+                Color = po.Product.Color,
+                Size = po.Size,
+                Quantity = po.Quantity,
+                ImgUrl = po.Product.ImgUrl
+            }).ToListAsync();
+
+            var orderStatuses = await dbContext.OrderStatuses.Select(os => new OrderStatusViewModel
+            {
+                Status = os.Status
+            }).ToListAsync();
+
+            var viewModel = new ManageOrdersViewModel()
+            {
+                Orders = orders,
+                OrderProducts = orderProducts,
+                OrderStatuses = orderStatuses
+            };
+
+            return viewModel;
+
         }
 
         public async Task<AddProductViewModel> GetNewAddedProductAsync()
@@ -115,10 +181,16 @@ namespace SportWave.Services
                 ImgUrl = po.Product.ImgUrl
             }).ToListAsync();
 
+            var orderStatuses = await dbContext.OrderStatuses.Select(os => new OrderStatusViewModel
+            {
+                Status = os.Status
+            }).ToListAsync();
+
             var model = new ManageOrdersViewModel()
             {
                 Orders = orders,
-                OrderProducts = orderProducts
+                OrderProducts = orderProducts,
+                OrderStatuses = orderStatuses
             };
 
             return model;

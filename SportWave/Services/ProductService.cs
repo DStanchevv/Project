@@ -201,6 +201,7 @@ namespace SportWave.Services
             {
                 review.Rating = model.Rating;
                 review.Comment = model.Comment;
+                model.ProductId = review.ProductId;
             }
 
             await dbContext.SaveChangesAsync();
@@ -273,9 +274,13 @@ namespace SportWave.Services
 
         public async Task<GetProductWithQuantityAndVariationsViewModel> GetProductByIdForRemoveAsync(int id)
         {
+            var product = await dbContext.Products.Include(p => p.ProductGender).Where(p => p.Id == id).FirstOrDefaultAsync();
+            var gender = product.ProductGender.Gender;
+
             return await dbContext.Products.Where(p => p.Id == id).Select(p => new GetProductWithQuantityAndVariationsViewModel
             {
-                Id = p.Id
+                Id = p.Id,
+                Gender = gender
             }).FirstOrDefaultAsync();
         }
 
@@ -328,6 +333,12 @@ namespace SportWave.Services
                 {
                     dbContext.ProductsVariations.Remove(pv);
                 }
+            }
+
+            var productReviews = await dbContext.UserReviews.Where(ur => ur.ProductId == product.Id).ToListAsync();
+            if(productReviews.Count != 0)
+            {
+                dbContext.UserReviews.RemoveRange(productReviews);
             }
 
             var productToBeRemoved = await dbContext.Products.Where(p => p.Id == product.Id).FirstOrDefaultAsync();
