@@ -6,9 +6,9 @@ namespace SportWave.Controllers
 {
     public class MenController : Controller
     {
-        private readonly IMenAndWomanService menService;
+        private readonly IMenAndWomenService menService;
 
-        public MenController(IMenAndWomanService menService)
+        public MenController(IMenAndWomenService menService)
         {
             this.menService = menService;
         }

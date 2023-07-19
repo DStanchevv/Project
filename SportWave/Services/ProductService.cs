@@ -64,8 +64,9 @@ namespace SportWave.Services
                     var codeValue = await dbContext.PromoCodes.Where(pc => pc.Id == codeId).Select(pc => pc.Value).FirstOrDefaultAsync();
 
                     var price = await dbContext.Products.Where(p => p.Id == shoppingCartItems.ProductId).Select(p => p.Price).FirstOrDefaultAsync();
-                    price -= price * (codeValue / 100m);
-                    shoppingCart.TotalPrice += price * shoppingCartItems.Quantity;
+                    var tempPrice = price - price * (codeValue / 100m);
+
+                    shoppingCart.TotalPrice += tempPrice * shoppingCartItems.Quantity;
                 }
 
                 await dbContext.ShoppingCartItems.AddAsync(shoppingCartItems);
@@ -74,7 +75,7 @@ namespace SportWave.Services
             else
             {
                 var shoppingCart = await dbContext.ShoppingCarts.Where(p => p.UserId == userId).FirstOrDefaultAsync();
-                if (!dbContext.ShoppingCartItems.Any(p => p.ProductId == product.Id && p.Size == product.Size))
+                if (!dbContext.ShoppingCartItems.Any(p => p.ProductId == product.Id && p.Size == product.Size && p.CartId == shoppingCart.Id))
                 {
                     var shoppingCartItems = new ShoppingCartItem()
                     {
@@ -95,8 +96,9 @@ namespace SportWave.Services
                         var codeValue = await dbContext.PromoCodes.Where(pc => pc.Id == codeId).Select(pc => pc.Value).FirstOrDefaultAsync();
 
                         var price = await dbContext.Products.Where(p => p.Id == shoppingCartItems.ProductId).Select(p => p.Price).FirstOrDefaultAsync();
-                        price -= price * (codeValue / 100m);
-                        shoppingCart.TotalPrice += price * shoppingCartItems.Quantity;
+                        var tempPrice = price - price * (codeValue / 100m);
+
+                        shoppingCart.TotalPrice += tempPrice * shoppingCartItems.Quantity;
                     }
                     
                     await dbContext.ShoppingCartItems.AddAsync(shoppingCartItems);

@@ -54,7 +54,7 @@ namespace SportWave.Services
 
             if (code != null && code.isValid)
             {
-                if (!dbContext.PromosUsers.Any())
+                if (!dbContext.PromosUsers.Any(pu => pu.UserId == userId))
                 {
                     var cart = await dbContext.ShoppingCarts.Where(sc => sc.UserId == userId).FirstOrDefaultAsync();
 

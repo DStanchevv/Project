@@ -51,14 +51,15 @@
                     }
                     else
                     {
-                        <option value="@size.Size">@size.Size</option>
+                        var quantity = Model.ProductVariations.Where(pv => pv.Size == size.Size).Select(pv => pv.Quantity).FirstOrDefault();
+                        <option value="@size.Size">@size.Size - @quantity left</option>
                     }
                 }
             </select>
             <span asp-validation-for="@Model.Size" class="text-danger"></span>
 
             <label asp-for="@Model.Quantity" class="form-label">Quantity</label>
-            <input asp-for="@Model.Quantity" class="form-control" aria-required="true" type="number" min="1"/>
+            <input asp-for="@Model.Quantity" class="form-control" aria-required="true" type="number" min="1" />
             <span asp-validation-for="@Model.Quantity" class="textColor"></span>
 
             <input class="my-1 w-100 btn btn-lg btn-danger buttonColor" type="submit" value="Add to Cart" asp-area="" asp-controller="Product" asp-action="AddToCart" asp-route-id="@Model.Id">

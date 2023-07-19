@@ -5,7 +5,7 @@ using SportWave.ViewModels.MenAndWomenViewModels;
 
 namespace SportWave.Services
 {
-    public class MenAndWomenService : IMenAndWomanService
+    public class MenAndWomenService : IMenAndWomenService
     {
         private readonly SportWaveDbContext dbContext;
 

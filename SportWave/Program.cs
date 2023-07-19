@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SportWave.Data;
 using SportWave.Data.Models;
+using SportWave.Infrastructure.Extensions;
 using SportWave.Services;
 using SportWave.Services.Contracts;
 
@@ -14,12 +16,12 @@ builder.Services.AddDbContext<SportWaveDbContext>(options =>
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
-    options.Password.RequireUppercase = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireDigit = true;
-    options.Password.RequiredLength = 8;
-    options.SignIn.RequireConfirmedAccount = true;
+    options.Password.RequireUppercase = builder.Configuration.GetValue<bool>("Identity:Password:RequireUppercase");
+    options.Password.RequireLowercase = builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase"); 
+    options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric"); 
+    options.Password.RequireDigit = builder.Configuration.GetValue<bool>("Identity:Password:RequireDigit"); 
+    options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength"); 
+    options.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
 })
     .AddEntityFrameworkStores<SportWaveDbContext>();
 
@@ -28,12 +30,7 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
 });
 
-builder.Services.AddScoped<IMenAndWomanService, MenAndWomenService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IAdminService, AdminService>();
-builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
-builder.Services.AddScoped<ICheckoutService, CheckoutService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddApplicationServices(typeof(IAdminService));
 
 var app = builder.Build();
 
