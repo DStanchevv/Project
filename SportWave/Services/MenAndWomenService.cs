@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SportWave.Data;
-using SportWave.Data.Models;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.MenAndWomenViewModels;
-using SportWave.ViewModels.ProductViewModels;
 
 namespace SportWave.Services
 {

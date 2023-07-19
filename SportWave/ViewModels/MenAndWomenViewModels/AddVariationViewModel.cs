@@ -1,5 +1,6 @@
 ﻿using SportWave.ViewModels.ProductViewModels;
 using System.ComponentModel.DataAnnotations;
+using static SportWave.Common.EntityValidationConstants.Variations;
 
 namespace SportWave.ViewModels.MenAndWomenViewModels
 {
@@ -10,7 +11,7 @@ namespace SportWave.ViewModels.MenAndWomenViewModels
 
         public int GenderId { get; set; }
 
-        [Range(0, 100)]
+        [Range(QuantityMinValue, QuantityMaxValue, ErrorMessage = "Invalid quantity.")]
         public int Quantity { get; set; }
 
         public IEnumerable<SizesViewModel> Sizes { get; set; } = new HashSet<SizesViewModel>();

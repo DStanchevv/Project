@@ -52,7 +52,7 @@ namespace SportWave.Services
         {
             var code = await dbContext.PromoCodes.Where(pc => pc.Code == model.Code).FirstOrDefaultAsync();
 
-            if (code != null)
+            if (code != null && code.isValid)
             {
                 if (!dbContext.PromosUsers.Any())
                 {

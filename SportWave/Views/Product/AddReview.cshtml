@@ -13,7 +13,7 @@
         <form asp-action="AddReview" method="post">
             <div class="mb-3">
                 <label asp-for="@Model.Rating" class="form-label">Rating (1 - 10)</label>
-                <input asp-for="@Model.Rating" class="form-control" aria-required="true" type="number"/>
+                <input asp-for="@Model.Rating" class="form-control" aria-required="true" type="number" min="1" max="10"/>
                 <span asp-validation-for="@Model.Rating" class="textColor"></span>
             </div>
             <div class="mb-3">

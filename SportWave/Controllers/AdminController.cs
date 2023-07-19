@@ -49,7 +49,7 @@ namespace SportWave.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddCategory()
+        public IActionResult AddCategory()
         {
             AddCategoryViewModel model = new AddCategoryViewModel();
 
@@ -72,6 +72,11 @@ namespace SportWave.Controllers
         {
             var model = await adminService.GetOrdersAsync();
 
+            if(model == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View(model);
         }
 
@@ -93,7 +98,72 @@ namespace SportWave.Controllers
         public async Task<IActionResult> FilterOrders([FromForm] ManageOrdersViewModel model)
         {
             var viewModel = await adminService.GetFilteredOrdersAsync(model);
+            if(viewModel == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> ManagePromoCodes()
+        {
+            var model = await adminService.GetPromoCodesAsync();
+
+            if(model == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> MakeInvalid([FromRoute]Guid id)
+        {
+            var promoCode = await adminService.GetPromoCodeToChangeStatusAsync(id);
+
+            if(promoCode == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
+            await adminService.MakeInvalidAsync(promoCode);
+            
+            return RedirectToAction(nameof(ManagePromoCodes));
+        }
+
+        public async Task<IActionResult> MakeValid([FromRoute]Guid id)
+        {
+            var promoCode = await adminService.GetPromoCodeToChangeStatusAsync(id);
+
+            if(promoCode == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            await adminService.MakeValidAsync(promoCode);
+
+            return RedirectToAction(nameof(ManagePromoCodes));
+        }
+
+        [HttpGet]
+        public IActionResult AddPromoCode()
+        {
+            AddNewPromoCodeViewModel model = new AddNewPromoCodeViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPromoCode(AddNewPromoCodeViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await adminService.AddPromoCodeAsync(model);
+
+            return RedirectToAction(nameof(ManagePromoCodes));
         }
     }
 }

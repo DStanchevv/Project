@@ -4,6 +4,7 @@ using SportWave.Data.Models;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.AdminViewModels;
 using SportWave.ViewModels.MenAndWomenViewModels;
+using SportWave.ViewModels.ShoppingCart;
 using System.Globalization;
 
 namespace SportWave.Services
@@ -37,7 +38,7 @@ namespace SportWave.Services
             var category = await dbContext.ProductCategories.Where(pc => pc.Id == model.CategoryId).Select(pc => pc.Category).FirstOrDefaultAsync();
             if (category != "All")
             {
-                
+
                 Product product = new Product()
                 {
                     Name = model.Name,
@@ -63,13 +64,36 @@ namespace SportWave.Services
             }
         }
 
+        public async Task AddPromoCodeAsync(AddNewPromoCodeViewModel model)
+        {
+            PromoCode promoCode = new PromoCode()
+            {
+                Code = model.Code,
+                Value = model.Value,
+                isValid = true
+            };
+
+            if (!dbContext.PromoCodes.Any(pc => pc.Code == model.Code))
+            {
+                if (promoCode.Value > 0)
+                {
+                    await dbContext.PromoCodes.AddAsync(promoCode);
+                }
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task ClearOrderAsync(Guid id)
         {
             var order = await dbContext.Orders.Where(o => o.Id == id).FirstOrDefaultAsync();
             var productsOrders = await dbContext.ProductsOrders.Where(po => po.OrderId == id).ToListAsync();
 
-            dbContext.ProductsOrders.RemoveRange(productsOrders);
-            dbContext.Remove(order);
+            if (order != null && productsOrders != null)
+            {
+                dbContext.ProductsOrders.RemoveRange(productsOrders);
+                dbContext.Remove(order);
+            }
 
             await dbContext.SaveChangesAsync();
         }
@@ -92,7 +116,7 @@ namespace SportWave.Services
                     OrderTotal = o.OrderTotal,
                 }).ToListAsync();
             }
-            else 
+            else
             {
                 orders = await dbContext.Orders.Include(o => o.Address).Select(o => new OrdersViewModel
                 {
@@ -200,11 +224,61 @@ namespace SportWave.Services
             return model;
         }
 
+        public async Task<IEnumerable<PromoCodesViewModel>> GetPromoCodesAsync()
+        {
+            var promoCodes = await dbContext.PromoCodes.Select(pc => new PromoCodesViewModel
+            {
+                CodeId = pc.Id,
+                Code = pc.Code,
+                Value = pc.Value,
+                IsValid = pc.isValid
+            }).ToListAsync();
+
+            return promoCodes;
+        }
+
+        public async Task<PromoCodesViewModel> GetPromoCodeToChangeStatusAsync(Guid codeId)
+        {
+            return await dbContext.PromoCodes.Where(pc => pc.Id == codeId).Select(pc => new PromoCodesViewModel
+            {
+                CodeId = pc.Id
+            }).FirstOrDefaultAsync();
+        }
+
+        public async Task MakeInvalidAsync(PromoCodesViewModel model)
+        {
+            var code = await dbContext.PromoCodes.Where(pc => pc.Id == model.CodeId).FirstOrDefaultAsync();
+
+            if (code != null)
+            {
+                code.isValid = false;
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task MakeValidAsync(PromoCodesViewModel promoCode)
+        {
+            var code = await dbContext.PromoCodes.Where(pc => pc.Id == promoCode.CodeId).FirstOrDefaultAsync();
+            if (code != null)
+            {
+                code.isValid = true;
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task SendOrderAsync(Guid id)
         {
             var order = await dbContext.Orders.Where(o => o.Id == id).FirstOrDefaultAsync();
-            var status = await dbContext.OrderStatuses.Where(s => s.Status == "On the way").FirstOrDefaultAsync();
-            order.Status = status.Status;
+            if (order != null)
+            {
+                var status = await dbContext.OrderStatuses.Where(s => s.Status == "On the way").FirstOrDefaultAsync();
+                if (status != null)
+                {
+                    order.Status = status.Status;
+                }
+            }
 
             await dbContext.SaveChangesAsync();
         }

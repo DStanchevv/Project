@@ -36,6 +36,10 @@
             public const int ColorMinLength = 3;
 
             public const int GenderMaxLength = 6;
+
+            public const int CategoryIdMinValue = 1;
+            public const int CategoryIdMaxValue = 100;
+
         }
 
         public static class ProductCategory
@@ -47,13 +51,16 @@
         public static class PromoCode
         {
             public const int CodeMaxLength = 15;
-            public const int CodeMinLength = 10;
+            public const int CodeMinLength = 4;
+
+            public const int CodeMaxValue = 100;
+            public const int CodeMinValue = 1;
         }
 
         public static class Category
         {
             public const int NameMaxLength = 20;
-            public const int NameMinLength = 3;
+            public const int NameMinLength = 4;
         }
 
         public static class PaymentMethod
@@ -66,6 +73,12 @@
 
             public const int ExpiryDateMaxLength = 5;
             public const int ExpiryDateMinLength = 5;
+        }
+
+        public static class Variations
+        {
+            public const int QuantityMaxValue = 100;
+            public const int QuantityMinValue = 1;
         }
     }
 }

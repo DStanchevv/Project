@@ -18,6 +18,10 @@ namespace SportWave.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var product = await productService.GetProductDetails(id);
+            if(product == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View(product);
         }
 
@@ -27,7 +31,7 @@ namespace SportWave.Controllers
             var product = await productService.GetProductByIdAsync(id);
             if(product == null)
             {
-                return RedirectToAction("Home", "Index");
+                return RedirectToAction("Index", "Home");
             }
             
             return View(product);
@@ -53,7 +57,7 @@ namespace SportWave.Controllers
 
             if(product == null)
             {
-                return RedirectToAction("Home", "Index");
+                return RedirectToAction("Index", "Home");
             }
 
             return View(product);
@@ -79,7 +83,7 @@ namespace SportWave.Controllers
 
             if(product == null)
             {
-                return RedirectToAction("Home", "Index");
+                return RedirectToAction("Index", "Home");
             }
 
             await productService.RemoveProductAndVariationsAsync(product);
@@ -109,7 +113,7 @@ namespace SportWave.Controllers
 
                 if (product == null)
                 {
-                    return RedirectToAction("Home", "Index");
+                    return RedirectToAction("Index", "Home");
                 }
 
                 product.Size = model.Size;
@@ -131,7 +135,7 @@ namespace SportWave.Controllers
 
             if (product == null)
             {
-                return RedirectToAction("Home", "Index");
+                return RedirectToAction("Index", "Home");
             }
 
             return View(product);
@@ -157,7 +161,7 @@ namespace SportWave.Controllers
 
             if (review == null)
             {
-                return RedirectToAction("Home", "Index");
+                return RedirectToAction("Index", "Home");
             }
 
             return View(review);

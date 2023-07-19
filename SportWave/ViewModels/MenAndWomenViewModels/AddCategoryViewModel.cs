@@ -8,7 +8,7 @@ namespace SportWave.ViewModels.MenAndWomenViewModels
     public class AddCategoryViewModel
     {
         [Required]
-        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "Invalid Category length.")]
         public string Name { get; set; } = null!;
     }
 }
