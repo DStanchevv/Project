@@ -23,5 +23,7 @@ namespace SportWave.ViewModels.CheckoutViewModels
 
         [MaxLength(AdditionalInfoMaxLength, ErrorMessage = "Invalid Info length.")]
         public string? AdditionalInfo { get; set; }
+
+        public string? Msg { get; set; }
     }
 }

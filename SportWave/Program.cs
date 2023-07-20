@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using SportWave.Data;
 using SportWave.Data.Models;
 using SportWave.Infrastructure.Extensions;
-using SportWave.Services;
 using SportWave.Services.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,12 +16,13 @@ builder.Services.AddDbContext<SportWaveDbContext>(options =>
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
     options.Password.RequireUppercase = builder.Configuration.GetValue<bool>("Identity:Password:RequireUppercase");
-    options.Password.RequireLowercase = builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase"); 
-    options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric"); 
-    options.Password.RequireDigit = builder.Configuration.GetValue<bool>("Identity:Password:RequireDigit"); 
-    options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength"); 
+    options.Password.RequireLowercase = builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase");
+    options.Password.RequireNonAlphanumeric = builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
+    options.Password.RequireDigit = builder.Configuration.GetValue<bool>("Identity:Password:RequireDigit");
+    options.Password.RequiredLength = builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
     options.SignIn.RequireConfirmedAccount = builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
 })
+    .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<SportWaveDbContext>();
 
 builder.Services.AddControllersWithViews(options =>

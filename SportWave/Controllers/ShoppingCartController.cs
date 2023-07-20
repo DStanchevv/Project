@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.ShoppingCart;
 using System.Security.Claims;
 
 namespace SportWave.Controllers
 {
+    [Authorize(Roles = "Admin, User")]
     public class ShoppingCartController : Controller
     {
         private readonly IShoppingCartService shoppingCartService;

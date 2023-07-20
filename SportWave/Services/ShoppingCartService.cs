@@ -103,6 +103,7 @@ namespace SportWave.Services
                     var cartModel = new ShoppingCartViewModel()
                     {
                         TotalPrice = cart.TotalPrice,
+                        HasPromo = true,
                         ProductsInCart = productsInCart
                     };
 
@@ -127,6 +128,7 @@ namespace SportWave.Services
                     var cartModel = new ShoppingCartViewModel()
                     {
                         TotalPrice = cart.TotalPrice,
+                        HasPromo = false,
                         ProductsInCart = productsInCart
                     };
 
@@ -161,6 +163,7 @@ namespace SportWave.Services
                 var cartModel = new ShoppingCartViewModel()
                 {
                     TotalPrice = shoppingCart.TotalPrice,
+                    HasPromo = false,
                     ProductsInCart = productsInCart
                 };
 

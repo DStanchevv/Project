@@ -15,7 +15,7 @@ namespace SportWave.Services.Contracts
         Task<GetProductWithQuantityAndVariationsViewModel> GetProductByIdAsync(int id);
         Task<ProductDetailsViewModel> GetProductByIdForCartAsync(int id);
         Task<EditProductViewModel> GetProductByIdForEditAsync(int id);
-        Task<AddAndEditReviewViewModel> GetReviewByIdForEditReviewAsync(int id);
+        Task<AddAndEditReviewViewModel> GetReviewByIdForEditReviewAsync(int id, Guid userId);
         Task<GetProductWithQuantityAndVariationsViewModel> GetProductByIdForRemoveAsync(int id);
         Task<AddAndEditReviewViewModel> GetProductByIdForReviewAsync(int id);
         Task<ProductDetailsViewModel> GetProductDetails(int id);

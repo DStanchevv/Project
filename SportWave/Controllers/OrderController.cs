@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportWave.Services.Contracts;
 using System.Security.Claims;
 
 namespace SportWave.Controllers
 {
+    [Authorize(Roles = "Admin, User")]
     public class OrderController : Controller
     {
         private readonly IOrderService userService;
@@ -22,7 +24,7 @@ namespace SportWave.Controllers
 
         public async Task<IActionResult> MarkAsShipped(Guid id)
         {
-            await userService.MarkedAsShippedAsync(id);
+            await userService.MarkedAsShippedAsync(id, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
 
             return RedirectToAction(nameof(Orders));
         }

@@ -5,6 +5,6 @@ namespace SportWave.Services.Contracts
     public interface IOrderService
     {
         Task<ManageOrdersViewModel> GetOrdersAsync(Guid userId);
-        Task MarkedAsShippedAsync(Guid id);
+        Task MarkedAsShippedAsync(Guid id, Guid userId);
     }
 }

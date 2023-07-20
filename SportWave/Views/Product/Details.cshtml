@@ -27,15 +27,18 @@
     @if (Model.ProductVariations.Count() == 0 || Model.ProductVariations.All(pv => pv.Quantity == 0))
     {
         <p>Out of Stock</p>
-        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id">
-            Edit
-        </a>
-        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="AddVariation" asp-route-id="@Model.Id">
-            Stock up
-        </a>
-        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Remove" asp-route-id="@Model.Id">
-            Remove product
-        </a>
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id">
+                Edit
+            </a>
+            <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="AddVariation" asp-route-id="@Model.Id">
+                Stock up
+            </a>
+            <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Remove" asp-route-id="@Model.Id">
+                Remove product
+            </a>
+        }
     }
     else
     {
@@ -51,8 +54,15 @@
                     }
                     else
                     {
-                        var quantity = Model.ProductVariations.Where(pv => pv.Size == size.Size).Select(pv => pv.Quantity).FirstOrDefault();
-                        <option value="@size.Size">@size.Size - @quantity left</option>
+                        if (User.IsInRole("Admin"))
+                        {
+                            var quantity = Model.ProductVariations.Where(pv => pv.Size == size.Size).Select(pv => pv.Quantity).FirstOrDefault();
+                            <option value="@size.Size">@size.Size - @quantity left</option>
+                        }
+                        else
+                        {
+                            <option value="@size.Size">@size.Size</option>
+                        }
                     }
                 }
             </select>
@@ -62,21 +72,39 @@
             <input asp-for="@Model.Quantity" class="form-control" aria-required="true" type="number" min="1" />
             <span asp-validation-for="@Model.Quantity" class="textColor"></span>
 
-            <input class="my-1 w-100 btn btn-lg btn-danger buttonColor" type="submit" value="Add to Cart" asp-area="" asp-controller="Product" asp-action="AddToCart" asp-route-id="@Model.Id">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <input class="my-1 w-100 btn btn-lg btn-danger buttonColor" type="submit" value="Add to Cart" asp-area="" asp-controller="Product" asp-action="AddToCart" asp-route-id="@Model.Id">
+            }
+            else
+            {
+                <a class="my-1 w-100 btn btn-lg btn-danger buttonColor my-2" asp-area="Identity" asp-page="/Account/Login">Sign in</a>
+            }
+
         </form>
 
-        <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="AddReview" asp-route-id="@Model.Id">
-            Add Review
-        </a>
-        <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id">
-            Edit
-        </a>
-        <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="AddVariation" asp-route-id="@Model.Id">
-            Stock up
-        </a>
-        <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Remove" asp-route-id="@Model.Id">
-            Remove product
-        </a>
+        @if (User.Identity.IsAuthenticated)
+        {
+            @if (!Model.Reviews.Any(r => r.User.UserName == User.Identity.Name))
+            {
+                <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="AddReview" asp-route-id="@Model.Id">
+                    Add Review
+                </a>
+            }
+        }
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id">
+                Edit
+            </a>
+            <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="AddVariation" asp-route-id="@Model.Id">
+                Stock up
+            </a>
+            <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Remove" asp-route-id="@Model.Id">
+                Remove product
+            </a>
+        }
     }
 </div>
 

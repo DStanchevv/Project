@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.ProductViewModels;
 using SportWave.ViewModels.ShoppingCart;
@@ -15,47 +16,51 @@ namespace SportWave.Controllers
             this.productService = productService;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var product = await productService.GetProductDetails(id);
-            if(product == null)
+            if (product == null)
             {
                 return RedirectToAction("Index", "Home");
             }
             return View(product);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> AddVariation(int id)
         {
             var product = await productService.GetProductByIdAsync(id);
-            if(product == null)
+            if (product == null)
             {
                 return RedirectToAction("Index", "Home");
             }
-            
+
             return View(product);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddVariation(int id, GetProductWithQuantityAndVariationsViewModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
             await productService.AddVariationToProductAsync(model, id);
 
-            return RedirectToAction("Details", "Product", new { Id = id});
+            return RedirectToAction("Details", "Product", new { Id = id });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             EditProductViewModel product = await productService.GetProductByIdForEditAsync(id);
 
-            if(product == null)
+            if (product == null)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -63,10 +68,11 @@ namespace SportWave.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(int id, EditProductViewModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }
@@ -76,15 +82,17 @@ namespace SportWave.Controllers
             return RedirectToAction("Details", "Product", new { Id = id });
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Remove(int id)
         {
             var product = await productService.GetProductByIdForRemoveAsync(id);
-            var gender = product.Gender;
-
-            if(product == null)
+            
+            if (product == null)
             {
                 return RedirectToAction("Index", "Home");
             }
+            
+            var gender = product.Gender;
 
             await productService.RemoveProductAndVariationsAsync(product);
 
@@ -98,10 +106,11 @@ namespace SportWave.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpPost]
-        public async Task<IActionResult> AddToCart([FromRoute]int id, [FromForm]CartProductViewModel model)
+        public async Task<IActionResult> AddToCart([FromRoute] int id, [FromForm] CartProductViewModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return RedirectToAction("Details", "Product", new { Id = id });
             }
@@ -128,6 +137,7 @@ namespace SportWave.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet]
         public async Task<IActionResult> AddReview(int id)
         {
@@ -141,6 +151,7 @@ namespace SportWave.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpPost]
         public async Task<IActionResult> AddReview(int id, AddAndEditReviewViewModel model)
         {
@@ -154,10 +165,11 @@ namespace SportWave.Controllers
             return RedirectToAction("Details", "Product", new { Id = id });
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet]
         public async Task<IActionResult> EditReview(int id)
         {
-            AddAndEditReviewViewModel review = await productService.GetReviewByIdForEditReviewAsync(id);
+            AddAndEditReviewViewModel review = await productService.GetReviewByIdForEditReviewAsync(id, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
 
             if (review == null)
             {
@@ -167,6 +179,7 @@ namespace SportWave.Controllers
             return View(review);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpPost]
         public async Task<IActionResult> EditReview(int id, AddAndEditReviewViewModel model)
         {

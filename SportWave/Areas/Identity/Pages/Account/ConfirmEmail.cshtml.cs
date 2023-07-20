@@ -28,6 +28,11 @@ namespace SportWave.Areas.Identity.Pages.Account
         public string StatusMessage { get; set; }
         public async Task<IActionResult> OnGetAsync(string userId, string code)
         {
+            if(User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (userId == null || code == null)
             {
                 return RedirectToPage("/Index");

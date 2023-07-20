@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.MenAndWomenViewModels;
 
 namespace SportWave.Controllers
 {
+    [AllowAnonymous]
     public class MenController : Controller
     {
         private readonly IMenAndWomenService menService;

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportWave.ViewModels;
 using System.Diagnostics;
 
 namespace SportWave.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         public HomeController()

@@ -100,7 +100,7 @@ namespace SportWave.Services
 
                         shoppingCart.TotalPrice += tempPrice * shoppingCartItems.Quantity;
                     }
-                    
+
                     await dbContext.ShoppingCartItems.AddAsync(shoppingCartItems);
                     await dbContext.SaveChangesAsync();
                 }
@@ -267,27 +267,43 @@ namespace SportWave.Services
             }).FirstOrDefaultAsync();
         }
 
-        public async Task<AddAndEditReviewViewModel> GetReviewByIdForEditReviewAsync(int id)
+        public async Task<AddAndEditReviewViewModel> GetReviewByIdForEditReviewAsync(int id, Guid userId)
         {
-            return await dbContext.UserReviews.Where(ur => ur.Id == id).Select(ur => new AddAndEditReviewViewModel
+            var review = await dbContext.UserReviews.Where(ur => ur.Id == id).Select(ur => new AddAndEditReviewViewModel
             {
                 UserId = ur.UserId,
                 Rating = ur.Rating,
                 Comment = ur.Comment,
                 ProductId = ur.ProductId
             }).FirstOrDefaultAsync();
+
+            if (review.UserId == userId)
+            {
+                return review;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task<GetProductWithQuantityAndVariationsViewModel> GetProductByIdForRemoveAsync(int id)
         {
             var product = await dbContext.Products.Include(p => p.ProductGender).Where(p => p.Id == id).FirstOrDefaultAsync();
-            var gender = product.ProductGender.Gender;
-
-            return await dbContext.Products.Where(p => p.Id == id).Select(p => new GetProductWithQuantityAndVariationsViewModel
+            if (product != null)
             {
-                Id = p.Id,
-                Gender = gender
-            }).FirstOrDefaultAsync();
+                var gender = product.ProductGender.Gender;
+
+                return await dbContext.Products.Where(p => p.Id == id).Select(p => new GetProductWithQuantityAndVariationsViewModel
+                {
+                    Id = p.Id,
+                    Gender = gender
+                }).FirstOrDefaultAsync();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task<AddAndEditReviewViewModel> GetProductByIdForReviewAsync(int id)
@@ -342,7 +358,7 @@ namespace SportWave.Services
             }
 
             var productReviews = await dbContext.UserReviews.Where(ur => ur.ProductId == product.Id).ToListAsync();
-            if(productReviews.Count != 0)
+            if (productReviews.Count != 0)
             {
                 dbContext.UserReviews.RemoveRange(productReviews);
             }

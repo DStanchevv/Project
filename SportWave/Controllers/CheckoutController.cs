@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.CheckoutViewModels;
 using System.Security.Claims;
 
 namespace SportWave.Controllers
 {
+    [Authorize(Roles = "User, Admin")]
     public class CheckoutController : Controller
     {
         private readonly ICheckoutService checkoutService;
@@ -47,8 +48,8 @@ namespace SportWave.Controllers
             }
 
             var isSuccessful = await checkoutService.CheckoutWithCardAsync(model, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-            
-            if(isSuccessful)
+
+            if (isSuccessful)
             {
                 await checkoutService.EmptyShoppingCart(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
 
@@ -56,7 +57,7 @@ namespace SportWave.Controllers
             }
             else
             {
-                model.Msg = "Invalid card information or card has expired!";
+                model.Msg = "Invalid card information or cart is empty!";
                 return View(model);
             }
         }
@@ -77,11 +78,20 @@ namespace SportWave.Controllers
                 return View(model);
             }
 
-            await checkoutService.CheckoutWithCashAsync(model, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-            
-            await checkoutService.EmptyShoppingCart(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-            
-            return RedirectToAction(nameof(OrderThanks));
+            var isSuccessful = await checkoutService.CheckoutWithCashAsync(model, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+
+            if (isSuccessful)
+            {
+                await checkoutService.EmptyShoppingCart(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+
+                return RedirectToAction(nameof(OrderThanks));
+            }
+            else
+            {
+                model.Msg = "Invalid information or cart is empty!";
+                return View(model);
+            }
+
         }
 
         public IActionResult OrderThanks()

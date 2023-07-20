@@ -49,11 +49,14 @@ namespace SportWave.Services
             return model;
         }
 
-        public async Task MarkedAsShippedAsync(Guid id)
+        public async Task MarkedAsShippedAsync(Guid id, Guid userId)
         {
-            var order = await dbContext.Orders.Where(o => o.Id == id).FirstOrDefaultAsync();
+            var order = await dbContext.Orders.Where(o => o.Id == id && o.UserId == userId).FirstOrDefaultAsync();
             var status = await dbContext.OrderStatuses.Where(s => s.Status == "Shipped").FirstOrDefaultAsync();
-            order.Status = status.Status;
+            if (order != null && status != null)
+            {
+                order.Status = status.Status;
+            }
 
             await dbContext.SaveChangesAsync();
         }

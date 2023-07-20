@@ -35,6 +35,11 @@ namespace SportWave.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
         {
+            if(User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (email == null)
             {
                 return RedirectToPage("/Index");
