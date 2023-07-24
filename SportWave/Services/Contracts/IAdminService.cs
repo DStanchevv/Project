@@ -10,6 +10,7 @@ namespace SportWave.Services.Contracts
         Task AddProductAsync(AddProductViewModel model);
         Task AddPromoCodeAsync(AddNewPromoCodeViewModel model);
         Task ClearOrderAsync(Guid id);
+        Task MakeUserAdminAsync(MakeUserAdminViewModel model);
         Task<ManageOrdersViewModel> GetFilteredOrdersAsync(ManageOrdersViewModel model);
         Task<AddProductViewModel> GetNewAddedProductAsync();
         Task<ManageOrdersViewModel> GetOrdersAsync();
@@ -18,5 +19,6 @@ namespace SportWave.Services.Contracts
         Task MakeInvalidAsync(PromoCodesViewModel model);
         Task MakeValidAsync(PromoCodesViewModel promoCode);
         Task SendOrderAsync(Guid id);
+        Task<MakeUserAdminViewModel> GetAdminEmailsAsync();
     }
 }

@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SportWave.Data;
 using SportWave.Data.Models;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.AdminViewModels;
 using SportWave.ViewModels.MenAndWomenViewModels;
 using System.Globalization;
+using static SportWave.Common.GeneralAppConstants;
 
 namespace SportWave.Services
 {
@@ -12,10 +14,12 @@ namespace SportWave.Services
     {
 
         private readonly SportWaveDbContext dbContext;
+        private readonly UserManager<ApplicationUser> manager;
 
-        public AdminService(SportWaveDbContext dbContext)
+        public AdminService(SportWaveDbContext dbContext, UserManager<ApplicationUser> manager)
         {
             this.dbContext = dbContext;
+            this.manager = manager;
         }
 
         public async Task AddCategoryAsync(AddCategoryViewModel model)
@@ -99,6 +103,26 @@ namespace SportWave.Services
             }
 
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<MakeUserAdminViewModel> GetAdminEmailsAsync()
+        {
+            HashSet<string> emails = new HashSet<string>();
+
+            foreach (var user in await dbContext.Users.ToListAsync())
+            {
+                if(await manager.IsInRoleAsync(user, AdminRoleName))
+                {
+                    emails.Add(user.Email);
+                }
+            }
+
+            var model = new MakeUserAdminViewModel()
+            {
+                Emails = emails
+            };
+            
+            return model;
         }
 
         public async Task<ManageOrdersViewModel> GetFilteredOrdersAsync(ManageOrdersViewModel model)
@@ -258,6 +282,16 @@ namespace SportWave.Services
             }
 
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task MakeUserAdminAsync(MakeUserAdminViewModel model)
+        {
+            var user = await dbContext.Users.Where(u => u.Email == model.Email).FirstOrDefaultAsync();
+
+            if (user != null)
+            {
+                await manager.AddToRoleAsync(user, AdminRoleName);
+            }
         }
 
         public async Task MakeValidAsync(PromoCodesViewModel promoCode)

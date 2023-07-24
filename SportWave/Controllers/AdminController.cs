@@ -50,6 +50,27 @@ namespace SportWave.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> MakeUserAdmin()
+        {
+            MakeUserAdminViewModel model = await adminService.GetAdminEmailsAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MakeUserAdmin(MakeUserAdminViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await adminService.MakeUserAdminAsync(model);
+
+            return RedirectToAction(nameof(MakeUserAdmin));
+        }
+
+        [HttpGet]
         public IActionResult AddCategory()
         {
             AddCategoryViewModel model = new AddCategoryViewModel();
@@ -66,6 +87,7 @@ namespace SportWave.Controllers
             }
 
             await adminService.AddCategoryAsync(model);
+
             return RedirectToAction("Admin", "Admin");
         }
 
