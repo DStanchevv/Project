@@ -4,7 +4,6 @@ using SportWave.Data.Models;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.AdminViewModels;
 using SportWave.ViewModels.MenAndWomenViewModels;
-using SportWave.ViewModels.ShoppingCart;
 using System.Globalization;
 
 namespace SportWave.Services
@@ -36,7 +35,7 @@ namespace SportWave.Services
         public async Task AddProductAsync(AddProductViewModel model)
         {
             var category = await dbContext.ProductCategories.Where(pc => pc.Id == model.CategoryId).Select(pc => pc.Category).FirstOrDefaultAsync();
-            if (category != "All")
+            if (category != "All" && category != null)
             {
 
                 Product product = new Product()
@@ -51,7 +50,11 @@ namespace SportWave.Services
                 };
 
                 var gender = await dbContext.ProductGenders.Where(g => g.Id == product.GenderId).FirstOrDefaultAsync();
-                model.Gender = gender.Gender;
+                if (gender != null)
+                {
+                    model.Gender = gender.Gender;
+                }
+
 
                 if (!dbContext.Products.Any(p => p.Name == product.Name && p.Color == product.Color && p.GenderId == product.GenderId))
                 {

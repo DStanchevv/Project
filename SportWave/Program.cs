@@ -54,6 +54,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.SeedRoles();
+
 app.MapDefaultControllerRoute();
 app.MapRazorPages();
 

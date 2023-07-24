@@ -24,7 +24,7 @@ namespace SportWave.ViewModels.MenAndWomenViewModels
         [Range(1, int.MaxValue)]
         public int GenderId { get; set; }
 
-        [Range(1, 100, ErrorMessage = "No Category selected.")]
+        [Range(CategoryIdMinValue, CategoryIdMaxValue, ErrorMessage = "No valid category selected.")]
         public int CategoryId { get; set; }
 
         [Required]

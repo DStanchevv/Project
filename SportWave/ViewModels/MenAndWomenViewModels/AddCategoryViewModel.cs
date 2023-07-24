@@ -1,5 +1,4 @@
-﻿using Microsoft.Build.Framework;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using static SportWave.Common.EntityValidationConstants.Category;
 using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
 
