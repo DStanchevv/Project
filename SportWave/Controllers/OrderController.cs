@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace SportWave.Controllers
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = "Admin, User, Employee")]
     public class OrderController : Controller
     {
         private readonly IOrderService userService;

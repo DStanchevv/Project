@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SportWave.Data;
 using SportWave.Data.Models;
+using SportWave.Hubs;
 using SportWave.Infrastructure.Extensions;
 using SportWave.Services.Contracts;
 
@@ -30,7 +31,9 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
 });
 
-builder.Services.AddApplicationServices(typeof(IAdminService));
+builder.Services.AddApplicationServices(typeof(IStaffService));
+
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -58,5 +61,7 @@ app.SeedRoles();
 
 app.MapDefaultControllerRoute();
 app.MapRazorPages();
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();

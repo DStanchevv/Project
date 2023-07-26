@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace SportWave.Controllers
 {
-    [Authorize(Roles = "User, Admin")]
+    [Authorize(Roles = "User, Admin, Employee")]
     public class CheckoutController : Controller
     {
         private readonly ICheckoutService checkoutService;

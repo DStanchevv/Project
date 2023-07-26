@@ -1,0 +1,56 @@
+﻿@using SportWave.ViewModels.AdminViewModels
+@model MakeUserEmployeeViewModel
+
+@{
+    ViewBag.Title = "Manage Employees";
+}
+
+<h2 class="text-center textColor">@ViewBag.Title</h2>
+<hr class="hrStyle" />
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6 textColor">
+        <form asp-action="MakeUserEmployee" method="post">
+            <div class="mb-3">
+                <label asp-for="@Model.Email" class="form-label">Email</label>
+                <input asp-for="@Model.Email" class="form-control" aria-required="true" />
+                <span asp-validation-for="@Model.Email" class="textColor"></span>
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-danger buttonColor" type="submit" value="Add Employee" />
+            </div>
+        </form>
+
+
+        <div>
+            <h3>Current Admin:</h3>
+            @foreach (var user in Model.AdminEmails)
+            {
+                <label class="textColor d-block">@user.Email</label>
+            }
+        </div>
+
+
+        <div>
+            <h3>Current Employees:</h3>
+            @if (Model.EmployeeEmails.Count() > 0)
+            {
+                foreach (var user in Model.EmployeeEmails)
+                {
+                    <div class="d-inline">
+                        <label class="textColor">@user.Email</label>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-controller="Staff" asp-action="RemoveEmployee" asp-route-id="@user.Id" class="btn btn-danger buttonColor mx-3">Remove</a>
+                        }
+                    </div>
+                    
+                }
+            }
+            else
+            {
+                <label class="textColor d-block">No employees registered yet.</label>
+            }
+        </div>
+    </div>
+</div>

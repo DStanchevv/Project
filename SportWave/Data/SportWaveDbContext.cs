@@ -30,6 +30,7 @@ namespace SportWave.Data
         public DbSet<PromoUser> PromosUsers { get; set; } = null!;
         public DbSet<PaymentType> PaymentTypes { get; set; } = null!;
         public DbSet<UserPaymentMethod> UsersPaymentMethods { get; set; } = null!;
+        public DbSet<Message> Messages { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

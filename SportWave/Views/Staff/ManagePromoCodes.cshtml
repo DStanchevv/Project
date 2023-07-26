@@ -1,0 +1,41 @@
+﻿﻿@using SportWave.ViewModels.AdminViewModels
+@model IEnumerable<PromoCodesViewModel>
+
+@{
+    ViewBag.Title = "Manage Promo Codes";
+}
+
+<h1 class="text-center textColor">@ViewBag.Title</h1>
+<p class="text-center textColor">Here you can manage the promo codes</p>
+<hr class="hrStyle" />
+
+<div class="row">
+
+    @foreach (var code in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body text-center">
+                    <h4>@code.Code</h4>
+                    <h6>Value: <b>@code.Value %</b></h6>
+                    @if (code.IsValid)
+                    {
+                        <h6>Status: <b>Valid</b></h6>
+                        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Staff" asp-action="MakeInvalid" asp-route-id="@code.CodeId">
+                            Change status
+                        </a>
+                    }
+                    else
+                    {
+                        <h6>Status: <b>Not valid</b></h6>
+                        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Staff" asp-action="MakeValid" asp-route-id="@code.CodeId">
+                            Change status
+                        </a>
+                    }
+                    <br />
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

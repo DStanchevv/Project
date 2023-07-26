@@ -1,0 +1,63 @@
+﻿@using SportWave.ViewModels.MenAndWomenViewModels
+@model AddProductViewModel
+@{
+    ViewBag.Title = "Add Product";
+}
+
+<h2 class="text-center textColor">@ViewBag.Title</h2>
+<hr class="hrStyle" />
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6 textColor">
+        <form asp-action="Add" method="post">
+            <div class="mb-3">
+                <label asp-for="@Model.Name" class="form-label">Name</label>
+                <input asp-for="@Model.Name" class="form-control" aria-required="true" />
+                <span asp-validation-for="@Model.Name" class="textColor"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.Price" class="form-label">Price</label>
+                <input asp-for="@Model.Price" class="form-control" aria-required="true" type="number" step=".01" min="0"/>
+                <span asp-validation-for="@Model.Price" class="textColor"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.Description" class="form-label">Description</label>
+                <textarea asp-for="@Model.Description" class="form-control" aria-required="true" rows="5"></textarea>
+                <span asp-validation-for="Description" class="textColor"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.Color" class="form-label">Color</label>
+                <input asp-for="@Model.Color" class="form-control" aria-required="true" />
+                <span asp-validation-for="@Model.Color" class="textColor"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.GenderId" class="form-label">Gender</label>
+                <select asp-for="@Model.GenderId" class="form-control">
+                    @foreach (var gender in @Model.Genders)
+                    {
+                        <option value="@gender.Id">@gender.Gender</option>
+                    }
+                </select>
+                <span asp-validation-for="@Model.GenderId" class="textColor"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.ImgUrl" class="form-label">Image URL</label>
+                <input asp-for="@Model.ImgUrl" class="form-control" aria-required="true" />
+                <span asp-validation-for="@Model.ImgUrl" class="textColor"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.CategoryId" class="form-label">Category</label>
+                <select asp-for="@Model.CategoryId" class="form-control">
+                    @foreach (var category in @Model.Categories)
+                    {
+                        <option value="@category.Id">@category.Category</option>
+                    }
+                </select>
+                <span asp-validation-for="@Model.CategoryId" class="textColor"></span>
+            </div>
+            <div class="mb-3">
+                <input class="btn btn-danger buttonColor" type="submit" value="Add" />
+            </div>
+        </form>
+    </div>
+</div>

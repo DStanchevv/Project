@@ -27,7 +27,7 @@ namespace SportWave.Controllers
             return View(product);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         [HttpGet]
         public async Task<IActionResult> AddVariation(int id)
         {
@@ -40,7 +40,7 @@ namespace SportWave.Controllers
             return View(product);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         [HttpPost]
         public async Task<IActionResult> AddVariation(int id, GetProductWithQuantityAndVariationsViewModel model)
         {
@@ -54,7 +54,7 @@ namespace SportWave.Controllers
             return RedirectToAction("Details", "Product", new { Id = id });
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -68,7 +68,7 @@ namespace SportWave.Controllers
             return View(product);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         [HttpPost]
         public async Task<IActionResult> Edit(int id, EditProductViewModel model)
         {
@@ -82,7 +82,7 @@ namespace SportWave.Controllers
             return RedirectToAction("Details", "Product", new { Id = id });
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Employee")]
         public async Task<IActionResult> Remove(int id)
         {
             var product = await productService.GetProductByIdForRemoveAsync(id);
@@ -106,7 +106,7 @@ namespace SportWave.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin, User, Employee")]
         [HttpPost]
         public async Task<IActionResult> AddToCart([FromRoute] int id, [FromForm] CartProductViewModel model)
         {
@@ -137,7 +137,7 @@ namespace SportWave.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin, User, Employee")]
         [HttpGet]
         public async Task<IActionResult> AddReview(int id)
         {
@@ -151,7 +151,7 @@ namespace SportWave.Controllers
             return View(product);
         }
 
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin, User, Employee")]
         [HttpPost]
         public async Task<IActionResult> AddReview(int id, AddAndEditReviewViewModel model)
         {
@@ -165,7 +165,7 @@ namespace SportWave.Controllers
             return RedirectToAction("Details", "Product", new { Id = id });
         }
 
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin, User, Employee")]
         [HttpGet]
         public async Task<IActionResult> EditReview(int id)
         {
@@ -179,7 +179,7 @@ namespace SportWave.Controllers
             return View(review);
         }
 
-        [Authorize(Roles = "Admin, User")]
+        [Authorize(Roles = "Admin, User, Employee")]
         [HttpPost]
         public async Task<IActionResult> EditReview(int id, AddAndEditReviewViewModel model)
         {

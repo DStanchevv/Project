@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Staff";
+}
+
+<h1 class="text-center textColor">@ViewBag.Title</h1>
+<p class="text-center textColor">Welcome to the staff section.</p>
+<hr class="hrStyle" />
+<a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="Add">
+    Add Product
+</a>
+<a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="AddCategory">
+    Add Category
+</a>
+<a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="AddPromoCode">
+    Add Promo Code
+</a>
+
+@if (!User.IsInRole("Employee"))
+{
+    <a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="MakeUserEmployee">
+        Manage Employees
+    </a>
+}
+<a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="ManageOrders">
+    Manage Orders
+</a>
+<a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Staff" asp-action="ManagePromoCodes">
+    Manage Promo Codes
+</a>

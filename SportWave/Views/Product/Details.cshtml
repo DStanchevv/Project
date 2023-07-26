@@ -27,7 +27,7 @@
     @if (Model.ProductVariations.Count() == 0 || Model.ProductVariations.All(pv => pv.Quantity == 0))
     {
         <p>Out of Stock</p>
-        @if (User.IsInRole("Admin"))
+        @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
         {
             <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id">
                 Edit
@@ -54,7 +54,7 @@
                     }
                     else
                     {
-                        if (User.IsInRole("Admin"))
+                        if (User.IsInRole("Admin") || User.IsInRole("Employee"))
                         {
                             var quantity = Model.ProductVariations.Where(pv => pv.Size == size.Size).Select(pv => pv.Quantity).FirstOrDefault();
                             <option value="@size.Size">@size.Size - @quantity left</option>
@@ -93,7 +93,7 @@
             }
         }
 
-        @if (User.IsInRole("Admin"))
+        @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
         {
             <a class="w-50 my-1 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id">
                 Edit

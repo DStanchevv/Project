@@ -1,0 +1,86 @@
+﻿﻿@using SportWave.ViewModels.AdminViewModels
+@model ManageOrdersViewModel
+
+@{
+    ViewBag.Title = "Manage Orders";
+}
+
+<h1 class="text-center textColor">@ViewBag.Title</h1>
+<p class="text-center textColor">Here you can manage the client orders</p>
+<hr class="hrStyle" />
+
+<div class="row">
+
+    <form asp-action="FilterOrders" method="post">
+        <div class="mb-3 textColor">
+            <label asp-for="@Model.Status" class="form-label">Filter by Status</label>
+            <select asp-for="@Model.Status" class="form-control">
+                @foreach (var status in @Model.OrderStatuses)
+                {
+                    <option value="@status.Status">@status.Status</option>
+                }
+                <option value="">All</option>
+            </select>
+            <span asp-validation-for="@Model.Status" class="textColor"></span>
+        </div>
+        <div class="mb-3">
+            <input class="btn btn-danger buttonColor" type="submit" value="Filter" />
+        </div>
+    </form>
+
+    @if (Model.Orders.Count() > 0)
+    {
+        @foreach (var order in Model.Orders)
+        {
+            <div class="col-md-4">
+                <div class="card mb-3">
+
+                    <div class="card-body text-center">
+                        <h6>Date: @order.DateOfOrder</h6>
+                        <h4>Address</h4>
+                        <h6>Country: <b>@order.Coutnry</b></h6>
+                        <h6>Street Name: <b>@order.StreetName</b></h6>
+                        <h6>Street Number: <b>@order.StreetNumber</b></h6>
+                        @if (order.AdditionalInfo != null)
+                        {
+                            <h6>Additional info: <b>@order.AdditionalInfo</b></h6>
+                        }
+
+                        <h6>Status: <b>@order.Status</b></h6>
+                        <h6>Order total: <b>@Math.Round(order.OrderTotal, 2) $</b></h6>
+                        <h4>Products</h4>
+                        @foreach (var product in Model.OrderProducts)
+                        {
+                            if (order.Id == product.OrderId)
+                            {
+                                <img class="card-img-top" src="@product.ImgUrl" alt="Product Image" style="width: 50%; height: 140px;">
+                                <h6>Name: <b>@product.Name</b></h6>
+                                <h6>Category: <b>@product.Category</b></h6>
+                                <h6>Color: <b>@product.Color</b></h6>
+                                <h6>Size: <b>@product.Size</b></h6>
+                                <h6>Quantity: <b>@product.Quantity</b></h6>
+                            }
+                        }
+                        @if (order.Status == "Not sent")
+                        {
+                            <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Admin" asp-action="SendOrder" asp-route-id="@order.Id">
+                                Send order
+                            </a>
+                        }
+                        @if (order.Status == "Shipped")
+                        {
+                            <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Admin" asp-action="ClearOrder" asp-route-id="@order.Id">
+                                Clear
+                            </a>
+                        }
+                        <br />
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <h2 class="textColor">No such orders placed.</h2>
+    }
+</div>

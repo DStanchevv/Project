@@ -54,6 +54,19 @@ namespace SportWave.Infrastructure.Extensions
 
             Task.Run(async () =>
             {
+                if (await roleManager.RoleExistsAsync(EmployeeRoleName))
+                {
+                    return;
+                }
+
+                IdentityRole<Guid> role = new IdentityRole<Guid>(EmployeeRoleName);
+                await roleManager.CreateAsync(role);
+            })
+                .GetAwaiter()
+                .GetResult();
+
+            Task.Run(async () =>
+            {
                 if (await roleManager.RoleExistsAsync(UserRoleName))
                 {
                     return;

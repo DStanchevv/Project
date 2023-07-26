@@ -28,10 +28,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Women" asp-action="Women"><span class="nbFontColor aMenColor">Women</span></a>
                         </li>
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Admin"><span class="nbFontColor aMenColor">Admin</span></a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Staff" asp-action="Staff"><span class="nbFontColor aMenColor">Staff</span></a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="Chat"><span class="nbFontColor aMenColor">Staff Group Chat</span></a>
                             </li>
                         }
                     </ul>

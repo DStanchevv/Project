@@ -1,0 +1,47 @@
+﻿@using SportWave.ViewModels.ChatViewModels
+@model IEnumerable<MsgViewModel>
+
+@{
+    ViewBag.Title = "Chat";
+}
+
+<link rel="stylesheet" href="~/css/chat.css" asp-append-version="true" />
+
+<div class="container py-5">
+
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-6" style="width: 1300px">
+
+            <div class="card" style="border-color: darkred;" id="chat2">
+
+                <div class="card-header d-flex justify-content-between align-items-center p-3" style="background-color: darkred; color: white;">
+                    <h5 class="mb-0">Chat</h5>
+                </div>
+
+                <div class="card-body overflow-auto" style="position: relative; height: 600px" id="messagesList">
+                    @foreach (var msg in Model)
+                    {
+                        <div class="d-flex flex-row justify-content-start">
+                            <label class="fw-bold">@msg.UserName</label>
+                            <div>
+                                <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">@msg.Msg</p>
+
+                                <p class="small ms-3 mb-3 rounded-3 text-muted">@msg.Time.ToString("dd.M.yyyy hh:mm:ss")</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3" style="background-color: darkred">
+                    <input type="text" class="form-control form-control-lg btn-danger" style="background-color: white; color: black; border-color: darkred;" id="messageInput" placeholder="Type message">
+                    <a class="ms-3">
+                        <input class="btn btn-lg btn-danger buttonColor" style="border-color: darkred" type="button" id="sendButton" value="Send" />
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>
