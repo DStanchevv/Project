@@ -190,7 +190,6 @@ namespace SportWave.Services
                 product.Description = model.Description;
                 product.CategoryId = model.CategoryId;
                 product.Color = model.Color;
-                product.ImgUrl = model.ImgUrl;
             }
 
             if (product.Price >= 0)
@@ -261,7 +260,6 @@ namespace SportWave.Services
                 Price = p.Price.ToString(),
                 Description = p.Description,
                 CategoryId = p.CategoryId,
-                ImgUrl = p.ImgUrl,
                 Color = p.Color,
                 Categories = categories
             }).FirstOrDefaultAsync();

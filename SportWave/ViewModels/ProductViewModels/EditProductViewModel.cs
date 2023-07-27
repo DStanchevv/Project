@@ -24,9 +24,6 @@ namespace SportWave.ViewModels.ProductViewModels
         [Range(CategoryIdMinValue, CategoryIdMaxValue, ErrorMessage = "No Category selected.")]
         public int CategoryId { get; set; }
 
-        [Required]
-        public string ImgUrl { get; set; } = null!;
-
         public IEnumerable<CategoryViewModel> Categories { get; set; } = new HashSet<CategoryViewModel>();
     }
 }

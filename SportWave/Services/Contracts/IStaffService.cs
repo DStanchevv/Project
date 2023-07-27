@@ -6,7 +6,7 @@ namespace SportWave.Services.Contracts
     public interface IStaffService
     {
         Task AddCategoryAsync(AddCategoryViewModel model);
-        Task AddProductAsync(AddProductViewModel model);
+        Task AddProductAsync(AddProductViewModel model, string imgUrl);
         Task AddPromoCodeAsync(AddNewPromoCodeViewModel model);
         Task ClearOrderAsync(Guid id);
         Task MakeUserEmployeeAsync(MakeUserEmployeeViewModel model);

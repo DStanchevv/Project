@@ -11,10 +11,12 @@ namespace SportWave.Controllers
     public class StaffController : Controller
     {
         private readonly IStaffService staffService;
+        private readonly IPhotoService photoService;
 
-        public StaffController(IStaffService adminService)
+        public StaffController(IStaffService adminService, IPhotoService photoService)
         {
             this.staffService = adminService;
+            this.photoService = photoService;
         }
 
         public IActionResult Staff()
@@ -38,7 +40,8 @@ namespace SportWave.Controllers
                 return View(model);
             }
 
-            await staffService.AddProductAsync(model);
+            var result = await photoService.AddPhotoAsync(model.ImgUrl);
+            await staffService.AddProductAsync(model, result.Url.ToString());
 
             if (model.Gender == "Male")
             {

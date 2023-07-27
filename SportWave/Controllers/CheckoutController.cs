@@ -10,60 +10,16 @@ namespace SportWave.Controllers
     public class CheckoutController : Controller
     {
         private readonly ICheckoutService checkoutService;
+        private readonly IStripeCheckoutService stripeCheckoutService;
 
-        public CheckoutController(ICheckoutService checkoutService)
+        public CheckoutController(ICheckoutService checkoutService, IStripeCheckoutService stripeCheckoutService)
         {
             this.checkoutService = checkoutService;
+            this.stripeCheckoutService = stripeCheckoutService;
         }
 
         [HttpGet]
-        public IActionResult PayWithCard()
-        {
-            PayWithCardViewModel model = new PayWithCardViewModel();
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PayWithCard(PayWithCardViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            if (model.ExpiryDate < DateTime.Now)
-            {
-                model.Msg = "Card has expired!";
-                return View(model);
-            }
-
-            foreach (var c in model.SecurityCode)
-            {
-                if (char.IsLetter(c))
-                {
-                    model.Msg = "Invalid security code!";
-                    return View(model);
-                }
-            }
-
-            var isSuccessful = await checkoutService.CheckoutWithCardAsync(model, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-
-            if (isSuccessful)
-            {
-                await checkoutService.EmptyShoppingCart(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-
-                return RedirectToAction(nameof(OrderThanks));
-            }
-            else
-            {
-                model.Msg = "Invalid card information or cart is empty!";
-                return View(model);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult PayInCash()
+        public IActionResult Order()
         {
             PayInCashViewModel model = new PayInCashViewModel();
 
@@ -71,7 +27,7 @@ namespace SportWave.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PayInCash(PayInCashViewModel model)
+        public async Task<IActionResult> Order(PayInCashViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -82,9 +38,7 @@ namespace SportWave.Controllers
 
             if (isSuccessful)
             {
-                await checkoutService.EmptyShoppingCart(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-
-                return RedirectToAction(nameof(OrderThanks));
+                return RedirectToAction(nameof(CreateCheckoutSession));
             }
             else
             {
@@ -94,8 +48,15 @@ namespace SportWave.Controllers
 
         }
 
-        public IActionResult OrderThanks()
+        public async Task<IActionResult> CreateCheckoutSession()
         {
+            string url = await stripeCheckoutService.CheckoutSessionAsync(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))); 
+            return Redirect(url); 
+        }
+
+        public async Task<IActionResult> OrderThanks()
+        {
+            await checkoutService.EmptyShoppingCart(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             return View();
         }
     }

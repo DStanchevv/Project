@@ -36,7 +36,7 @@ namespace SportWave.Services
             }
         }
 
-        public async Task AddProductAsync(AddProductViewModel model)
+        public async Task AddProductAsync(AddProductViewModel model, string imgUrl)
         {
             var category = await dbContext.ProductCategories.Where(pc => pc.Id == model.CategoryId).Select(pc => pc.Category).FirstOrDefaultAsync();
             if (category != "All" && category != null)
@@ -50,7 +50,7 @@ namespace SportWave.Services
                     CategoryId = model.CategoryId,
                     Color = model.Color,
                     GenderId = model.GenderId,
-                    ImgUrl = model.ImgUrl
+                    ImgUrl = imgUrl
                 };
 
                 var gender = await dbContext.ProductGenders.Where(g => g.Id == product.GenderId).FirstOrDefaultAsync();

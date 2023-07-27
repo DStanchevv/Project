@@ -32,11 +32,6 @@
                 <span asp-validation-for="@Model.Color" class="textColor"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="@Model.ImgUrl" class="form-label">Image URL</label>
-                <input asp-for="@Model.ImgUrl" class="form-control" aria-required="true" />
-                <span asp-validation-for="@Model.ImgUrl" class="textColor"></span>
-            </div>
-            <div class="mb-3">
                 <label asp-for="@Model.CategoryId" class="form-label">Category</label>
                 <select asp-for="@Model.CategoryId" class="form-control">
                     @foreach (var category in @Model.Categories)

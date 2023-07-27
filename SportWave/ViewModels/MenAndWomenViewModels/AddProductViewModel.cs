@@ -28,7 +28,7 @@ namespace SportWave.ViewModels.MenAndWomenViewModels
         public int CategoryId { get; set; }
 
         [Required]
-        public string ImgUrl { get; set; } = null!;
+        public IFormFile ImgUrl { get; set; } = null!;
 
         public string? Gender { get; set; }
 

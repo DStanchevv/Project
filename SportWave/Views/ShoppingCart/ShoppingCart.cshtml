@@ -10,11 +10,8 @@
 
 @if (Model.ProductsInCart.Count() > 0)
 {
-    <a class="w-50 btn btn-lg btn-danger buttonColor my-1" style="margin-left: 25%" asp-area="" asp-controller="Checkout" asp-action="PayInCash">
-        Pay in cash
-    </a>
-    <a class="w-50 btn btn-lg btn-danger buttonColor my-1" style="margin-left: 25%" asp-area="" asp-controller="Checkout" asp-action="PayWithCard">
-        Pay with card
+    <a class="w-50 btn btn-lg btn-danger buttonColor my-1" style="margin-left: 25%" asp-area="" asp-controller="Checkout" asp-action="Order">
+        Place order
     </a>
     @if (!Model.HasPromo)
     {

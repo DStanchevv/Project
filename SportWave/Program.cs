@@ -1,15 +1,19 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SportWave.Cloudinary;
 using SportWave.Data;
 using SportWave.Data.Models;
 using SportWave.Hubs;
 using SportWave.Infrastructure.Extensions;
 using SportWave.Services.Contracts;
+using SportWave.Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 
 builder.Services.AddDbContext<SportWaveDbContext>(options =>
     options.UseSqlServer(connectionString));
