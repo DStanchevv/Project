@@ -6,7 +6,7 @@ using SportWave.Services.Contracts;
 using SportWave.ViewModels.AdminViewModels;
 using SportWave.ViewModels.MenAndWomenViewModels;
 using System.Globalization;
-using static SportWave.Common.GeneralAppConstants;
+using static SportWave.Common.RolesConstants;
 
 namespace SportWave.Services
 {
@@ -96,10 +96,10 @@ namespace SportWave.Services
             var order = await dbContext.Orders.Where(o => o.Id == id).FirstOrDefaultAsync();
             var productsOrders = await dbContext.ProductsOrders.Where(po => po.OrderId == id).ToListAsync();
 
-            if (order != null && productsOrders != null)
+            if (order != null && productsOrders != null && order.Status == "Shipped")
             {
                 dbContext.ProductsOrders.RemoveRange(productsOrders);
-                dbContext.Remove(order);
+                dbContext.Orders.Remove(order);
             }
 
             await dbContext.SaveChangesAsync();

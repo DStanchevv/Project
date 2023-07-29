@@ -1,6 +1,6 @@
 ﻿namespace SportWave.Common
 {
-    public static class GeneralAppConstants
+    public static class RolesConstants
     {
         public const string AdminRoleName = "Admin";
         public const string EmployeeRoleName = "Employee";

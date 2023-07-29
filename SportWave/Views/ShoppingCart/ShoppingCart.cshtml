@@ -28,9 +28,6 @@
 
 }
 
-
-
-
 <hr class="hrStyle" />
 
 <div class="row">
@@ -56,14 +53,14 @@
                     <div>
                         <div class="d-inline-block">
                             <a class="w-30 btn btn-lg btn-danger buttonColor my-1 mx-4" asp-area="" asp-controller="ShoppingCart" asp-action="Add" asp-route-id="@product.Id">
-                                +
+                                <i class="fa-solid fa-plus fa-sm"></i>
                             </a>
                         </div>
                         @if (product.Quantity > 1)
                         {
                             <div class="d-inline-block">
                                 <a class="w-30 btn btn-lg btn-danger buttonColor my-1 mx-4" asp-area="" asp-controller="ShoppingCart" asp-action="Subtract" asp-route-id="@product.Id">
-                                    -
+                                    <i class="fa-solid fa-minus fa-sm"></i>
                                 </a>
                             </div>
                         }

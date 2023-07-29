@@ -6,24 +6,24 @@
 <p class="text-center textColor">Welcome to the staff section.</p>
 <hr class="hrStyle" />
 <a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="Add">
-    Add Product
+    Add Product  <i class="fa-solid fa-circle-plus fa-sm"></i>
 </a>
 <a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="AddCategory">
-    Add Category
+    Add Category  <i class="fa-solid fa-circle-plus fa-sm"></i>
 </a>
 <a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="AddPromoCode">
-    Add Promo Code
+    Add Promo Code  <i class="fa-solid fa-circle-plus fa-sm"></i>
 </a>
 
 @if (!User.IsInRole("Employee"))
 {
     <a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="MakeUserEmployee">
-        Manage Employees
+        Manage Employees   <i class="fa-solid fa-list-check fa-sm"></i>
     </a>
 }
 <a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="ManageOrders">
-    Manage Orders
+    Manage Orders  <i class="fa-solid fa-truck fa-sm"></i>
 </a>
 <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Staff" asp-action="ManagePromoCodes">
-    Manage Promo Codes
+    Manage Promo Codes    <i class="fa-solid fa-percent fa-sm"></i>
 </a>

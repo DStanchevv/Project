@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SportWave.Data.Models;
 using System.Reflection;
-using static SportWave.Common.GeneralAppConstants;
+using static SportWave.Common.RolesConstants;
 
 namespace SportWave.Infrastructure.Extensions
 {

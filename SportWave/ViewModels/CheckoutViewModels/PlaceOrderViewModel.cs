@@ -5,7 +5,7 @@ using static SportWave.Common.EntityValidationConstants.Address;
 
 namespace SportWave.ViewModels.CheckoutViewModels
 {
-    public class PayInCashViewModel
+    public class PlaceOrderViewModel
     {
         [Required]
         [StringLength(CountryNameMaxLength, MinimumLength = CountryNameMinLength, ErrorMessage = "Invalid Country name length.")]

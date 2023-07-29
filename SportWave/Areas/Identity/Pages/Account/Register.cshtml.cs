@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using SportWave.Data.Models;
-using static SportWave.Common.GeneralAppConstants;
+using static SportWave.Common.RolesConstants;
 
 namespace SportWave.Areas.Identity.Pages.Account
 {

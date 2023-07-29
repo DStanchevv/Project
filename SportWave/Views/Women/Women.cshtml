@@ -12,7 +12,7 @@
 
     <form asp-action="Filter" method="post">
         <div class="mb-3 textColor">
-            <label asp-for="@Model.CategoryId" class="form-label">Filter by Category</label>
+            <label asp-for="@Model.CategoryId" class="form-label">Search by Category</label>
             <select asp-for="@Model.CategoryId" class="form-control">
                 @foreach (var category in @Model.Categories)
                 {
@@ -22,7 +22,7 @@
             <span asp-validation-for="@Model.CategoryId" class="textColor"></span>
         </div>
         <div class="mb-3">
-            <input class="btn btn-danger buttonColor" type="submit" value="Filter" />
+            <input class="btn btn-danger buttonColor" type="submit" value="Search" />
         </div>
     </form>
 
@@ -38,7 +38,7 @@
                         <h6>Color: <b>@product.Color</b></h6>
                         <h6>Price: <b>@product.Price $</b></h6>
                         <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
-                            Details
+                            <i class="fa-solid fa-circle-info fa-lg"></i>
                         </a>
                         <br />
                     </div>

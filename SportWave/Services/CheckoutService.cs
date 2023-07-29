@@ -14,7 +14,7 @@ namespace SportWave.Services
             this.dbContext = dbContext;
         }
 
-        public async Task<bool> CheckoutWithCashAsync(PayInCashViewModel model, Guid UserId)
+        public async Task<bool> PlaceOrderAsync(PlaceOrderViewModel model, Guid UserId)
         {
             var shoppingCart = await dbContext.ShoppingCarts.Where(sc => sc.UserId == UserId).FirstOrDefaultAsync();
             var shoppingCartItems = await dbContext.ShoppingCartItems.Where(sci => sci.CartId == shoppingCart.Id).ToListAsync();
@@ -50,7 +50,7 @@ namespace SportWave.Services
                 }
 
 
-                var typeId = await dbContext.PaymentTypes.Where(pt => pt.Type == "Cash").Select(pt => pt.Id).FirstOrDefaultAsync();
+                var typeId = await dbContext.PaymentTypes.Where(pt => pt.Type == "Stripe").Select(pt => pt.Id).FirstOrDefaultAsync();
                 UserPaymentMethod method = new UserPaymentMethod()
                 {
                     UserId = UserId,

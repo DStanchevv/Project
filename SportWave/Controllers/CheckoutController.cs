@@ -21,20 +21,20 @@ namespace SportWave.Controllers
         [HttpGet]
         public IActionResult Order()
         {
-            PayInCashViewModel model = new PayInCashViewModel();
+            PlaceOrderViewModel model = new PlaceOrderViewModel();
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Order(PayInCashViewModel model)
+        public async Task<IActionResult> Order(PlaceOrderViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            var isSuccessful = await checkoutService.CheckoutWithCashAsync(model, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var isSuccessful = await checkoutService.PlaceOrderAsync(model, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
 
             if (isSuccessful)
             {

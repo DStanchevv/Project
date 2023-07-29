@@ -22,7 +22,7 @@
         </form>
 
 
-        <div>
+        <div class="my-5">
             <h3>Current Admin:</h3>
             @foreach (var user in Model.AdminEmails)
             {
@@ -31,7 +31,7 @@
         </div>
 
 
-        <div>
+        <div class="my-5">
             <h3>Current Employees:</h3>
             @if (Model.EmployeeEmails.Count() > 0)
             {
@@ -41,7 +41,7 @@
                         <label class="textColor">@user.Email</label>
                         @if (User.IsInRole("Admin"))
                         {
-                            <a asp-controller="Staff" asp-action="RemoveEmployee" asp-route-id="@user.Id" class="btn btn-danger buttonColor mx-3">Remove</a>
+                            <a asp-controller="Staff" asp-action="RemoveEmployee" asp-route-id="@user.Id" class="btn btn-danger buttonColor mx-3"><i class="fa-solid fa-trash-can fa-sm"></i></a>
                         }
                     </div>
                     

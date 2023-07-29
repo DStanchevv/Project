@@ -60,14 +60,7 @@ namespace SportWave.Data
             paymentType = new PaymentType()
             {
                 Id = 1,
-                Type = "Card"
-            };
-            paymentTypes.Add(paymentType);
-
-            paymentType = new PaymentType()
-            {
-                Id = 2,
-                Type = "Cash"
+                Type = "Stripe"
             };
             paymentTypes.Add(paymentType);
 
