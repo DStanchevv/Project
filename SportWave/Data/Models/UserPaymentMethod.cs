@@ -21,13 +21,5 @@ namespace SportWave.Data.Models
         [ForeignKey(nameof(PaymentType))]
         public int PaymentTypeId { get; set; }
         public PaymentType PaymentType { get; set; } = null!;
-
-        public string? Provider { get; set; }
-
-        public string? CardNumber { get; set; }
-
-        public string? SecurityCode { get; set; }
-
-        public DateTime? ExpiryDate { get; set; }
     }
 }

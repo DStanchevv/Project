@@ -63,13 +63,13 @@
                         }
                         @if (order.Status == "Not sent")
                         {
-                            <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Admin" asp-action="SendOrder" asp-route-id="@order.Id">
+                            <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Staff" asp-action="SendOrder" asp-route-id="@order.Id">
                                 Send order
                             </a>
                         }
                         @if (order.Status == "Shipped")
                         {
-                            <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Admin" asp-action="ClearOrder" asp-route-id="@order.Id">
+                            <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Staff" asp-action="ClearOrder" asp-route-id="@order.Id">
                                 Clear
                             </a>
                         }
