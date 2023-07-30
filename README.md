@@ -10,5 +10,6 @@ stock up the product, remove it or make orders and write reviews as a normal use
 - Back-end: ASP.NET Core 6.0
 - Front-end: HTML, CSS, Bootstrap
 - Database: Microsoft Sql Server
+- File storage cloud api: Cloudinary 
 - Payment gateway: Stripe 
 
