@@ -22,6 +22,7 @@ namespace SportWave.Controllers
             var product = await productService.GetProductDetails(id);
             if (product == null)
             {
+                TempData["message"] = "No such product!";
                 return RedirectToAction("Index", "Home");
             }
             return View(product);
@@ -34,6 +35,7 @@ namespace SportWave.Controllers
             var product = await productService.GetProductByIdAsync(id);
             if (product == null)
             {
+                TempData["message"] = "No such product!";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -51,6 +53,7 @@ namespace SportWave.Controllers
 
             await productService.AddVariationToProductAsync(model, id);
 
+            TempData["message"] = "Added Successfully!";
             return RedirectToAction("Details", "Product", new { Id = id });
         }
 
@@ -62,6 +65,7 @@ namespace SportWave.Controllers
 
             if (product == null)
             {
+                TempData["message"] = "No such product!";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -79,6 +83,7 @@ namespace SportWave.Controllers
 
             await productService.EditProductAsync(model, id);
 
+            TempData["message"] = "Edited Successfully!";
             return RedirectToAction("Details", "Product", new { Id = id });
         }
 
@@ -89,12 +94,14 @@ namespace SportWave.Controllers
             
             if (product == null)
             {
+                TempData["message"] = "No such product!";
                 return RedirectToAction("Index", "Home");
             }
             
             var gender = product.Gender;
 
             await productService.RemoveProductAndVariationsAsync(product);
+            TempData["message"] = "Removed Successfully!";
 
             if (gender == "Male")
             {
@@ -122,6 +129,7 @@ namespace SportWave.Controllers
 
                 if (product == null)
                 {
+                    TempData["message"] = "No such product!";
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -133,6 +141,7 @@ namespace SportWave.Controllers
             }
             else
             {
+                TempData["message"] = "There aren't enough!";
                 return RedirectToAction("Details", "Product", new { Id = id });
             }
         }
@@ -145,6 +154,7 @@ namespace SportWave.Controllers
 
             if (product == null)
             {
+                TempData["message"] = "No such product!";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -173,6 +183,7 @@ namespace SportWave.Controllers
 
             if (review == null)
             {
+                TempData["message"] = "No such review!";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -190,6 +201,7 @@ namespace SportWave.Controllers
 
             await productService.EditReviewAsync(model, id);
 
+            TempData["message"] = "Edited Successfully!";
             return RedirectToAction("Details", "Product", new { Id = model.ProductId });
         }
     }

@@ -42,6 +42,7 @@ namespace SportWave.Controllers
 
             var result = await photoService.AddPhotoAsync(model.ImgUrl);
             await staffService.AddProductAsync(model, result.Url.ToString());
+            TempData["message"] = "Added Successfully!";
 
             if (model.Gender == "Male")
             {
@@ -73,6 +74,7 @@ namespace SportWave.Controllers
 
             await staffService.MakeUserEmployeeAsync(model);
 
+            TempData["message"] = "Added Successfully!";
             return RedirectToAction(nameof(MakeUserEmployee));
         }
 
@@ -88,6 +90,7 @@ namespace SportWave.Controllers
 
             await staffService.RemoveEmployeeAsync(employee);
 
+            TempData["message"] = "Removed Successfully!";
             return RedirectToAction(nameof(MakeUserEmployee));
         }
 
@@ -109,6 +112,7 @@ namespace SportWave.Controllers
 
             await staffService.AddCategoryAsync(model);
 
+            TempData["message"] = "Added Successfully!";
             return RedirectToAction("Staff", "Staff");
         }
 
@@ -118,6 +122,7 @@ namespace SportWave.Controllers
 
             if(model == null)
             {
+                TempData["message"] = "Something went wrong!";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -128,6 +133,7 @@ namespace SportWave.Controllers
         {
             await staffService.SendOrderAsync(id);
 
+            TempData["message"] = "Sent Successfully!";
             return RedirectToAction(nameof(ManageOrders));
         }
 
@@ -135,6 +141,7 @@ namespace SportWave.Controllers
         {
             await staffService.ClearOrderAsync(id);
 
+            TempData["message"] = "Cleared Successfully!";
             return RedirectToAction(nameof(ManageOrders));
         }
 
@@ -155,6 +162,7 @@ namespace SportWave.Controllers
 
             if(model == null)
             {
+                TempData["message"] = "Something went wrong!";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -167,11 +175,13 @@ namespace SportWave.Controllers
 
             if(promoCode == null)
             {
+                TempData["message"] = "Something went wrong!";
                 return RedirectToAction("Index", "Home");
             }
             
             await staffService.MakeInvalidAsync(promoCode);
-            
+
+            TempData["message"] = "Edited Successfully!";
             return RedirectToAction(nameof(ManagePromoCodes));
         }
 
@@ -181,11 +191,13 @@ namespace SportWave.Controllers
 
             if(promoCode == null)
             {
+                TempData["message"] = "Something went wrong!";
                 return RedirectToAction("Index", "Home");
             }
 
             await staffService.MakeValidAsync(promoCode);
 
+            TempData["message"] = "Edited Successfully!";
             return RedirectToAction(nameof(ManagePromoCodes));
         }
 
@@ -207,6 +219,7 @@ namespace SportWave.Controllers
 
             await staffService.AddPromoCodeAsync(model);
 
+            TempData["message"] = "Added Successfully!";
             return RedirectToAction(nameof(ManagePromoCodes));
         }
     }

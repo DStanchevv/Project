@@ -26,6 +26,7 @@ namespace SportWave.Controllers
         {
             await userService.MarkedAsShippedAsync(id, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
 
+            TempData["message"] = "Edited Successfully!";
             return RedirectToAction(nameof(Orders));
         }
     }
