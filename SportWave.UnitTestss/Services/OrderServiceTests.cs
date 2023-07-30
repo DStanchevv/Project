@@ -4,7 +4,7 @@ using SportWave.Services.Contracts;
 using SportWave.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace SportWave.UnitTests
+namespace SportWave.UnitTestss.Services
 {
     public class OrderServiceTests
     {

@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 using Moq;
 using Microsoft.AspNetCore.Identity;
 
-namespace SportWave.UnitTests
+namespace SportWave.UnitTestss.Services
 {
     public class StaffServiceTests
     {

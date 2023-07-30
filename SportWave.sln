@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportWave", "SportWave\Spor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportWave.UnitTests", "SportWave.UnitTestss\SportWave.UnitTests.csproj", "{470213B7-05D2-4D2C-8C56-2021402FD39C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportWave.UnitTestss", "SportWave.UnitTestss\SportWave.UnitTestss.csproj", "{CCF9E610-3598-4395-9A38-3ADE320D9761}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{470213B7-05D2-4D2C-8C56-2021402FD39C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{470213B7-05D2-4D2C-8C56-2021402FD39C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{470213B7-05D2-4D2C-8C56-2021402FD39C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCF9E610-3598-4395-9A38-3ADE320D9761}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCF9E610-3598-4395-9A38-3ADE320D9761}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCF9E610-3598-4395-9A38-3ADE320D9761}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCF9E610-3598-4395-9A38-3ADE320D9761}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

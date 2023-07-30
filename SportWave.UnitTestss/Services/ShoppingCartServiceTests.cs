@@ -5,7 +5,7 @@ using SportWave.Services;
 using Microsoft.EntityFrameworkCore;
 using SportWave.ViewModels.ShoppingCart;
 
-namespace SportWave.UnitTests
+namespace SportWave.UnitTestss.Services
 {
     public class ShoppingCartServiceController
     {

@@ -5,7 +5,7 @@ using SportWave.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using SportWave.ViewModels.CheckoutViewModels;
 
-namespace SportWave.UnitTests
+namespace SportWave.UnitTestss.Services
 {
     public class CheckoutServiceTests
     {
