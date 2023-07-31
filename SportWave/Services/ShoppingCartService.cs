@@ -80,15 +80,17 @@ namespace SportWave.Services
         public async Task<ShoppingCartViewModel> GetProductsInCartAsync(Guid UserId)
         {
             var cart = await dbContext.ShoppingCarts.Where(sc => sc.UserId == UserId).FirstOrDefaultAsync();
-            var products = await dbContext.ShoppingCartItems.Where(c => c.CartId == cart.Id).ToListAsync();
-            if(products.Count() == 0)
-            {
-                cart.TotalPrice = 0;
-                await dbContext.SaveChangesAsync();
-            }
 
             if (cart != null)
             {
+                var products = await dbContext.ShoppingCartItems.Where(c => c.CartId == cart.Id).ToListAsync();
+
+                if (products.Count() == 0)
+                {
+                    cart.TotalPrice = 0;
+                    await dbContext.SaveChangesAsync();
+                }
+
                 var promoUser = await dbContext.PromosUsers.Where(pu => pu.UserId == UserId).FirstOrDefaultAsync();
 
                 if (promoUser != null)
