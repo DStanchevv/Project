@@ -50,6 +50,11 @@ namespace SportWave.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPromoCode(AddPromoCodeViewModel model)
         {
+            if(!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             await shoppingCartService.ApplyDiscountAsync(model, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             return RedirectToAction(nameof(ShoppingCart));
         }

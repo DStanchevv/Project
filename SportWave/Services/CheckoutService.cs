@@ -47,6 +47,7 @@ namespace SportWave.Services
                 if (!dbContext.UsersAddresses.Any(ua => ua.UserId == UserId && ua.AddressId == addressId))
                 {
                     await dbContext.UsersAddresses.AddAsync(userAddress);
+                    await dbContext.SaveChangesAsync();
                 }
 
 
@@ -63,8 +64,6 @@ namespace SportWave.Services
                     await dbContext.SaveChangesAsync();
                 }
 
-
-                var productsInCart = await dbContext.ShoppingCartItems.Include(sci => sci.Product).ToListAsync();
                 var total = await dbContext.ShoppingCarts.Where(sc => sc.UserId == UserId).Select(sc => sc.TotalPrice).FirstOrDefaultAsync();
 
                 var paymentMethodId = await dbContext.UsersPaymentMethods.Where(pm => pm.UserId == UserId && pm.PaymentTypeId == typeId).Select(upm => upm.Id).FirstOrDefaultAsync();
@@ -81,10 +80,11 @@ namespace SportWave.Services
                 if (!dbContext.Orders.Any(o => o.Id == order.Id))
                 {
                     await dbContext.Orders.AddAsync(order);
+                    await dbContext.SaveChangesAsync();
                 }
 
 
-                foreach (var product in productsInCart)
+                foreach (var product in shoppingCartItems)
                 {
                     ProductOrder productOrder = new ProductOrder()
                     {
@@ -98,7 +98,6 @@ namespace SportWave.Services
                     {
                         await dbContext.ProductsOrders.AddAsync(productOrder);
                     }
-
                 }
                 helper = true;
                 await dbContext.SaveChangesAsync();

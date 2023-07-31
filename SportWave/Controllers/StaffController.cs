@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SportWave.Services;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.AdminViewModels;
 using SportWave.ViewModels.MenAndWomenViewModels;
@@ -37,12 +36,22 @@ namespace SportWave.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model = await staffService.GetNewAddedProductAsync();
                 return View(model);
             }
 
             var result = await photoService.AddPhotoAsync(model.ImgUrl);
-            await staffService.AddProductAsync(model, result.Url.ToString());
-            TempData["message"] = "Added Successfully!";
+            if (result != null)
+            {
+                await staffService.AddProductAsync(model, result.Url.ToString());
+                TempData["message"] = "Added Successfully!";
+            }
+            else
+            {
+                TempData["message"] = "Invalid image!";
+                model = await staffService.GetNewAddedProductAsync();
+                return View(model);
+            }
 
             if (model.Gender == "Male")
             {
@@ -62,7 +71,7 @@ namespace SportWave.Controllers
 
             return View(model);
         }
-        
+
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> MakeUserEmployee(MakeUserEmployeeViewModel model)
@@ -120,7 +129,7 @@ namespace SportWave.Controllers
         {
             var model = await staffService.GetOrdersAsync();
 
-            if(model == null)
+            if (model == null)
             {
                 TempData["message"] = "Something went wrong!";
                 return RedirectToAction("Index", "Home");
@@ -149,7 +158,7 @@ namespace SportWave.Controllers
         public async Task<IActionResult> FilterOrders([FromForm] ManageOrdersViewModel model)
         {
             var viewModel = await staffService.GetFilteredOrdersAsync(model);
-            if(viewModel == null)
+            if (viewModel == null)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -160,7 +169,7 @@ namespace SportWave.Controllers
         {
             var model = await staffService.GetPromoCodesAsync();
 
-            if(model == null)
+            if (model == null)
             {
                 TempData["message"] = "Something went wrong!";
                 return RedirectToAction("Index", "Home");
@@ -169,27 +178,27 @@ namespace SportWave.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> MakeInvalid([FromRoute]Guid id)
+        public async Task<IActionResult> MakeInvalid([FromRoute] Guid id)
         {
             var promoCode = await staffService.GetPromoCodeToChangeStatusAsync(id);
 
-            if(promoCode == null)
+            if (promoCode == null)
             {
                 TempData["message"] = "Something went wrong!";
                 return RedirectToAction("Index", "Home");
             }
-            
+
             await staffService.MakeInvalidAsync(promoCode);
 
             TempData["message"] = "Edited Successfully!";
             return RedirectToAction(nameof(ManagePromoCodes));
         }
 
-        public async Task<IActionResult> MakeValid([FromRoute]Guid id)
+        public async Task<IActionResult> MakeValid([FromRoute] Guid id)
         {
             var promoCode = await staffService.GetPromoCodeToChangeStatusAsync(id);
 
-            if(promoCode == null)
+            if (promoCode == null)
             {
                 TempData["message"] = "Something went wrong!";
                 return RedirectToAction("Index", "Home");

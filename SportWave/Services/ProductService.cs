@@ -275,7 +275,7 @@ namespace SportWave.Services
                 ProductId = ur.ProductId
             }).FirstOrDefaultAsync();
 
-            if (review.UserId == userId)
+            if (review != null && review.UserId == userId)
             {
                 return review;
             }

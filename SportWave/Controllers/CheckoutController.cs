@@ -42,8 +42,8 @@ namespace SportWave.Controllers
             }
             else
             {
-                model.Msg = "Invalid information or cart is empty!";
-                return View(model);
+                TempData["message"] = "Something went wrong!";
+                return RedirectToAction("Index", "Home");
             }
 
         }

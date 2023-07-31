@@ -22,7 +22,7 @@ namespace TestImgUpload.Services
         public async Task<ImageUploadResult> AddPhotoAsync(IFormFile file)
         {
             var uploadResult = new ImageUploadResult();
-            if (file.Length > 0)
+            if (file.Length > 0 && (file.ContentType == "image/jpeg" || file.ContentType == "image/jpg" || file.ContentType == "image/png"))
             {
                 using var stream = file.OpenReadStream();
                 var uploadParams = new ImageUploadParams
@@ -34,8 +34,12 @@ namespace TestImgUpload.Services
                 uploadParams.Overwrite = false;
 
                 uploadResult = await cloudinary.UploadAsync(uploadParams);
+                return uploadResult;
             }
-            return uploadResult;
+            else
+            {
+                return null;
+            }    
         }
     }
 }

@@ -48,6 +48,7 @@ namespace SportWave.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model = await productService.GetProductByIdAsync(id);
                 return View(model);
             }
 
@@ -141,7 +142,7 @@ namespace SportWave.Controllers
             }
             else
             {
-                TempData["message"] = "There aren't enough!";
+                TempData["message"] = "There aren't enough in stock!";
                 return RedirectToAction("Details", "Product", new { Id = id });
             }
         }

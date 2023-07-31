@@ -56,9 +56,8 @@ namespace SportWave.Services
             if (order != null && status != null)
             {
                 order.Status = status.Status;
+                await dbContext.SaveChangesAsync();
             }
-
-            await dbContext.SaveChangesAsync();
         }
     }
 }
