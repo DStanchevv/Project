@@ -33,7 +33,7 @@
                             <h6>Status: <b>@order.Status</b></h6>
                             <h6>Order total: <b>@Math.Round(order.OrderTotal, 2) $</b></h6>
                             <h4>Products</h4>
-                            @foreach (var product in Model.OrderProducts)
+                            @foreach (var product in Model.OrderProducts.Where(op => op.OrderId == order.Id))
                             {
                                 if (order.Id == product.OrderId)
                                 {
