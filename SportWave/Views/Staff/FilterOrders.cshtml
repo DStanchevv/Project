@@ -13,7 +13,7 @@
 
     <form asp-action="FilterOrders" method="post">
         <div class="mb-3 textColor">
-            <label asp-for="@Model.Status" class="form-label">Filter by Status</label>
+            <label asp-for="@Model.Status" class="form-label">Search by Status</label>
             <select asp-for="@Model.Status" class="form-control">
                 @foreach (var status in @Model.OrderStatuses)
                 {
@@ -24,7 +24,7 @@
             <span asp-validation-for="@Model.Status" class="textColor"></span>
         </div>
         <div class="mb-3">
-            <input class="btn btn-danger buttonColor" type="submit" value="Filter" />
+            <input class="btn btn-danger buttonColor" type="submit" value="Search" />
         </div>
     </form>
 

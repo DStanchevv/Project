@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SportWave.Data.Migrations
 {
-    public partial class InitializeDb : Migration
+    public partial class CreateDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -62,6 +62,21 @@ namespace SportWave.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Msg = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Time = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -252,7 +267,8 @@ namespace SportWave.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -270,8 +286,7 @@ namespace SportWave.Data.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsDefault = table.Column<bool>(type: "bit", nullable: false)
+                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -296,12 +311,7 @@ namespace SportWave.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PaymentTypeId = table.Column<int>(type: "int", nullable: false),
-                    Provider = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CardNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    isDefault = table.Column<bool>(type: "bit", nullable: false)
+                    PaymentTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -429,9 +439,9 @@ namespace SportWave.Data.Migrations
                 {
                     table.PrimaryKey("PK_ProductsVariations", x => new { x.ProductId, x.SizeId, x.GenderId });
                     table.ForeignKey(
-                        name: "FK_ProductsVariations_Products_GenderId",
+                        name: "FK_ProductsVariations_ProductGenders_GenderId",
                         column: x => x.GenderId,
-                        principalTable: "Products",
+                        principalTable: "ProductGenders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -454,11 +464,12 @@ namespace SportWave.Data.Migrations
                 {
                     CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
+                    Size = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShoppingCartItems", x => new { x.CartId, x.ProductId });
+                    table.PrimaryKey("PK_ShoppingCartItems", x => new { x.CartId, x.ProductId, x.Size });
                     table.ForeignKey(
                         name: "FK_ShoppingCartItems_Products_ProductId",
                         column: x => x.ProductId,
@@ -505,12 +516,15 @@ namespace SportWave.Data.Migrations
                 name: "ProductsOrders",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductsOrders", x => new { x.ProductId, x.OrderId });
+                    table.PrimaryKey("PK_ProductsOrders", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ProductsOrders_Orders_OrderId",
                         column: x => x.OrderId,
@@ -525,35 +539,12 @@ namespace SportWave.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "PromosOrders",
-                columns: table => new
-                {
-                    PromoCodeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PromosOrders", x => new { x.PromoCodeId, x.OrderId });
-                    table.ForeignKey(
-                        name: "FK_PromosOrders_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PromosOrders_PromoCodes_PromoCodeId",
-                        column: x => x.PromoCodeId,
-                        principalTable: "PromoCodes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "OrderStatuses",
                 column: "Status",
                 values: new object[]
                 {
+                    "Not sent",
                     "On the way",
                     "Shipped"
                 });
@@ -561,11 +552,7 @@ namespace SportWave.Data.Migrations
             migrationBuilder.InsertData(
                 table: "PaymentTypes",
                 columns: new[] { "Id", "Type" },
-                values: new object[,]
-                {
-                    { 1, "Card" },
-                    { 2, "Cash" }
-                });
+                values: new object[] { 1, "Stripe" });
 
             migrationBuilder.InsertData(
                 table: "ProductCategories",
@@ -596,43 +583,6 @@ namespace SportWave.Data.Migrations
                     { 3, "M" },
                     { 4, "L" },
                     { 5, "XL" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "PromoCodes",
-                columns: new[] { "Id", "Code", "Value", "isValid" },
-                values: new object[,]
-                {
-                    { new Guid("8207c71d-8619-4423-8317-73bf1a748bcd"), "CODE10", 10, true },
-                    { new Guid("f9fd4b96-9613-41bf-b148-788ba1fb5557"), "CODE20", 20, true }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "CategoryId", "Color", "Description", "GenderId", "ImgUrl", "Name", "Price" },
-                values: new object[] { 1, 1, "WHite", "A very light, soft and comfortable T-shirt made of 100% cotton.", 1, "/img/T-Shirt V1.jpg", "T-Shirt V1", 15.99m });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "CategoryId", "Color", "Description", "GenderId", "ImgUrl", "Name", "Price" },
-                values: new object[] { 2, 2, "White", "A very light, soft and comfortable hoodie made of 100% cotton.", 1, "/img/Hoodie V1.jpg", "Hoodie V1", 20.99m });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "CategoryId", "Color", "Description", "GenderId", "ImgUrl", "Name", "Price" },
-                values: new object[] { 3, 3, "Blue", "A very light, soft and comfortable Shorts made of 100% cotton.", 1, "/img/Shorts V1.jpg", "Shorts V1", 20.99m });
-
-            migrationBuilder.InsertData(
-                table: "ProductsVariations",
-                columns: new[] { "GenderId", "ProductId", "SizeId", "Quantity" },
-                values: new object[,]
-                {
-                    { 1, 1, 1, 10 },
-                    { 1, 1, 2, 10 },
-                    { 1, 2, 1, 10 },
-                    { 1, 2, 2, 10 },
-                    { 1, 3, 1, 10 },
-                    { 1, 3, 2, 10 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -710,6 +660,11 @@ namespace SportWave.Data.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductsOrders_ProductId",
+                table: "ProductsOrders",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductsVariations_GenderId",
                 table: "ProductsVariations",
                 column: "GenderId");
@@ -718,11 +673,6 @@ namespace SportWave.Data.Migrations
                 name: "IX_ProductsVariations_SizeId",
                 table: "ProductsVariations",
                 column: "SizeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PromosOrders_OrderId",
-                table: "PromosOrders",
-                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PromosUsers_PromoCodeId",
@@ -783,13 +733,13 @@ namespace SportWave.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "ProductsOrders");
 
             migrationBuilder.DropTable(
                 name: "ProductsVariations");
-
-            migrationBuilder.DropTable(
-                name: "PromosOrders");
 
             migrationBuilder.DropTable(
                 name: "PromosUsers");
@@ -807,10 +757,10 @@ namespace SportWave.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "ProductSizes");
+                name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "ProductSizes");
 
             migrationBuilder.DropTable(
                 name: "PromoCodes");

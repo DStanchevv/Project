@@ -132,6 +132,13 @@ namespace SportWave.Data
             };
             productSizes.Add(productSize);
 
+            productSize = new ProductSize()
+            {
+                Id = 6,
+                Size = "All"
+            };
+            productSizes.Add(productSize);
+
             return productSizes.ToArray();
         }
         private ProductGender[] GenerateProductGenders()
@@ -180,6 +187,13 @@ namespace SportWave.Data
             {
                 Id = 3,
                 Category = "Shorts"
+            };
+            productCategories.Add(productCategory);
+
+            productCategory = new ProductCategory()
+            {
+                Id = 4,
+                Category = "All"
             };
             productCategories.Add(productCategory);
 

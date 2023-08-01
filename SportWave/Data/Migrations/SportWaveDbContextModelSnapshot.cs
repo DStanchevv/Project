@@ -445,6 +445,11 @@ namespace SportWave.Data.Migrations
                         {
                             Id = 3,
                             Category = "Shorts"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Category = "All"
                         });
                 });
 
@@ -547,6 +552,11 @@ namespace SportWave.Data.Migrations
                         {
                             Id = 5,
                             Size = "XL"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Size = "All"
                         });
                 });
 

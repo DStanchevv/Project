@@ -12,8 +12,8 @@ using SportWave.Data;
 namespace SportWave.Data.Migrations
 {
     [DbContext(typeof(SportWaveDbContext))]
-    [Migration("20230709201344_changeProductsOrders")]
-    partial class changeProductsOrders
+    [Migration("20230801071716_CreateDb")]
+    partial class CreateDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -258,6 +258,30 @@ namespace SportWave.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("SportWave.Data.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Msg")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("SportWave.Data.Models.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -309,6 +333,10 @@ namespace SportWave.Data.Migrations
                     b.HasData(
                         new
                         {
+                            Status = "Not sent"
+                        },
+                        new
+                        {
                             Status = "On the way"
                         },
                         new
@@ -337,12 +365,7 @@ namespace SportWave.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Type = "Card"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Type = "Cash"
+                            Type = "Stripe"
                         });
                 });
 
@@ -390,41 +413,6 @@ namespace SportWave.Data.Migrations
                     b.HasIndex("GenderId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            Color = "WHite",
-                            Description = "A very light, soft and comfortable T-shirt made of 100% cotton.",
-                            GenderId = 1,
-                            ImgUrl = "/img/T-Shirt V1.jpg",
-                            Name = "T-Shirt V1",
-                            Price = 15.99m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 2,
-                            Color = "White",
-                            Description = "A very light, soft and comfortable hoodie made of 100% cotton.",
-                            GenderId = 1,
-                            ImgUrl = "/img/Hoodie V1.jpg",
-                            Name = "Hoodie V1",
-                            Price = 20.99m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 3,
-                            Color = "Blue",
-                            Description = "A very light, soft and comfortable Shorts made of 100% cotton.",
-                            GenderId = 1,
-                            ImgUrl = "/img/Shorts V1.jpg",
-                            Name = "Shorts V1",
-                            Price = 20.99m
-                        });
                 });
 
             modelBuilder.Entity("SportWave.Data.Models.ProductCategory", b =>
@@ -494,19 +482,28 @@ namespace SportWave.Data.Migrations
 
             modelBuilder.Entity("SportWave.Data.Models.ProductOrder", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<string>("Size")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProductId", "OrderId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductsOrders");
                 });
@@ -576,50 +573,6 @@ namespace SportWave.Data.Migrations
                     b.HasIndex("SizeId");
 
                     b.ToTable("ProductsVariations");
-
-                    b.HasData(
-                        new
-                        {
-                            ProductId = 1,
-                            SizeId = 1,
-                            GenderId = 1,
-                            Quantity = 10
-                        },
-                        new
-                        {
-                            ProductId = 1,
-                            SizeId = 2,
-                            GenderId = 1,
-                            Quantity = 10
-                        },
-                        new
-                        {
-                            ProductId = 2,
-                            SizeId = 1,
-                            GenderId = 1,
-                            Quantity = 10
-                        },
-                        new
-                        {
-                            ProductId = 2,
-                            SizeId = 2,
-                            GenderId = 1,
-                            Quantity = 10
-                        },
-                        new
-                        {
-                            ProductId = 3,
-                            SizeId = 1,
-                            GenderId = 1,
-                            Quantity = 10
-                        },
-                        new
-                        {
-                            ProductId = 3,
-                            SizeId = 2,
-                            GenderId = 1,
-                            Quantity = 10
-                        });
                 });
 
             modelBuilder.Entity("SportWave.Data.Models.PromoCode", b =>
@@ -642,37 +595,6 @@ namespace SportWave.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PromoCodes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("d80e9924-4431-47e2-9fef-4238cab36466"),
-                            Code = "CODE10",
-                            Value = 10,
-                            isValid = true
-                        },
-                        new
-                        {
-                            Id = new Guid("4810e9f4-2711-49cf-a52a-e7163ae9eed6"),
-                            Code = "CODE20",
-                            Value = 20,
-                            isValid = true
-                        });
-                });
-
-            modelBuilder.Entity("SportWave.Data.Models.PromoOrder", b =>
-                {
-                    b.Property<Guid>("PromoCodeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("PromoCodeId", "OrderId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("PromosOrders");
                 });
 
             modelBuilder.Entity("SportWave.Data.Models.PromoUser", b =>
@@ -695,6 +617,9 @@ namespace SportWave.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -748,20 +673,8 @@ namespace SportWave.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CardNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ExpiryDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("PaymentTypeId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Provider")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SecurityCode")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -954,25 +867,6 @@ namespace SportWave.Data.Migrations
                     b.Navigation("ProductGender");
 
                     b.Navigation("ProductSize");
-                });
-
-            modelBuilder.Entity("SportWave.Data.Models.PromoOrder", b =>
-                {
-                    b.HasOne("SportWave.Data.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SportWave.Data.Models.PromoCode", "PromoCode")
-                        .WithMany()
-                        .HasForeignKey("PromoCodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("PromoCode");
                 });
 
             modelBuilder.Entity("SportWave.Data.Models.PromoUser", b =>
