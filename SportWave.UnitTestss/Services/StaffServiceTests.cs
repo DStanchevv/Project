@@ -651,7 +651,7 @@ namespace SportWave.UnitTestss.Services
             var result = service.GetAdminAndEmployeeEmailsAsync();
 
             Assert.NotNull(result);
-            
+
             context.Dispose();
         }
 
@@ -1155,18 +1155,35 @@ namespace SportWave.UnitTestss.Services
                 AccessFailedCount = 0
             });
 
+            context.Roles.Add(new IdentityRole<Guid>
+            {
+                Id = Guid.Parse("2C991241-E7F6-4E39-B5DB-90DDE1DC8785"),
+                Name = "Employee",
+                NormalizedName = "Employee",
+                ConcurrencyStamp = "f0bdbfbb-6ea7-4f21-85b3-18c06972e002"
+            });
+
+            context.UserRoles.Add(new IdentityUserRole<Guid>
+            {
+                UserId = Guid.Parse("591C3FC7-2E0A-498A-9693-713DC1C10DD9"),
+                RoleId = Guid.Parse("2C991241-E7F6-4E39-B5DB-90DDE1DC8785")
+            });
+
             await context.SaveChangesAsync();
+
+            var res1 = await context.UserRoles.ToListAsync();
 
             EmployeeViewModel model = new EmployeeViewModel()
             {
+                UserId = Guid.Parse("591C3FC7-2E0A-498A-9693-713DC1C10DD9"),
                 Email = "test@gmail.com"
             };
 
             await service.RemoveEmployeeAsync(model);
 
-            var result = await context.Users.ToListAsync();
+            var res2 = await context.UserRoles.ToListAsync();
 
-            Assert.Empty(result);
+            Assert.NotEqual(res1.Count(), res2.Count());
 
             context.Dispose();
         }

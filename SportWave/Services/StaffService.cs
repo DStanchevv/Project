@@ -330,17 +330,19 @@ namespace SportWave.Services
         {
             return await dbContext.Users.Where(u => u.Id == userId).Select(u => new EmployeeViewModel
             {
+                UserId = u.Id,
                 Email = u.Email
             }).FirstOrDefaultAsync();
         }
 
         public async Task RemoveEmployeeAsync(EmployeeViewModel employee)
         {
-            var employeeToRemove = await dbContext.Users.Where(u => u.Email == employee.Email).FirstOrDefaultAsync();
+            var role = await dbContext.Roles.Where(r => r.Name == EmployeeRoleName).FirstOrDefaultAsync();
+            var employeeToRemove = await dbContext.UserRoles.Where(u => u.UserId == employee.UserId && u.RoleId == role.Id).FirstOrDefaultAsync();
 
             if (employeeToRemove != null)
             {
-                dbContext.Users.Remove(employeeToRemove);
+                dbContext.UserRoles.Remove(employeeToRemove);
                 await dbContext.SaveChangesAsync();
             }
         }
