@@ -16,7 +16,8 @@ namespace SportWave.Controllers
 
         public async Task<IActionResult> Chat()
         {
-            var model = await chatService.GetAllMsgsAsync();
+            var userName = User.Identity.Name.Split("@").ToArray()[0];
+            var model = await chatService.GetAllMsgsAsync(userName);
             return View(model);
         }
     }

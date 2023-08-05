@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using SportWave.Services.Contracts;
+using System.Net.WebSockets;
 
 namespace SportWave.Hubs
 {
@@ -11,6 +12,12 @@ namespace SportWave.Hubs
         public ChatHub(IChatService chatService)
         {
             this.chatService = chatService;
+        }
+
+        public override async Task OnConnectedAsync()
+        {
+            var userName = Context.User.Identity.Name.Split("@").ToArray()[0];
+            await Clients.Caller.SendAsync("UserData", userName);
         }
 
         [Authorize(Roles = "Admin, Employee")]

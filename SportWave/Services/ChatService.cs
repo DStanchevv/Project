@@ -31,14 +31,22 @@ namespace SportWave.Services
             }
         }
 
-        public async Task<IEnumerable<MsgViewModel>> GetAllMsgsAsync()
+        public async Task<ChatViewModel> GetAllMsgsAsync(string user)
         {
-            return await this.dbContext.Messages.Select(m => new MsgViewModel
+            var messages = await this.dbContext.Messages.Select(m => new MsgViewModel
             {
                 UserName = m.UserName,
                 Msg = m.Msg,
                 Time = m.Time
             }).ToListAsync();
+
+            var model = new ChatViewModel()
+            {
+                Messages = messages,
+                User = user
+            };
+
+            return model;
         }
     }
 }

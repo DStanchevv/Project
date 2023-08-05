@@ -1,11 +1,12 @@
 ﻿@using SportWave.ViewModels.ChatViewModels
-@model IEnumerable<MsgViewModel>
+@model ChatViewModel
 
 @{
     ViewBag.Title = "Chat";
 }
 
 <link rel="stylesheet" href="~/css/chat.css" asp-append-version="true" />
+
 
 <div class="container py-5">
 
@@ -19,16 +20,31 @@
                 </div>
 
                 <div class="card-body overflow-auto" style="position: relative; height: 600px" id="messagesList">
-                    @foreach (var msg in Model)
+                    @foreach (var msg in Model.Messages)
                     {
-                        <div class="d-flex flex-row justify-content-start">
-                            <label class="fw-bold">@msg.UserName</label>
-                            <div>
-                                <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">@msg.Msg</p>
+                        if (msg.UserName != Model.User)
+                        {
+                            <div class="d-flex flex-row justify-content-start">
+                                <label class="fw-bold">@msg.UserName</label>
+                                <div>
+                                    <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">@msg.Msg</p>
 
-                                <p class="small ms-3 mb-3 rounded-3 text-muted">@msg.Time.ToString("dd.M.yyyy hh:mm:ss")</p>
+                                    <p class="small ms-3 mb-3 rounded-3 text-muted">@msg.Time.ToString("dd.M.yyyy hh:mm:ss")</p>
+                                </div>
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex flex-row justify-content-end">
+                                <label class="fw-bold">@msg.UserName</label>
+                                <div>
+                                    <p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #8B0000; color: white;">@msg.Msg</p>
+
+                                    <p class="small ms-3 mb-3 rounded-3 text-muted">@msg.Time.ToString("dd.M.yyyy hh:mm:ss")</p>
+                                </div>
+                            </div>
+                        }
+
                     }
                 </div>
 

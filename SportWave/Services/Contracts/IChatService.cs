@@ -5,6 +5,6 @@ namespace SportWave.Services.Contracts
     public interface IChatService
     {
         Task SaveMsgAsync(string userName, string message);
-        Task<IEnumerable<MsgViewModel>> GetAllMsgsAsync();
+        Task<ChatViewModel> GetAllMsgsAsync(string user);
     }
 }
