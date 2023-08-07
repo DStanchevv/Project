@@ -1,0 +1,48 @@
+﻿@using SportWave.ViewModels.StoreViewModels
+@model AllStoresViewModel
+
+@{
+    ViewData["Title"] = "Stores";
+}
+
+<h1 class="text-center textColor">@ViewBag.Title</h1>
+<p class="text-center textColor">The stores nearest to you</p>
+<a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Store" asp-action="AllStores">
+    All Stores
+</a>
+<hr class="hrStyle" />
+
+<div class="row">
+    @if (Model.Stores.Count() > 0)
+    {
+        <h3 class="textColor">Ones in your city or region: </h3>
+        foreach (var store in Model.Stores)
+        {
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body text-center">
+                        <h6>Country: <b>@store.Country</b></h6>
+                        <h6>Region: <b>@store.Region</b></h6>
+                        <h6>City: <b>@store.City</b></h6>
+                        <h6>Location: <b>@store.Location</b></h6>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    @if (Model.ClosestStore != null)
+    {
+        <h3 class="textColor">Closest one to you: </h3>
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body text-center">
+                    <h6>Country: <b>@Model.ClosestStore.Country</b></h6>
+                    <h6>Region: <b>@Model.ClosestStore.Region</b></h6>
+                    <h6>City: <b>@Model.ClosestStore.City</b></h6>
+                    <h6>Location: <b>@Model.ClosestStore.Location</b></h6>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.AdminViewModels;
 using SportWave.ViewModels.MenAndWomenViewModels;
+using SportWave.ViewModels.StaffViewModels;
 
 namespace SportWave.Controllers
 {
@@ -230,6 +231,49 @@ namespace SportWave.Controllers
 
             TempData["message"] = "Added Successfully!";
             return RedirectToAction(nameof(ManagePromoCodes));
+        }
+
+        [HttpGet]
+        public IActionResult AddStore()
+        {
+            AddStoreViewModel model = new AddStoreViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddStore(AddStoreViewModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await staffService.AddStoreAsync(model);
+
+            TempData["message"] = "Added Successfully!";
+            return RedirectToAction(nameof(ManageStores));
+        }
+
+        public async Task<IActionResult> ManageStores()
+        {
+            var model = await staffService.GetStoresAsync();
+
+            if (model == null)
+            {
+                TempData["message"] = "Something went wrong!";
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> RemoveStore([FromRoute]int id)
+        {
+            await staffService.RemoveStoreAsync(id);
+
+            TempData["message"] = "Removed Successfully!";
+            return RedirectToAction(nameof(ManageStores));
         }
     }
 }

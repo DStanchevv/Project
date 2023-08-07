@@ -5,6 +5,7 @@ using SportWave.Data.Models;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.AdminViewModels;
 using SportWave.ViewModels.MenAndWomenViewModels;
+using SportWave.ViewModels.StaffViewModels;
 using System.Globalization;
 using static SportWave.Common.RolesConstants;
 
@@ -112,7 +113,7 @@ namespace SportWave.Services
 
             foreach (var user in await dbContext.Users.ToListAsync())
             {
-                if(await manager.IsInRoleAsync(user, AdminRoleName))
+                if (await manager.IsInRoleAsync(user, AdminRoleName))
                 {
                     adminEmails.Add(user);
                 }
@@ -127,7 +128,7 @@ namespace SportWave.Services
                 AdminEmails = adminEmails,
                 EmployeeEmails = employeeEmails
             };
-            
+
             return model;
         }
 
@@ -343,6 +344,48 @@ namespace SportWave.Services
             if (employeeToRemove != null)
             {
                 dbContext.UserRoles.Remove(employeeToRemove);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task AddStoreAsync(AddStoreViewModel model)
+        {
+            var stores = await dbContext.Stores.ToListAsync();
+
+            var store = new Store()
+            {
+                Country = model.Country,
+                Region = model.Region,
+                City = model.City,
+                Location = model.Location
+            };
+
+            if (!stores.Any(s => s.Location == s.Location))
+            {
+                await dbContext.Stores.AddAsync(store);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<IEnumerable<AddStoreViewModel>> GetStoresAsync()
+        {
+            return await dbContext.Stores.Select(s => new AddStoreViewModel
+            {
+                Id = s.Id,
+                Country = s.Country,
+                Region = s.Region,
+                City = s.City,
+                Location = s.Location
+            }).ToListAsync();
+        }
+
+        public async Task RemoveStoreAsync(int id)
+        {
+            var store = await dbContext.Stores.FirstOrDefaultAsync(s => s.Id == id);
+
+            if(store != null)
+            {
+                dbContext.Stores.Remove(store);
                 await dbContext.SaveChangesAsync();
             }
         }

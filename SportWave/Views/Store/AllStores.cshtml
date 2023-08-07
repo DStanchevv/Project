@@ -1,0 +1,43 @@
+﻿@using SportWave.ViewModels.StoreViewModels
+@model IEnumerable<StoreViewModel>
+
+@{
+    ViewData["Title"] = "Stores";
+}
+
+<h1 class="text-center textColor">@ViewBag.Title</h1>
+<p class="text-center textColor">Those are the coordinates for all our stores</p>
+@if (Model.Count() > 0)
+{
+    <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Store" asp-action="RequestLocation">
+        Find nearest to you
+    </a>
+}
+
+<hr class="hrStyle" />
+
+
+@if (Model.Count() > 0)
+{
+    <div class="row">
+        @foreach (var store in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body text-center">
+                        <h6>Country: <b>@store.Country</b></h6>
+                        <h6>Region: <b>@store.Region</b></h6>
+                        <h6>City: <b>@store.City</b></h6>
+                        <h6>Location: <b>@store.Location</b></h6>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <h2 class="textColor">No available stores!</h2>
+}
+
+

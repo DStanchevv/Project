@@ -14,6 +14,9 @@
 <a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="AddPromoCode">
     Add Promo Code  <i class="fa-solid fa-circle-plus fa-sm mx-1"></i>
 </a>
+<a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="AddStore">
+    Add Store  <i class="fa-solid fa-circle-plus fa-sm mx-1"></i>
+</a>
 
 @if (!User.IsInRole("Employee"))
 {
@@ -24,6 +27,9 @@
 <a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="ManageOrders">
     Manage Orders  <i class="fa-solid fa-truck fa-sm mx-1"></i>
 </a>
-<a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Staff" asp-action="ManagePromoCodes">
+<a class="w-100 btn btn-lg btn-danger buttonColor" style="margin-bottom: 1%;" asp-area="" asp-controller="Staff" asp-action="ManagePromoCodes">
     Manage Promo Codes    <i class="fa-solid fa-percent fa-sm mx-1"></i>
+</a>
+<a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Staff" asp-action="ManageStores">
+    Manage Stores   <i class="fa-solid fa-store fa-sm mx-1"></i>
 </a>

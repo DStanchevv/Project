@@ -31,6 +31,7 @@ namespace SportWave.Data
         public DbSet<PaymentType> PaymentTypes { get; set; } = null!;
         public DbSet<UserPaymentMethod> UsersPaymentMethods { get; set; } = null!;
         public DbSet<Message> Messages { get; set; } = null!;
+        public DbSet<Store> Stores { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -46,6 +47,7 @@ namespace SportWave.Data
             builder.Entity<ProductSize>().HasData(this.GenerateProductSizes());
             builder.Entity<ProductGender>().HasData(this.GenerateProductGenders());
             builder.Entity<ProductCategory>().HasData(this.GenerateProductCategories());
+            builder.Entity<Store>().HasData(this.GenerateStores());
 
             base.OnModelCreating(builder);
         }
@@ -198,6 +200,44 @@ namespace SportWave.Data
             productCategories.Add(productCategory);
 
             return productCategories.ToArray();
+        }
+        private Store[] GenerateStores()
+        {
+            ICollection<Store> Stores = new HashSet<Store>();
+
+            Store store;
+
+            store = new Store()
+            {
+                Id = 1,
+                Country = "Bulgaria",
+                Region = "Sofia",
+                City = "Sofia",
+                Location = "42.676711, 23.322012"
+            };
+            Stores.Add(store);
+
+            store = new Store()
+            {
+                Id = 2,
+                Country = "Bulgaria",
+                Region = "Plovdiv",
+                City = "Plovdiv",
+                Location = "42.144982, 24.751170"
+            };
+            Stores.Add(store);
+
+            store = new Store()
+            {
+                Id = 3,
+                Country = "Bulgaria",
+                Region = "Stara Zagora",
+                City = "Stara Zagora",
+                Location = "42.428134, 25.626048"
+            };
+            Stores.Add(store);
+
+            return Stores.ToArray();
         }
     }
 }

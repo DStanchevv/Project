@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Stores";
+}
+
+<h1 class="text-center textColor">@ViewBag.Title</h1>
+<p class="text-center textColor">Do you allow your location to be used?</p>
+<hr class="hrStyle" />
+
+<div class="row">
+    <div class="col-md-4">
+        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Store" asp-action="NearestLocation">
+            Yes
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a class="w-100 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Store" asp-action="AllStores">
+            No
+        </a>
+    </div>
+</div>
+

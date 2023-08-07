@@ -28,6 +28,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Women" asp-action="Women"><span class="nbFontColor aMenColor">Women  <i class="fa-solid fa-person-dress fa-sm"></i></span></a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="AllStores"><span class="nbFontColor aMenColor"><i class="fa-solid fa-earth-europe fa-lg"></i></span></a>
+                        </li>
                         @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
                         {
                             <li class="nav-item">

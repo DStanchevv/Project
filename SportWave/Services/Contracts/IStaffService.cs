@@ -1,5 +1,6 @@
 ﻿using SportWave.ViewModels.AdminViewModels;
 using SportWave.ViewModels.MenAndWomenViewModels;
+using SportWave.ViewModels.StaffViewModels;
 
 namespace SportWave.Services.Contracts
 {
@@ -21,5 +22,8 @@ namespace SportWave.Services.Contracts
         Task<MakeUserEmployeeViewModel> GetAdminAndEmployeeEmailsAsync();
         Task<EmployeeViewModel> GetEmployeeByIdAsync(Guid userId);
         Task RemoveEmployeeAsync(EmployeeViewModel employee);
+        Task AddStoreAsync(AddStoreViewModel model);
+        Task<IEnumerable<AddStoreViewModel>> GetStoresAsync();
+        Task RemoveStoreAsync(int id);
     }
 }
