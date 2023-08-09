@@ -55,13 +55,25 @@ namespace SportWave.Controllers
                 return View(model);
             }
 
-            await shoppingCartService.ApplyDiscountAsync(model, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var successful = await shoppingCartService.ApplyDiscountAsync(model, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            if(successful)
+            {
+                TempData["message"] = "Code applied successfully!";
+            }
+            else
+            {
+                TempData["message"] = "Code does not exsist or is invalid!";
+            }
             return RedirectToAction(nameof(ShoppingCart));
         }
 
         public async Task<IActionResult> RemovePromoCode()
         {
-            await shoppingCartService.RemoveDiscountAsync(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            var successful = await shoppingCartService.RemoveDiscountAsync(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+            if (successful)
+            {
+                TempData["message"] = "Code removed successfully!";
+            }
             return RedirectToAction(nameof(ShoppingCart));
         }
     }

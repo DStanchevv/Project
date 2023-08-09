@@ -51,9 +51,10 @@ namespace SportWave.Services
             }
         }
 
-        public async Task ApplyDiscountAsync(AddPromoCodeViewModel model, Guid userId)
+        public async Task<bool> ApplyDiscountAsync(AddPromoCodeViewModel model, Guid userId)
         {
             var code = await dbContext.PromoCodes.Where(pc => pc.Code == model.Code).FirstOrDefaultAsync();
+            var helper = false;
 
             if (code != null && code.isValid)
             {
@@ -73,8 +74,12 @@ namespace SportWave.Services
                     await dbContext.PromosUsers.AddAsync(promoUser);
 
                     await dbContext.SaveChangesAsync();
+
+                    helper = true;
                 }
             }
+
+            return helper;
         }
 
         public async Task<ShoppingCartViewModel> GetProductsInCartAsync(Guid UserId)
@@ -183,11 +188,12 @@ namespace SportWave.Services
 
         }
 
-        public async Task RemoveDiscountAsync(Guid userId)
+        public async Task<bool> RemoveDiscountAsync(Guid userId)
         {
             var promoUser = await dbContext.PromosUsers.Where(pu => pu.UserId == userId).FirstOrDefaultAsync();
             var shoppingCart = await dbContext.ShoppingCarts.Where(sc => sc.UserId == userId).FirstOrDefaultAsync();
             var shoppingCartItems = await dbContext.ShoppingCartItems.Include(sci => sci.Product).Where(sci => sci.CartId == shoppingCart.Id).ToListAsync();
+            var helper = false;
 
             if (promoUser != null)
             {
@@ -197,10 +203,12 @@ namespace SportWave.Services
                 {
                     shoppingCart.TotalPrice += sci.Product.Price * sci.Quantity;
                 }
-
+                
+                await dbContext.SaveChangesAsync();
+                helper = true;
             }
 
-            await dbContext.SaveChangesAsync();
+            return helper;
         }
 
         public async Task RemoveProductFromCart(Guid UserId, int id)

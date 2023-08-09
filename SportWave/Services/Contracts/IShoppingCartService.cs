@@ -8,7 +8,7 @@ namespace SportWave.Services.Contracts
         Task SubtractQuantityToProductAsync(Guid userId, int id);
         Task<ShoppingCartViewModel> GetProductsInCartAsync(Guid userId);
         Task RemoveProductFromCart(Guid userId, int id);
-        Task ApplyDiscountAsync(AddPromoCodeViewModel model, Guid userId);
-        Task RemoveDiscountAsync(Guid guid);
+        Task<bool> ApplyDiscountAsync(AddPromoCodeViewModel model, Guid userId);
+        Task<bool> RemoveDiscountAsync(Guid guid);
     }
 }
