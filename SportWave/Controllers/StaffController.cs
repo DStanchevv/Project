@@ -244,7 +244,7 @@ namespace SportWave.Controllers
         [HttpPost]
         public async Task<IActionResult> AddStore(AddStoreViewModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }
@@ -268,11 +268,19 @@ namespace SportWave.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> RemoveStore([FromRoute]int id)
+        public async Task<IActionResult> RemoveStore([FromRoute] int id)
         {
-            await staffService.RemoveStoreAsync(id);
+            var successful = await staffService.RemoveStoreAsync(id);
 
-            TempData["message"] = "Removed Successfully!";
+            if (successful)
+            {
+                TempData["message"] = "Removed Successfully!";
+            }
+            else
+            {
+                TempData["message"] = "Something went wrong!";
+            }
+
             return RedirectToAction(nameof(ManageStores));
         }
     }

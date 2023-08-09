@@ -7,9 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using SportWave.Data.Models;
 using Microsoft.AspNetCore.Http;
 using SportWave.ViewModels.AdminViewModels;
-using System.Linq.Expressions;
-using Moq;
 using Microsoft.AspNetCore.Identity;
+using SportWave.ViewModels.StaffViewModels;
 
 namespace SportWave.UnitTestss.Services
 {
@@ -1188,5 +1187,193 @@ namespace SportWave.UnitTestss.Services
             context.Dispose();
         }
 
+        [Fact]
+        public async Task AddStoreWorksProperly()
+        {
+            SportWaveDbContext context = new SportWaveDbContext(DbContextOptions.Options);
+            FakeUserManager userManager = new FakeUserManager(context);
+            IStaffService service = new StaffService(context, userManager);
+
+            var res1 = await context.Stores.ToListAsync();
+
+            await service.AddStoreAsync(new AddStoreViewModel
+            {
+                Id = 1,
+                Country = "Test",
+                Region = "Test",
+                City = "Test",
+                Location = "Test"
+            });
+
+            var res2 = await context.Stores.ToListAsync();
+
+            Assert.NotEqual(res1.Count(), res2.Count());
+
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task AddStoreDoesNotAddStoreIfItAlreadyExists()
+        {
+            SportWaveDbContext context = new SportWaveDbContext(DbContextOptions.Options);
+            FakeUserManager userManager = new FakeUserManager(context);
+            IStaffService service = new StaffService(context, userManager);
+
+            context.Stores.Add(new Store
+            {
+                Id = 1,
+                Country = "Test",
+                Region = "Test",
+                City = "Test",
+                Location = "Test"
+            });
+
+            await context.SaveChangesAsync();
+
+            var res1 = await context.Stores.ToListAsync();
+
+            await service.AddStoreAsync(new AddStoreViewModel
+            {
+                Id = 1,
+                Country = "Test",
+                Region = "Test",
+                City = "Test",
+                Location = "Test"
+            });
+
+            var res2 = await context.Stores.ToListAsync();
+
+            Assert.Equal(res1.Count(), res2.Count());
+
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task GetStoresDoesNotReturnNullWhenThereAreStores()
+        {
+            SportWaveDbContext context = new SportWaveDbContext(DbContextOptions.Options);
+            FakeUserManager userManager = new FakeUserManager(context);
+            IStaffService service = new StaffService(context, userManager);
+
+            context.Stores.Add(new Store
+            {
+                Id = 1,
+                Country = "Test",
+                Region = "Test",
+                City = "Test",
+                Location = "Test"
+            });
+
+            await context.SaveChangesAsync();
+
+            var res1 = await service.GetStoresAsync();
+
+            Assert.NotNull(res1);
+
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task GetStoresDoesNotReturnNullWhenThereAreNoStores()
+        {
+            SportWaveDbContext context = new SportWaveDbContext(DbContextOptions.Options);
+            FakeUserManager userManager = new FakeUserManager(context);
+            IStaffService service = new StaffService(context, userManager);
+
+            var res1 = await service.GetStoresAsync();
+
+            Assert.NotNull(res1);
+
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task GetStoresReturnsNotEmptyListWhenThereAreStores()
+        {
+            SportWaveDbContext context = new SportWaveDbContext(DbContextOptions.Options);
+            FakeUserManager userManager = new FakeUserManager(context);
+            IStaffService service = new StaffService(context, userManager);
+
+            context.Stores.Add(new Store
+            {
+                Id = 1,
+                Country = "Test",
+                Region = "Test",
+                City = "Test",
+                Location = "Test"
+            });
+
+            await context.SaveChangesAsync();
+
+            var res1 = await service.GetStoresAsync();
+
+            Assert.NotEmpty(res1);
+
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task GetStoresReturnsEmptyListWhenThereAreNoStores()
+        {
+            SportWaveDbContext context = new SportWaveDbContext(DbContextOptions.Options);
+            FakeUserManager userManager = new FakeUserManager(context);
+            IStaffService service = new StaffService(context, userManager);
+
+            var res1 = await service.GetStoresAsync();
+
+            Assert.Empty(res1);
+
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task RemoveStoreWorksProperly()
+        {
+            SportWaveDbContext context = new SportWaveDbContext(DbContextOptions.Options);
+            FakeUserManager userManager = new FakeUserManager(context);
+            IStaffService service = new StaffService(context, userManager);
+
+            context.Stores.Add(new Store
+            {
+                Id = 1,
+                Country = "Test",
+                Region = "Test",
+                City = "Test",
+                Location = "Test"
+            });
+
+            await context.SaveChangesAsync();
+
+            var res1 = await service.RemoveStoreAsync(1);
+
+            Assert.True(res1);
+
+            context.Dispose();
+        }
+
+        [Fact]
+        public async Task RemoveStoreReturnsFalseIfStoreDoesNotExsist()
+        {
+            SportWaveDbContext context = new SportWaveDbContext(DbContextOptions.Options);
+            FakeUserManager userManager = new FakeUserManager(context);
+            IStaffService service = new StaffService(context, userManager);
+
+            context.Stores.Add(new Store
+            {
+                Id = 1,
+                Country = "Test",
+                Region = "Test",
+                City = "Test",
+                Location = "Test"
+            });
+
+            await context.SaveChangesAsync();
+
+            var res1 = await service.RemoveStoreAsync(2);
+
+            Assert.False(res1);
+
+            context.Dispose();
+        }
     }
 }

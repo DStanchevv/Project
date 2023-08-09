@@ -360,7 +360,7 @@ namespace SportWave.Services
                 Location = model.Location
             };
 
-            if (!stores.Any(s => s.Location == s.Location))
+            if (!stores.Any(s => s.Location == model.Location))
             {
                 await dbContext.Stores.AddAsync(store);
                 await dbContext.SaveChangesAsync();
@@ -379,15 +379,19 @@ namespace SportWave.Services
             }).ToListAsync();
         }
 
-        public async Task RemoveStoreAsync(int id)
+        public async Task<bool> RemoveStoreAsync(int id)
         {
+            var helper = false;
             var store = await dbContext.Stores.FirstOrDefaultAsync(s => s.Id == id);
 
             if(store != null)
             {
+                helper = true;
                 dbContext.Stores.Remove(store);
                 await dbContext.SaveChangesAsync();
             }
+
+            return helper;
         }
     }
 }

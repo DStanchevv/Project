@@ -24,6 +24,6 @@ namespace SportWave.Services.Contracts
         Task RemoveEmployeeAsync(EmployeeViewModel employee);
         Task AddStoreAsync(AddStoreViewModel model);
         Task<IEnumerable<AddStoreViewModel>> GetStoresAsync();
-        Task RemoveStoreAsync(int id);
+        Task<bool> RemoveStoreAsync(int id);
     }
 }
