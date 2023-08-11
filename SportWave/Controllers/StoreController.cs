@@ -42,7 +42,6 @@ namespace SportWave.Controllers
                 {
                     return View(allStoresModel);
                 }
-
             }
             catch
             {

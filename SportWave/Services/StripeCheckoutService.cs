@@ -13,7 +13,7 @@ namespace SportWave.Services
         private readonly SportWaveDbContext dbContext;
         private readonly StripeSettings stripeSettings;
         
-        public StripeCheckoutService(SportWaveDbContext dbContext, IOptions<StripeSettings> stripeSettings)
+        public StripeCheckoutService(SportWaveDbContext dbContext)
         {
             this.dbContext = dbContext;
             this.stripeSettings = new StripeSettings();
