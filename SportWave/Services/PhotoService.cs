@@ -1,7 +1,5 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
-using Microsoft.Extensions.Options;
-using SportWave.Cloudinary;
 using SportWave.Services.Contracts;
 
 namespace TestImgUpload.Services
@@ -9,12 +7,16 @@ namespace TestImgUpload.Services
     public class PhotoService : IPhotoService
     {
         private readonly Cloudinary cloudinary;
-        public PhotoService(IOptions<CloudinarySettings> config)
+        public PhotoService()
         {
+            string cloudName = Environment.GetEnvironmentVariable("CLOUDINARY_NAME");
+            string apiKey = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY");
+            string apiSecret = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET");
+
             var acc = new Account(
-                config.Value.CloudName,
-                config.Value.ApiKey,
-                config.Value.ApiSecret
+                cloudName,
+                apiKey,
+                apiSecret
                 );
             cloudinary = new Cloudinary(acc);
         }

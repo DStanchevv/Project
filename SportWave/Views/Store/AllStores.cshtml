@@ -10,15 +10,21 @@
 @if (Model.Count() > 0)
 {
     <div class="d-flex justify-content-center">
-        <a class="w-50 btn btn-lg btn-danger buttonColor" asp-area="" asp-controller="Store" asp-action="RequestLocation">
+        <a id="find-nearest" class="w-50 btn btn-lg btn-danger buttonColor">
             Find nearest to you
         </a>
     </div>
+    <script>
+        document.querySelector("#find-nearest").addEventListener("click", event => {
+            event.preventDefault();
+            navigator.geolocation.getCurrentPosition(({ coords }) => {
+                window.location.href = `/Store/NearestLocation?latitude=${coords.latitude}&longitude=${coords.longitude}`;
+            });
+        });
+    </script>
 }
 
-
 <hr class="hrStyle" />
-
 
 @if (Model.Count() > 0)
 {

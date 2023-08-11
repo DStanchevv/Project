@@ -1,21 +1,19 @@
-﻿{
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:20542",
-      "sslPort": 44329
-    }
-  },
+{
   "profiles": {
     "SportWave": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7090;http://localhost:5090",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "CLOUDINARY_NAME": "df55mctne",
+        "CLOUDINARY_API_KEY": "397415825623513",
+        "CLOUDINARY_API_SECRET": "0XUoNe6WM3eK3cKr7Zg1KkxlhnY",
+        "STRIPE_API_KEY": "pk_test_51NVYNzJeUaYAMlBG4bGgt9FzVQsMGmwotWYYI58wu8DJPSVx0AKMjG1dpA00OclfWaESuZSI9dEpmlcbDB65tenS00aNWN81oY",
+        "STRIPE_API_SECRET": "sk_test_51NVYNzJeUaYAMlBGeBe7RRVLlN27VhXvnmljMjMUe4m0x4nktqQqbbu2ha8mbVu4XbAIHlVLxybkHDwkJ612Fa2P00JKngiyZT",
+        "STRIPE_URLS_HOST": "https://localhost:7090"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7090;http://localhost:5090"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -23,6 +21,14 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    }
+  },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:20542",
+      "sslPort": 44329
     }
   }
 }

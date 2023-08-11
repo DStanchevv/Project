@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SportWave.Data;
-using SportWave.Data.Models;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.StoreViewModels;
 using System.Globalization;
@@ -20,7 +19,7 @@ namespace SportWave.Services
         {
             double lon2 = 0, lat2 = 0;
             Dictionary<StoreViewModel, double> stores = new Dictionary<StoreViewModel, double>();
-            
+
             var allStores = await dbContext.Stores.Select(s => new StoreViewModel
             {
                 Country = s.Country,
@@ -31,8 +30,16 @@ namespace SportWave.Services
 
             foreach (var s in allStores)
             {
-                lon2 = double.Parse(s.Location.Split(",").ToArray()[0], CultureInfo.InvariantCulture);
-                lat2 = double.Parse(s.Location.Split(",").ToArray()[1], CultureInfo.InvariantCulture);
+                try
+                {
+                    lon2 = double.Parse(s.Location.Split(",").ToArray()[0], CultureInfo.InvariantCulture);
+                    lat2 = double.Parse(s.Location.Split(",").ToArray()[1], CultureInfo.InvariantCulture);
+                }
+                catch
+                {
+                    continue;
+                }
+
 
                 if ((lat1 == lat2) && (lon1 == lon2))
                 {
@@ -84,7 +91,7 @@ namespace SportWave.Services
 
         public async Task<AllStoresViewModel> GetStoreByCityOrRegionAsync(string city, string region)
         {
-            var stores =  await dbContext.Stores.Where(s => s.City == city || s.Region == region).Select(s => new StoreViewModel
+            var stores = await dbContext.Stores.Where(s => s.City == city || s.Region == region).Select(s => new StoreViewModel
             {
                 Country = s.Country,
                 Region = s.Region,

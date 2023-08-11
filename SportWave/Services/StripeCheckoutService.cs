@@ -16,7 +16,7 @@ namespace SportWave.Services
         public StripeCheckoutService(SportWaveDbContext dbContext, IOptions<StripeSettings> stripeSettings)
         {
             this.dbContext = dbContext;
-            this.stripeSettings = stripeSettings.Value;
+            this.stripeSettings = new StripeSettings();
         }
         public async Task<string> CheckoutSessionAsync(Guid userId)
         {
@@ -26,8 +26,8 @@ namespace SportWave.Services
             var userEmail = await dbContext.Users.Where(u => u.Id == userId).Select(u => u.Email).FirstOrDefaultAsync();
 
             var currency = "usd";
-            var successUrl = "https://localhost:7090/Checkout/OrderThanks";
-            var cancelUrl = "https://localhost:7090/ShoppingCart/ShoppingCart";
+            var successUrl = $"{this.stripeSettings.UrlsHost}/Checkout/OrderThanks";
+            var cancelUrl = $"{this.stripeSettings.UrlsHost}/ShoppingCart/ShoppingCart";
 
             List<SessionLineItemOptions> lineItems = new List<SessionLineItemOptions>();
             foreach (var product in products)

@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using SportWave.IPInfo;
 using SportWave.Services.Contracts;
 using SportWave.ViewModels.StoreViewModels;
-using System.Globalization;
-using System.Net;
 
 namespace SportWave.Controllers
 {
@@ -33,38 +29,14 @@ namespace SportWave.Controllers
             return View();
         }
 
-        public async Task<IActionResult> NearestLocation()
+        public async Task<IActionResult> NearestLocation([FromQuery] double latitude, [FromQuery] double longitude)
         {
-            var ipInfo = new IpInfo();
-            var storeModel = new StoreViewModel();
             var allStoresModel = new AllStoresViewModel();
 
             try
             {
-                string url = "https://ipinfo.io?token=27df0381695f75";
-                var info = new WebClient().DownloadString(url);
+                allStoresModel.ClosestStore = await storeService.FindClosestOne(latitude, longitude);
 
-                ipInfo = JsonConvert.DeserializeObject<IpInfo>(info);
-                if (ipInfo != null)
-                {
-                    RegionInfo myRI = new RegionInfo(ipInfo.Country);
-
-                    ipInfo.Country = myRI.EnglishName;
-                    storeModel.City = ipInfo.City;
-                    storeModel.Region = ipInfo.Region;
-                    storeModel.Location = ipInfo.Location;
-
-
-                    if (storeModel.City != null)
-                    {
-                        allStoresModel = await storeService.GetStoreByCityOrRegionAsync(storeModel.City, storeModel.Region);
-
-                        var yourLon = double.Parse(storeModel.Location.Split(",").ToArray()[0], CultureInfo.InvariantCulture);
-                        var yourlat = double.Parse(storeModel.Location.Split(",").ToArray()[1], CultureInfo.InvariantCulture);
-
-                        allStoresModel.ClosestStore = await storeService.FindClosestOne(yourlat, yourLon);
-                    }
-                }
 
                 if (allStoresModel.Stores.Count() == 0 && allStoresModel.ClosestStore == null)
                 {

@@ -2,7 +2,8 @@
 {
     public class StripeSettings
     {
-        public string SecretKey { get; set; } = null!;
-        public string PublicKey { get; set; } = null!;
+        public readonly string UrlsHost = Environment.GetEnvironmentVariable("STRIPE_URLS_HOST");
+        public readonly string SecretKey = Environment.GetEnvironmentVariable("STRIPE_API_SECRET");
+        public readonly string PublicKey = Environment.GetEnvironmentVariable("STRIPE_API_KEY");
     }
 }
