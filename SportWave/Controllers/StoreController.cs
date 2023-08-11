@@ -24,11 +24,6 @@ namespace SportWave.Controllers
             return View(model);
         }
 
-        public IActionResult RequestLocation()
-        {
-            return View();
-        }
-
         public async Task<IActionResult> NearestLocation([FromQuery] double latitude, [FromQuery] double longitude)
         {
             var allStoresModel = new AllStoresViewModel();
