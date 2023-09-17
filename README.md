@@ -14,6 +14,3 @@ stock up the product, remove it or make orders and write reviews as a normal use
 - Payment gateway: Stripe
 - HTML5 Geolocation 
 
-# Deployed on Azure: 
-- https://sportwave20230810130352.azurewebsites.net
-
